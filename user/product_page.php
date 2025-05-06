@@ -2,6 +2,90 @@
 <html lang="en">
 <head>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #FFFDF7;
+            color: #2A2A2A;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(255, 206, 10, 0.1);
+        }
+
+        .product-title {
+            font-size: 2rem;
+            color: #2A2A2A;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2A2A2A;
+            margin-bottom: 1rem;
+        }
+
+        .product-description {
+            color: #555555;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .product-features {
+            margin-bottom: 2rem;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: #555555;
+        }
+
+        .feature i {
+            color: #FFCE0A;
+        }
+
+        .cta-button {
+            background: #FFCE0A;
+            color: #2A2A2A;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+        }
+
+        .cta-button:hover {
+            background: #FFD534;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(255, 206, 10, 0.2);
+        }
+
         :root {
             --primary-color: #FFCE0A;
             --secondary-color: #ffd840;
@@ -36,17 +120,17 @@
             grid-template-columns: 1fr 1fr;
             gap: 3rem;
             margin-bottom: 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(255, 206, 10, 0.1);
         }
         
         .product-image {
-            background-color: white;
+            background-color: #FFFDF7;
+            border: 1px solid #FFE97D;
             border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 1rem;
         }
         
         .product-image img {
@@ -65,12 +149,15 @@
             font-size: 2.2rem;
             font-weight: 700;
             color: var(--dark-text);
+            border-bottom: 2px solid #FFCE0A;
+            padding-bottom: 0.5rem;
         }
         
         .product-price {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--secondary-color);
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2A2A2A;
+            margin-bottom: 1rem;
         }
         
         .product-description {
@@ -89,10 +176,15 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            background: #FFFDF7;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid #FFE97D;
         }
         
         .feature i {
             color: var(--primary-color);
+            color: #FFCE0A;
         }
         
         .cta-button {
@@ -107,12 +199,22 @@
             box-shadow: var(--shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin-top: 1rem;
+            background: #FFCE0A;
+            color: #2A2A2A;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
         
         .cta-button:hover {
             background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
             transform: translateY(-3px);
             box-shadow: 0 6px 12px rgba(255, 206, 10, 0.2);
+            background: #FFD534;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 206, 10, 0.2);
         }
         
         .section-title {
@@ -121,6 +223,8 @@
             margin: 2rem 0 1.5rem 0;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--primary-color);
+            color: #2A2A2A;
+            border-bottom: 2px solid #FFCE0A;
         }
         
         .reviews-container {
@@ -129,6 +233,9 @@
             padding: 2rem;
             box-shadow: var(--shadow);
             margin-bottom: 3rem;
+            background: white;
+            border: 1px solid #FFE97D;
+            box-shadow: 0 4px 6px rgba(255, 206, 10, 0.1);
         }
         
         .reviews-header {
@@ -153,6 +260,7 @@
         .stars {
             color: var(--primary-color);
             font-size: 1.2rem;
+            color: #FFCE0A;
         }
         
         .review-count {
@@ -300,7 +408,7 @@
         .card-price {
             font-size: 1.2rem;
             font-weight: 600;
-            color: var(--secondary-color);
+            color: #2A2A2A;
             margin-bottom: 1rem;
         }
         
@@ -415,8 +523,8 @@
                 <img src="../assets/images/office.png" alt="Produit Digital">
             </div>
             <div class="product-info">
-                <h1 class="product-title">Formation Complète Marketing Digital</h1>
-                <div class="product-price">€149.99</div>
+                <h1 class="product-title">Lorem Ipsum Dolor Sit Amet</h1>
+                <div class="product-price">0.00 Prix</div>
                 <div class="product-rating">
                     <span class="stars">
                         <i class="fas fa-star"></i>
@@ -425,31 +533,31 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star-half-alt"></i>
                     </span>
-                    <span class="review-count">(42 avis)</span>
+                    <span class="review-count">(00 Lorem)</span>
                 </div>
                 <p class="product-description">
-                    Cette formation complète en marketing digital vous donnera toutes les compétences nécessaires pour exceller dans le domaine du marketing en ligne. Accédez à plus de 50 heures de contenu vidéo, des ressources téléchargeables et un accès à vie aux mises à jour.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </p>
                 <div class="product-features">
                     <div class="feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Accès à vie</span>
+                        <span>Lorem ipsum dolor</span>
                     </div>
                     <div class="feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>50+ heures de vidéo HD</span>
+                        <span>Consectetur adipiscing</span>
                     </div>
                     <div class="feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>30 ressources téléchargeables</span>
+                        <span>Sed do eiusmod</span>
                     </div>
                     <div class="feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Certificat d'achèvement</span>
+                        <span>Tempor incididunt</span>
                     </div>
                     <div class="feature">
                         <i class="fas fa-check-circle"></i>
-                        <span>Support par email</span>
+                        <span>Ut labore et dolore</span>
                     </div>
                 </div>
                 <div class="product-actions">
@@ -460,7 +568,7 @@
             </div>
         </div>
         
-        <h2 class="title4"><strong>Découvrez <span class="highlight">les Avis </span>de Nos Clients</strong></h2>
+        <h2 class="title4"><strong>Lorem <span class="highlight">Ipsum </span>Dolor Sit</strong></h2>
         <main class="container_review">
             <div class="marquee pause-on-hover" style="--total: 6;">
                 <!-- le contenu des review-cards -->
@@ -477,7 +585,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="section-header d-flex justify-content-between">
-                    <h2 class="section-title">Produits recommandés</h2>
+                    <h2 class="section-title">Lorem Ipsum</h2>
                     <div class="d-flex align-items-center">
                         <a href="#" class="btn-link text-decoration-none">Voir tous les produits →</a>
                         <div class="swiper-buttons">
@@ -502,14 +610,14 @@
                                         <img src="../assets/images/office.png" class="tab-image">
                                     </a>
                                 </figure>
-                                <h3>Microsoft Office 2024 Home PC</h3>
-                                <span class="qty">1 Unit</span>
+                                <h3>Lorem Ipsum Dolor</h3>
+                                <span class="qty">0 Lorem</span>
                                 <span class="rating">
                                     <svg width="24" height="24" class="text-primary">
                                         <use xlink:href="#star-solid"></use>
-                                    </svg> 4.5
+                                    </svg> 0.0
                                 </span>
-                                <span class="price">200 MAD</span>
+                                <span class="price">0.00 Prix</span>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="input-group product-qty">
                                         <span class="input-group-btn">
