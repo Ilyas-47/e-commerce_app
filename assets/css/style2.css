@@ -1,0 +1,340 @@
+/* Section : Why Choose Us */
+  
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 50px auto;
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    padding: 40px;
+  }
+  
+  .left {
+    flex: 1;
+    padding-right: 40px;
+    min-width: 300px;
+  }
+  
+  .left h1 {
+    font-size: 2.8em;
+    margin-bottom: 24px;
+    color: #2A2A2A;
+    position: relative;
+    font-weight: 700;
+  }
+  
+  .left h1:after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 4px;
+    background: #FFCE0A; /* accent jaune */
+    left: 0;
+    bottom: -12px;
+    border-radius: 2px;
+  }
+  
+  .left p {
+    font-size: 1.1em;
+    line-height: 1.8;
+    color: #555555; /* unifié */
+    margin-top: 20px;
+  }
+  
+  .right {
+    flex: 1;
+    min-width: 300px;
+    padding-left: 20px;
+  }
+  
+  .feature {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 35px;
+    transition: all 0.3s ease;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .feature:hover {
+    background-color: #F0F7FF; /* hover bleu très doux */
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(47, 111, 207, 0.1);
+  }
+  
+  .icon {
+    width: 70px;
+    height: 70px;
+    border: 3px solid #FFCE0A;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 25px;
+    background-color: rgba(255, 206, 10, 0.08); /* fond léger jaune */
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+  
+  .feature:hover .icon {
+    background-color: #FFCE0A; /* jaune vif */
+  }
+  
+  .feature:hover .icon svg {
+    fill: #FFFFFF; /* blanc sur fond jaune */
+  }
+  
+  .icon svg {
+    width: 32px;
+    height: 32px;
+    fill: #FFCE0A;
+    transition: all 0.3s ease;
+  }
+  
+  .text {
+    flex-grow: 1;
+  }
+  
+  .text h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.3em;
+    color: #2A2A2A;
+    font-weight: 600;
+  }
+  
+  .text p {
+    margin: 0;
+    font-size: 1em;
+    color: #555555;
+    line-height: 1.6;
+  }
+  
+  
+  @media (max-width: 860px) {
+    .container {
+      flex-direction: column;
+      padding: 30px;
+    }
+    
+    .left {
+      padding-right: 0;
+      margin-bottom: 40px;
+    }
+    
+    .right {
+      padding-left: 0;
+    }
+  }
+
+
+  /* section numbers */
+
+  .section-numbers {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #828012, #d2c211); /* bleu amélioré */
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+
+  .section-numbers h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: white;
+  }
+
+  .section-numbers h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color:white;
+  }
+
+  .stats {
+    display: flex;
+    gap: 60px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat-block {
+    flex: 1 1 250px;
+  }
+
+  .number {
+    font-size: 5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .description {
+    font-size: 1.2rem;
+    color: #dddddd;
+    max-width: 300px;
+    margin: 0 auto;
+    margin-top:5px;
+  }
+
+  @media (max-width: 600px) {
+    .number {
+      font-size: 3.5rem;
+    }
+    h1, h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+
+  /* qualite */
+
+  .features-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.feature-item {
+    flex: 1 1 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.feature-icon {
+    font-size: 32px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.feature-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.feature-description {
+    font-size: 14px;
+    color: #777;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .features-container {
+        flex-direction: column;
+    }
+    
+    .feature-item {
+        max-width: 100%;
+    }
+}
+
+
+/* les avis */
+
+:root {
+    --body-color: #010c15;
+    --primary-color: #26d0ce;
+    --secondary-color: #d22222;
+    --accent-color: #c98bdf;
+    --alt-body-color: #010a1c;
+    --extra-color: #e6089b;
+  
+    color-scheme: dark;
+  }
+  
+  .title4{
+            margin-top: 60px;
+            margin-bottom: 5px;
+            margin-left:30%;
+         }
+   /* * {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  } */
+  
+  /* body {
+     display: grid;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    place-items: center;
+    font-family: sans-serif; 
+    background-color: var(--body-color);
+  }  */
+  
+  .container_review {
+    margin-top:50px;
+    width: 90vw;
+    height: 282px;
+    overflow: hidden;
+    position: relative;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  
+    .marquee {
+      --duration: 60s;
+      --card-width: 16rem;
+  
+      width: 100%;
+      height: 100%;
+      position: relative;
+  
+      display: flex;
+      overflow: hidden;
+      mask-image: linear-gradient(to right, rgb(0 0 0 / 0), rgb(0 0 0 / 1) 5%, rgb(0 0 0 / 1) 95%, rgb(0 0 0 / 0));
+  
+      &.pause-on-hover:hover review-card {
+        animation-play-state: paused;
+      }
+  
+      &.reverse review-card {
+        animation-direction: reverse;
+      }
+  
+      & review-card {
+        position: absolute;
+        inset-inline-start: max(calc(var(--card-width) * var(--total)), 100%);
+  
+        animation-duration: var(--duration);
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        animation-delay: calc(
+          var(--duration) / var(--total) * (var(--total) - var(--index)) * -1
+        );
+        animation-name: scroll-left;
+      }
+    }
+  }
+  
+  @keyframes scroll-left {
+    to {
+      inset-inline-start: calc((var(--card-width) + 50px) * -1);
+    }
+  }
+
+  
+
