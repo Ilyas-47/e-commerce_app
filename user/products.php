@@ -21,7 +21,6 @@
             margin: 2rem auto;
             padding: 0 1rem;
         }
-
         .filters {
             background: white;
             padding: 1.5rem;
