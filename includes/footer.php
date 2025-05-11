@@ -51,6 +51,9 @@
          <script src="../assets/js/script.js"></script>
          <script src="../assets/js/scroll_avie.js"></script>
          <script src="https://cdn.tailwindcss.com"></script>
+         <script src="../assets/js/login_register.js"></script>
+         <script src="../assets/js/products.js"></script>
+         <script src="../assets/js/product_page.js"></script>
          <!-- <link rel="stylesheet" href="../assets/css/footer.css"> -->
       </footer>
    </body>  

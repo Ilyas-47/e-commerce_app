@@ -11,18 +11,18 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateCartTotal() {
       let total = 0;
       document.querySelectorAll('.cart-item').forEach(item => {
-        const price = parseFloat(item.querySelector('.cart-item-price').textContent.replace('€', ''));
+        const price = parseFloat(item.querySelector('.cart-item-price').textContent.replace('MAD', ''));
         const quantity = parseInt(item.querySelector('.quantity-input').value);
         total += price * quantity;
         
         // Mettre à jour le sous-total de l'article
-        item.querySelector('.cart-item-subtotal').textContent = '€' + (price * quantity).toFixed(2);
+        item.querySelector('.cart-item-subtotal').textContent = price * quantity + ' MAD';
       });
       
       // Mettre à jour le résumé du panier
-      document.querySelector('.summary-row.total span:last-child').textContent = '€' + total.toFixed(2);
+      document.querySelector('.summary-row.total span:last-child').textContent = total + ' MAD';
       document.querySelectorAll('.cart-total').forEach(el => {
-        el.textContent = '€' + total.toFixed(2);
+        el.textContent = total + ' MAD';
       });
       
       // Mettre à jour le nombre d'articles
@@ -97,20 +97,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (code && validPromoCodes[code]) {
           // Code valide
           const discount = validPromoCodes[code];
-          const subtotal = parseFloat(document.querySelector('.summary-row:first-child span:last-child').textContent.replace('€', ''));
+          const subtotal = parseFloat(document.querySelector('.summary-row:first-child span:last-child').textContent.replace('MAD', ''));
           const discountAmount = (subtotal * discount / 100).toFixed(2);
           const newTotal = (subtotal - discountAmount).toFixed(2);
           
           // Mise à jour de l'UI
-          discountRow.querySelector('span:last-child').textContent = `-€${discountAmount}`;
+          discountRow.querySelector('span:last-child').textContent = `-${discountAmount} MAD`;
           discountRow.style.display = 'flex';
-          document.querySelector('.summary-row.total span:last-child').textContent = `€${newTotal}`;
+          document.querySelector('.summary-row.total span:last-child').textContent = `${newTotal} MAD`;
           document.querySelectorAll('.cart-total').forEach(el => {
-            el.textContent = `€${newTotal}`;
+            el.textContent = `${newTotal} MAD`;
           });
           
           // Afficher le feedback
-          promoFeedback.textContent = `Code "${code}" appliqué : -€${discountAmount} (${discount}%)`;
+          promoFeedback.textContent = `Code "${code}" appliqué : -${discountAmount} MAD (${discount}%)`;
           promoFeedback.style.display = 'block';
           
           // Désactiver l'input et le bouton

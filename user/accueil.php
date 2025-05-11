@@ -20,7 +20,7 @@
                       <div class="categories my-3" style="color:#FFCE0A">Nouveautés</div>
                       <h3 class="display-4">Solutions Digitales</h3>
                       <p>Découvrez notre nouvelle gamme de solutions digitales pour transformer votre entreprise.</p>
-                      <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Explorer</a>
+                      <a href="products.php" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Explorer</a>
                     </div>
                     <div class="img-wrapper col-md-5">
                       <img src="../assets/images/office.png" class="img-fluid" alt="Digital Solutions">
@@ -35,7 +35,7 @@
                       <div class="categories mb-3 pb-3" style="color:#FFCE0A" >Offre Spéciale</div>
                       <h3 class="banner-title">Pack Entreprise</h3>
                       <p>Profitez de nos offres exclusives sur les logiciels professionnels essentiels.</p>
-                      <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">Découvrir</a>
+                      <a href="products.php" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">Découvrir</a>
                     </div>
                     <div class="img-wrapper col-md-5">
                       <img src="../assets/images/office.png" class="img-fluid" alt="Business Pack">
@@ -50,7 +50,7 @@
                       <div class="categories mb-3 pb-3" style="color:#FFCE0A">Services Cloud</div>
                       <h3 class="banner-title display-4">Solutions Cloud</h3>
                       <p>Optimisez votre infrastructure avec nos solutions cloud performantes et sécurisées.</p>
-                      <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">En Savoir Plus</a>
+                      <a href="products.php" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">En Savoir Plus</a>
                     </div>
                     <div class="img-wrapper col-md-5">
                       <img src="../assets/images/office.png" class="img-fluid" alt="Cloud Solutions">
@@ -288,7 +288,7 @@
               <h2 class="section-title">Produits les plus populaires</h2>
 
               <div class="d-flex align-items-center">
-                <a href="#" class="btn-link text-decoration-none">Voir toutes les Produits →</a>
+                <a href="products.php" class="btn-link text-decoration-none">Voir toutes les Produits →</a>
                 <div class="swiper-buttons">
                   <button class="swiper-prev products-carousel-prev btn btn-primary">❮</button>
                   <button class="swiper-next products-carousel-next btn btn-primary">❯</button>
@@ -307,7 +307,7 @@
                 <div class="product-item swiper-slide">
                   <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="product_page.php" title="Product Title">
                       <img src="../assets/images/office.png"  class="tab-image">
                     </a>
                   </figure>
@@ -335,7 +335,7 @@
                 <div class="product-item swiper-slide">
                   <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="product_page.php" title="Product Title">
                       <img src="../assets/images/office.png"  class="tab-image">
                     </a>
                   </figure>
@@ -363,7 +363,7 @@
                 <div class="product-item swiper-slide">
                   <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="product_page.php" title="Product Title">
                       <img src="../assets/images/office.png"  class="tab-image">
                     </a>
                   </figure>
@@ -391,7 +391,7 @@
                 <div class="product-item swiper-slide">
                   <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="product_page.php" title="Product Title">
                       <img src="../assets/images/office.png"  class="tab-image">
                     </a>
                   </figure>
@@ -418,35 +418,7 @@
                 <div class="product-item swiper-slide">
                   <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                   <figure>
-                    <a href="index.html" title="Product Title">
-                      <img src="../assets/images/office.png"  class="tab-image">
-                    </a>
-                  </figure>
-                  <h3>Microsoft Office 2024 Home PC</h3>
-                  <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
-                  <span class="price">200 MAD</span>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="input-group product-qty">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                            </button>
-                        </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                            </button>
-                        </span>
-                    </div>
-                    <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
-                  </div>
-                </div>
-
-                <div class="product-item swiper-slide">
-                  <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
-                  <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="product_page.php" title="Product Title">
                       <img src="../assets/images/office.png"  class="tab-image">
                     </a>
                   </figure>
@@ -474,7 +446,7 @@
                 <div class="product-item swiper-slide">
                   <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="product_page.php" title="Product Title">
                       <img src="../assets/images/office.png"  class="tab-image">
                     </a>
                   </figure>
@@ -502,7 +474,35 @@
                 <div class="product-item swiper-slide">
                   <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="product_page.php" title="Product Title">
+                      <img src="../assets/images/office.png"  class="tab-image">
+                    </a>
+                  </figure>
+                  <h3>Microsoft Office 2024 Home PC</h3>
+                  <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
+                  <span class="price">200 MAD</span>
+                  <div class="d-flex align-items-center justify-content-between">
+                    <div class="input-group product-qty">
+                        <span class="input-group-btn">
+                            <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
+                            </button>
+                        </span>
+                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                        <span class="input-group-btn">
+                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
+                            </button>
+                        </span>
+                    </div>
+                    <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                  </div>
+                </div>
+
+                <div class="product-item swiper-slide">
+                  <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
+                  <figure>
+                    <a href="product_page.php" title="Product Title">
                       <img src="../assets/images/office.png"  class="tab-image">
                     </a>
                   </figure>

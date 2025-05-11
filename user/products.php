@@ -1,592 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nos Produits</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-
-        body {
-            background-color: #FFFDF7;
-            color: #1E293B;
-            line-height: 1.6;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 2rem 0;
-        }
-
-        .page-header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #1E293B;
-        }
-
-        .page-header p {
-            display: none;
-        }
-
-        .header-bg {
-            display: none;
-        }
-
-        .products-container {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 2rem;
-            max-width: 1400px;
-            margin: 0 auto 3rem;
-            padding: 0 1.5rem;
-        }
-
-        .filters {
-            background: #FFFFFF;
-            padding: 1.75rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(255, 206, 10, 0.07);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-        }
-
-        .filter-group {
-            margin-bottom: 1.75rem;
-            border-bottom: 1px solid #E2E8F0;
-            padding-bottom: 1.5rem;
-        }
-
-        .filter-group:last-child {
-            margin-bottom: 0;
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .filter-group h3 {
-            color: #1E293B;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-        }
-
-        .filter-group h3 i {
-            margin-right: 0.5rem;
-            color: #FFCE0A;
-        }
-
-        .filter-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .filter-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            cursor: pointer;
-            font-size: 0.95rem;
-            color: #64748B;
-            transition: all 0.3s ease;
-        }
-
-        .filter-checkbox:hover {
-            color: #1E293B;
-        }
-
-        .filter-checkbox input {
-            accent-color: #FFCE0A;
-            width: 16px;
-            height: 16px;
-        }
-
-        .price-range {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .price-inputs {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .price-input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #E2E8F0;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .price-input:focus {
-            border-color: #FFCE0A;
-            box-shadow: 0 0 0 2px rgba(255, 206, 10, 0.1);
-        }
-
-        .apply-price {
-            background-color: #FFCE0A;
-            color: #1E293B;
-            border: none;
-            padding: 0.75rem;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-            width: 100%;
-        }
-
-        .apply-price:hover {
-            background-color: #FFD534;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(255, 206, 10, 0.07);
-        }
-
-        .filter-select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #E2E8F0;
-            border-radius: 8px;
-            background: #FFFFFF;
-            color: #64748B;
-            font-size: 0.9rem;
-            outline: none;
-            transition: all 0.3s ease;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748B' width='18px' height='18px'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-        }
-
-        .filter-select:focus {
-            border-color: #FFCE0A;
-            box-shadow: 0 0 0 2px rgba(255, 206, 10, 0.1);
-            color: #1E293B;
-        }
-
-        .products-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .products-count {
-            font-size: 0.95rem;
-            color: #64748B;
-        }
-
-        .products-sort {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .sort-label {
-            font-size: 0.95rem;
-            color: #64748B;
-        }
-
-        .sort-select {
-            padding: 0.5rem 1rem;
-            border: 1px solid #E2E8F0;
-            border-radius: 8px;
-            background: #FFFFFF;
-            color: #1E293B;
-            font-size: 0.9rem;
-            outline: none;
-            transition: all 0.3s ease;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748B' width='18px' height='18px'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            padding-right: 30px;
-        }
-
-        .sort-select:focus {
-            border-color: #FFCE0A;
-            box-shadow: 0 0 0 2px rgba(255, 206, 10, 0.1);
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .product-card {
-            background: #FFFFFF;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(255, 206, 10, 0.12);
-            transition: all 0.3s ease;
-            position: relative;
-            border: 1px solid #E2E8F0;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(255, 206, 10, 0.1);
-        }
-
-        .product-badge {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background-color: #FFCE0A;
-            color: #1E293B;
-            font-size: 0.8rem;
-            font-weight: 600;
-            padding: 0.3rem 0.6rem;
-            border-radius: 20px;
-            z-index: 2;
-        }
-
-        .product-image-container {
-            height: 200px;
-            width: 100%;
-            background: #f3f4f6;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .product-image {
-            height: 100%;
-            width: 100%;
-            object-fit: contain;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .product-card:hover .product-image {
-            transform: scale(1.05);
-        }
-
-        .product-details {
-            padding: 1.5rem;
-        }
-
-        .product-category {
-            font-size: 0.8rem;
-            color: #FFCE0A;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .product-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
-            color: #1E293B;
-        }
-
-        .product-meta {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-            font-size: 0.85rem;
-            color: #64748B;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .product-price {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: #1E293B;
-            margin: 1rem 0;
-            display: flex;
-            flex-direction: column; /* Change to column */
-            align-items: flex-start; /* Align left */
-            gap: 0.25rem; /* Reduce gap */
-        }
-
-        .price-original {
-            text-decoration: line-through;
-            color: #64748B;
-            font-size: 0.9rem;
-            font-weight: normal;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .price-discount {
-            background-color: #FFF8E5;
-            color: #966D00;
-            padding: 0.2rem 0.5rem;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .product-buttons {
-            display: flex;
-            flex-direction: column; /* Retour à column au lieu de row */
-            gap: 0.75rem;
-            margin-top: 1.25rem;
-        }
-
-        .btn-cart, .btn-shop {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .btn-cart {
-            flex: 1;
-            background: white;
-            color: #1E293B;
-            border: 2px solid #FFCE0A;
-        }
-
-        .btn-shop {
-            flex: 2;
-            background: #FFCE0A;
-            color: #1E293B;
-        }
-
-        .btn-cart:hover {
-            background: #FFF8E5;
-            border-color: #FFD534;
-        }
-
-        .btn-shop:hover {
-            background: #FFD534;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(255, 206, 10, 0.07);
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 3rem;
-            gap: 0.25rem;
-        }
-
-        .page-item {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            border: 1px solid #E2E8F0;
-            background: #FFFFFF;
-            color: #64748B;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .page-item:hover, .page-item.active {
-            background: #FFCE0A;
-            color: #1E293B;
-            border-color: #FFCE0A;
-        }
-
-        .page-item.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .filters-mobile-btn {
-            display: none;
-            padding: 0.75rem 1.25rem;
-            background: #FFFFFF;
-            border: 1px solid #E2E8F0;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #1E293B;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .filters-mobile-btn:hover {
-            background: #F9FAFB;
-        }
-
-        .filters-close {
-            display: none;
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #64748B;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            grid-column: 1 / -1;
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            color: #E2E8F0;
-            margin-bottom: 1rem;
-        }
-
-        .empty-state h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: #1E293B;
-        }
-
-        .empty-state p {
-            color: #64748B;
-            margin-bottom: 1.5rem;
-        }
-
-        .reset-filters {
-            background: none;
-            border: none;
-            color: #FFCE0A;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .reset-filters:hover {
-            background: rgba(255, 206, 10, 0.05);
-        }
-
-        @media (max-width: 992px) {
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .products-container {
-                grid-template-columns: 1fr;
-            }
-
-            .filters {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                z-index: 1000;
-                overflow-y: auto;
-                border-radius: 0;
-                padding-top: 4rem;
-            }
-
-            .filters.active {
-                display: block;
-            }
-
-            .filters-mobile-btn {
-                display: flex;
-            }
-
-            .filters-close {
-                display: block;
-            }
-
-            .products-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-
-            .products-sort {
-                width: 100%;
-            }
-
-            .sort-select {
-                flex-grow: 1;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .page-header {
-                padding: 2rem 1rem;
-            }
-
-            .page-header h1 {
-                font-size: 2rem;
-            }
-
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-            }
-
-            .product-buttons {
-                flex-direction: column;
-            }
-
-            .pagination {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-        }
-
-        /* Helper classes */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
-        }
-
-        .overlay.active {
-            display: block;
-        }
-    </style>
-</head>
 <body>
     <?php include_once '../includes/nav.php'; ?>
-
+    <link rel="stylesheet" type="text/css" href="../assets/css/products.css">
     <header class="page-header">
         <h1>Nos produits</h1>
     </header>
@@ -707,7 +123,7 @@
                         </div>
                         <div class="product-buttons">
                             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Panier</button>
-                            <button class="btn-shop"><i class="fas fa-bolt"></i> Acheter</button>
+                            <a href="product_page.php" class="btn-shop"><i class="fas fa-bolt"></i> Acheter</a>
                         </div>
                     </div>
                 </div>
@@ -736,7 +152,7 @@
                         </div>
                         <div class="product-buttons">
                             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Panier</button>
-                            <button class="btn-shop"><i class="fas fa-bolt"></i> Acheter</button>
+                            <a href="product_page.php" class="btn-shop"><i class="fas fa-bolt"></i> Acheter</a>
                         </div>
                     </div>
                 </div>
@@ -766,7 +182,7 @@
                         </div>
                         <div class="product-buttons">
                             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Panier</button>
-                            <button class="btn-shop"><i class="fas fa-bolt"></i> Acheter</button>
+                            <a href="product_page.php" class="btn-shop"><i class="fas fa-bolt"></i> Acheter</a>
                         </div>
                     </div>
                 </div>
@@ -795,7 +211,7 @@
                         </div>
                         <div class="product-buttons">
                             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Panier</button>
-                            <button class="btn-shop"><i class="fas fa-bolt"></i> Acheter</button>
+                            <a href="product_page.php" class="btn-shop"><i class="fas fa-bolt"></i> Acheter</a>
                         </div>
                     </div>
                 </div>
@@ -824,7 +240,7 @@
                         </div>
                         <div class="product-buttons">
                             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Panier</button>
-                            <button class="btn-shop"><i class="fas fa-bolt"></i> Acheter</button>
+                            <a href="product_page.php" class="btn-shop"><i class="fas fa-bolt"></i> Acheter</a>
                         </div>
                     </div>
                 </div>
@@ -853,7 +269,7 @@
                         </div>
                         <div class="product-buttons">
                             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Panier</button>
-                            <button class="btn-shop"><i class="fas fa-bolt"></i> Acheter</button>
+                            <a href="product_page.php" class="btn-shop"><i class="fas fa-bolt"></i> Acheter</a>
                         </div>
                     </div>
                 </div>
@@ -882,7 +298,7 @@
                         </div>
                         <div class="product-buttons">
                             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Panier</button>
-                            <button class="btn-shop"><i class="fas fa-bolt"></i> Acheter</button>
+                            <a href="product_page.php" class="btn-shop"><i class="fas fa-bolt"></i> Acheter</a>
                         </div>
                     </div>
                 </div>
@@ -911,7 +327,7 @@
                         </div>
                         <div class="product-buttons">
                             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Panier</button>
-                            <button class="btn-shop"><i class="fas fa-bolt"></i> Acheter</button>
+                            <a href="product_page.php" class="btn-shop"><i class="fas fa-bolt"></i> Acheter</a>
                         </div>
                     </div>
                 </div>
@@ -940,7 +356,7 @@
                         </div>
                         <div class="product-buttons">
                             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Panier</button>
-                            <button class="btn-shop"><i class="fas fa-bolt"></i> Acheter</button>
+                            <a href="product_page.php" class="btn-shop"><i class="fas fa-bolt"></i> Acheter</a>
                         </div>
                     </div>
                 </div>
@@ -969,7 +385,7 @@
                         </div>
                         <div class="product-buttons">
                             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Panier</button>
-                            <button class="btn-shop"><i class="fas fa-bolt"></i> Acheter</button>
+                            <a href="product_page.php" class="btn-shop"><i class="fas fa-bolt"></i> Acheter</a>
                         </div>
                     </div>
                 </div>
@@ -998,7 +414,7 @@
                         </div>
                         <div class="product-buttons">
                             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Panier</button>
-                            <button class="btn-shop"><i class="fas fa-bolt"></i> Acheter</button>
+                            <a href="product_page.php" class="btn-shop"><i class="fas fa-bolt"></i> Acheter</a>
                         </div>
                     </div>
                 </div>
@@ -1027,7 +443,7 @@
                         </div>
                         <div class="product-buttons">
                             <button class="btn-cart"><i class="fas fa-shopping-cart"></i> Panier</button>
-                            <button class="btn-shop"><i class="fas fa-bolt"></i> Acheter</button>
+                            <a href="product_page.php" class="btn-shop"><i class="fas fa-bolt"></i> Acheter</a>
                         </div>
                     </div>
                 </div>
@@ -1045,27 +461,6 @@
 
     <div class="overlay"></div>
 
-    <script>
-        const filtersBtn = document.querySelector('.filters-mobile-btn');
-        const filters = document.querySelector('.filters');
-        const filtersClose = document.querySelector('.filters-close');
-        const overlay = document.querySelector('.overlay');
-
-        filtersBtn.addEventListener('click', () => {
-            filters.classList.add('active');
-            overlay.classList.add('active');
-        });
-
-        filtersClose.addEventListener('click', () => {
-            filters.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-
-        overlay.addEventListener('click', () => {
-            filters.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-    </script>
 <?php include_once '../includes/footer.php'; ?>
 </body>
 </html>

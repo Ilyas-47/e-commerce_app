@@ -23,6 +23,7 @@
       <link rel="stylesheet" type="text/css" href="../assets/css/favoris.css">
       <link rel="stylesheet" type="text/css" href="../assets/css/profile.css">
 
+
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
@@ -80,7 +81,7 @@
       <!-- <div class="preloader-wrapper">
          <div class="preloader">
          </div>
-         </div> -->
+         </div>  -->
       <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasSearch" aria-labelledby="Search">
          <div class="offcanvas-header justify-content-center">
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -184,7 +185,7 @@
                   <div class="cart d-none d-lg-block dropdown">
                      <button class="border-0 bg-transparent d-flex flex-column gap-1 lh-1 align-items-end" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
                      <span class="fs-6 text-muted" style="color:black;">Votre Panier</span>
-                     <span class="cart-total fs-5 fw-bold" style="color:black;">$00.00</span>
+                     <span class="cart-total fs-5 fw-bold" style="color:black;">00.00 MAD</span>
                      </button>
                   </div>
                </div>
@@ -200,7 +201,7 @@
     </div>
     <div class="d-flex flex-column gap-1 lh-1 align-items-start">
       <span class="fs-6 text-muted">Votre Panier</span>
-      <span class="cart-total fs-5 fw-bold">€89.97</span>
+      <span class="cart-total fs-5 fw-bold">89.97</span>
     </div>
   </button>
 </div> -->
@@ -219,21 +220,21 @@
       <!-- Item 1 -->
       <li class="cart-item">
         <div class="cart-item-image">
-          <img src="../assets/images/d-product.png" alt="Produit 1">
+          <img src="../assets/images/office.png" alt="Produit 1">
         </div>
         <div class="cart-item-details">
           <div class="cart-item-top">
-            <h5 class="cart-item-title">Chemise en lin premium</h5>
+            <h5 class="cart-item-title">Microsoft Office 2024 Home PC</h5>
             <button class="cart-item-remove" aria-label="Retirer l'article">×</button>
           </div>
-          <div class="cart-item-price">€39.99</div>
+          <div class="cart-item-price">200 MAD</div>
           <div class="cart-item-bottom">
             <div class="quantity-selector">
               <button class="quantity-btn" data-action="decrease">−</button>
               <input type="number" class="quantity-input" value="1" min="1" max="10" aria-label="Quantité">
               <button class="quantity-btn" data-action="increase">+</button>
             </div>
-            <div class="cart-item-subtotal">€39.99</div>
+            <div class="cart-item-subtotal">200 MAD</div>
           </div>
         </div>
       </li>
@@ -241,21 +242,21 @@
       <!-- Item 2 -->
       <li class="cart-item">
         <div class="cart-item-image">
-          <img src="../assets/images/d-product.png" alt="Produit 2">
+          <img src="../assets/images/office.png" alt="Produit 2">
         </div>
         <div class="cart-item-details">
           <div class="cart-item-top">
-            <h5 class="cart-item-title">Pantalon chino slim fit</h5>
+            <h5 class="cart-item-title">Microsoft Office 2024 Home PC</h5>
             <button class="cart-item-remove" aria-label="Retirer l'article">×</button>
           </div>
-          <div class="cart-item-price">€29.99</div>
+          <div class="cart-item-price">200 MAD</div>
           <div class="cart-item-bottom">
             <div class="quantity-selector">
               <button class="quantity-btn" data-action="decrease">−</button>
               <input type="number" class="quantity-input" value="1" min="1" max="10" aria-label="Quantité">
               <button class="quantity-btn" data-action="increase">+</button>
             </div>
-            <div class="cart-item-subtotal">€29.99</div>
+            <div class="cart-item-subtotal">200 MAD</div>
           </div>
         </div>
       </li>
@@ -263,21 +264,21 @@
       <!-- Item 3 -->
       <li class="cart-item">
         <div class="cart-item-image">
-          <img src="../assets/images/d-product.png" alt="Produit 3">
+          <img src="../assets/images/office.png" alt="Produit 3">
         </div>
         <div class="cart-item-details">
           <div class="cart-item-top">
-            <h5 class="cart-item-title">Chaussures en cuir</h5>
+            <h5 class="cart-item-title">Microsoft Office 2024 Home PC</h5>
             <button class="cart-item-remove" aria-label="Retirer l'article">×</button>
           </div>
-          <div class="cart-item-price">€19.99</div>
+          <div class="cart-item-price">200 MAD</div>
           <div class="cart-item-bottom">
             <div class="quantity-selector">
               <button class="quantity-btn" data-action="decrease">−</button>
               <input type="number" class="quantity-input" value="1" min="1" max="10" aria-label="Quantité">
               <button class="quantity-btn" data-action="increase">+</button>
             </div>
-            <div class="cart-item-subtotal">€19.99</div>
+            <div class="cart-item-subtotal">200 MAD</div>
           </div>
         </div>
       </li>
@@ -300,7 +301,7 @@
     <div class="cart-summary">
       <div class="summary-row">
         <span>Sous-total</span>
-        <span>€89.97</span>
+        <span>200 MAD</span>
       </div>
       <!-- Code promo -->
       <div class="promo-code-container">
@@ -309,16 +310,16 @@
           <button class="btn btn-outline-secondary" type="button" id="applyPromoBtn">Appliquer</button>
         </div>
         <div class="promo-feedback text-success" style="display: none; font-size: 13px; margin-bottom: 10px;">
-          Code promo appliqué : -€10.00
+          Code promo appliqué : -50 MAD
         </div>
       </div>
       <div class="summary-row discount-row" style="display: none; color: #ff6b6b;">
         <span>Réduction</span>
-        <span>-€10.00</span>
+        <span>-50 MAD</span>
       </div>
       <div class="summary-row total">
         <span>Total</span>
-        <span>€89.97</span>
+        <span>200 MAD</span>
       </div>
     </div>
     
@@ -361,7 +362,7 @@
         </div>
         <div class="favoris-item-details">
           <div class="favoris-item-top">
-            <h5 class="favoris-item-title">Chemise en lin premium</h5>
+            <h5 class="favoris-item-title">Microsoft Office 2024 Home PC</h5>
             <div class="favoris-item-actions">
               <button class="favoris-item-cart" aria-label="Ajouter au panier">
                 <svg width="18" height="18" viewBox="0 0 24 24">
@@ -375,9 +376,9 @@
               </button>
             </div>
           </div>
-          <div class="favoris-item-price">€39.99</div>
+          <div class="favoris-item-price">200 MAD</div>
           <div class="favoris-item-description">
-            Chemise élégante en lin de haute qualité, parfaite pour l'été
+            Microsoft Office 2024 Home PC
           </div>
         </div>
       </li>
@@ -389,7 +390,7 @@
         </div>
         <div class="favoris-item-details">
           <div class="favoris-item-top">
-            <h5 class="favoris-item-title">Pantalon chino slim fit</h5>
+            <h5 class="favoris-item-title">Microsoft Office 2024 Home PC</h5>
             <div class="favoris-item-actions">
               <button class="favoris-item-cart" aria-label="Ajouter au panier">
                 <svg width="18" height="18" viewBox="0 0 24 24">
@@ -403,9 +404,9 @@
               </button>
             </div>
           </div>
-          <div class="favoris-item-price">€29.99</div>
+          <div class="favoris-item-price">200 MAD</div>
           <div class="favoris-item-description">
-            Pantalon chino confortable et élégant, coupe ajustée moderne
+            Microsoft Office 2024 Home PC
           </div>
         </div>
       </li>
@@ -417,7 +418,7 @@
         </div>
         <div class="favoris-item-details">
           <div class="favoris-item-top">
-            <h5 class="favoris-item-title">Chaussures en cuir</h5>
+            <h5 class="favoris-item-title">Microsoft Office 2024 Home PC</h5>
             <div class="favoris-item-actions">
               <button class="favoris-item-cart" aria-label="Ajouter au panier">
                 <svg width="18" height="18" viewBox="0 0 24 24">
@@ -431,9 +432,9 @@
               </button>
             </div>
           </div>
-          <div class="favoris-item-price">€19.99</div>
+          <div class="favoris-item-price">200 MAD</div>
           <div class="favoris-item-description">
-            Chaussures confortables en cuir véritable, design classique
+            Microsoft Office 2024 Home PC
           </div>
         </div>
       </li>
@@ -496,7 +497,7 @@
         </a>
       </li>
       <li>
-        <a href="#">
+        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFavoris" aria-controls="offcanvasFavoris">
           <svg width="20" height="20" viewBox="0 0 24 24">
             <use xlink:href="#heart"></use>
           </svg>
@@ -526,64 +527,64 @@
     <button class="value">
         Produit
         <div class="dropdown-menu">
-            <a href="#">Produit</a>
-            <a href="#">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
         </div>
     </button>
     <button class="value">
         Produit
         <div class="dropdown-menu">
-            <a href="#">Produit</a>
-            <a href="#">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
         </div>
     </button>
     <button class="value">
         Produit
         <div class="dropdown-menu">
-            <a href="#">Produit</a>
-            <a href="#">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
         </div>
     </button>
     <button class="value">
         Produit
         <div class="dropdown-menu">
-            <a href="#">Produit</a>
-            <a href="#">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
         </div>
     </button>
     <button class="value">
         Produit
         <div class="dropdown-menu">
-            <a href="#">Produit</a>
-            <a href="#">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
         </div>
     </button>
     <button class="value">
         Produit
         <div class="dropdown-menu">
-            <a href="#">Produit</a>
-            <a href="#">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
         </div>
     </button>
     <button class="value">
         Produit
         <div class="dropdown-menu">
-            <a href="#">Produit</a>
-            <a href="#">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
         </div>
     </button>
     <button class="value">
         Produit
         <div class="dropdown-menu">
-            <a href="#">Produit</a>
-            <a href="#">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
         </div>
     </button>
     <button class="value">
         Produit
         <div class="dropdown-menu">
-            <a href="#">Produit</a>
-            <a href="#">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
         </div>
     </button>
 </div>
