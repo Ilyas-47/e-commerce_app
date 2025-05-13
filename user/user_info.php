@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
+<head>
+        <?php include("../includes/nav.php")?>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -20,6 +24,16 @@
             --gray: #6c757d;
             --light-gray: #e9ecef;
         }
+
+        :root {
+            --info-primary: #2D3250;
+            --info-secondary: #424769;
+            --info-accent: #676F9D;
+            --info-light: #F9F9F9;
+            --info-success: #43A047;
+            --info-danger: #E53935;
+            --info-warning: #FB8C00;
+        }
         
         body {
             background-color: #f5f7fb;
@@ -33,197 +47,10 @@
             padding: 0 20px;
         }
         
-        header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
-        
-        .logo {
-            font-weight: 700;
-            font-size: 24px;
-            color: var(--primary);
-        }
-        
-        .logo span {
-            color: var (--accent);
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-        
-        .user-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .user-actions .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 4px;
-            background-color: var(--primary);
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-        
-        .user-actions .btn:hover {
-            background-color: var(--secondary);
-        }
-        
-        .user-actions .cart {
-            position: relative;
-        }
-        
-        .cart-count {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background-color: var(--accent);
-            color: white;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        main {
-            padding: 40px 0;
-        }
-        
         .profile-section {
             display: grid;
             grid-template-columns: 250px 1fr;
             gap: 30px;
-        }
-        
-        .sidebar {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            height: fit-content;
-        }
-        
-        .user-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--light-gray);
-            margin-bottom: 20px;
-        }
-        
-        .avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .avatar .change-avatar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            font-size: 12px;
-            text-align: center;
-            padding: 5px 0;
-            cursor: pointer;
-            transition: opacity 0.3s;
-            opacity: 0;
-        }
-        
-        .avatar:hover .change-avatar {
-            opacity: 1;
-        }
-        
-        .user-name {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .user-email {
-            color: var(--gray);
-            font-size: 14px;
-        }
-        
-        .menu {
-            list-style: none;
-        }
-        
-        .menu li {
-            margin-bottom: 10px;
-        }
-        
-        .menu li:last-child {
-            margin-bottom: 0;
-        }
-        
-        .menu a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border-radius: 4px;
-            text-decoration: none;
-            color: var(--dark);
-            transition: background-color 0.3s;
-        }
-        
-        .menu a:hover {
-            background-color: var(--light-gray);
-        }
-        
-        .menu a.active {
-            background-color: var(--primary);
-            color: white;
         }
         
         .content {
@@ -579,10 +406,6 @@
                 grid-template-columns: 1fr;
             }
             
-            .nav-links {
-                display: none;
-            }
-            
             .form-row {
                 grid-template-columns: 1fr;
                 gap: 15px;
@@ -687,30 +510,75 @@
             padding-bottom: 15px;
             border-bottom: 1px solid var(--light-gray);
         }
+
+        .info-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .info-profile-section {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+
+        .info-content {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+
+        .info-form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .info-form-control:focus {
+            border-color: var(--info-accent);
+            box-shadow: 0 0 0 3px rgba(103, 111, 157, 0.1);
+        }
+
+        .info-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .info-btn-primary {
+            background-color: var(--info-primary);
+            color: white;
+        }
+
+        .info-btn-primary:hover {
+            background-color: var(--info-secondary);
+            transform: translateY(-1px);
+        }
+
+        .info-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            padding: 15px 20px;
+            z-index: 1000;
+            border-left: 4px solid var(--info-primary);
+        }
     </style>
+</head>
 <body>
     <main>
         <div class="container">
             <div class="profile-section">
-                <!-- Sidebar avec profil utilisateur -->
-                <div class="sidebar">
-                    <div class="user-info">
-                        <div class="avatar">
-                            <img src="../assets/images/office.png" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-                        </div>
-                        <div class="user-name">Jean Dupont</div>
-                        <div class="user-email">jean.dupont@example.com</div>
-                    </div>
-                    <ul class="menu">
-                        <li><a href="user_profil.php"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a></li>
-                        <li><a href="user_info.php"><i class="fas fa-user"></i> Informations personnelles</a></li>
-                        <li><a href="user_commande.php"><i class="fas fa-shopping-bag"></i> Mes commandes</a></li>
-                        <li><a href="user_pay.php"><i class="fas fa-credit-card"></i> Moyens de paiement</a></li>
-                        <li><a href="user_favoris.php"><i class="fas fa-heart"></i> Liste de souhaits</a></li>
-                        <li><a href="user_support.php" class="active"><i class="fas fa-headset"></i> Support</a></li>
-                        <li><a href="#"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
-                    </ul>
-                </div>
+                <?php include('user_nav.php'); ?>
                 
                 <div class="content">
                     <h1 class="section-title"><i class="fas fa-user-circle"></i> Informations Personnelles</h1>
@@ -822,6 +690,30 @@
                 toast.remove();
             });
         }
+
+        function showInfoToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `info-toast info-toast-${type}`;
+            toast.innerHTML = `
+                <div class="info-toast-content">
+                    <i class="fas fa-info-circle info-toast-icon"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="info-toast-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+            
+            toast.querySelector('.info-toast-close').addEventListener('click', () => {
+                toast.remove();
+            });
+        }
         
         // Form submission handler avec validation du mot de passe
         document.getElementById('personal-info-form').addEventListener('submit', function(e) {
@@ -856,6 +748,7 @@
             }
         });
     </script>
+    <?php include("../includes/footer.php")?>
 
 </body>
 </html>

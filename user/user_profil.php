@@ -1,443 +1,407 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DigiStore - Mon Profil</title>
+    <?php include("../includes/nav.php")?>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
         }
         
         :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
-            --accent: #4cc9f0;
-            --dark: #212529;
-            --light: #f8f9fa;
-            --success: #4caf50;
-            --danger: #f44336;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
+            --primary: #1e40af;          /* Deep blue */
+            --secondary: #1e3a8a;        /* Darker blue */
+            --accent: #3b82f6;           /* Bright blue */
+            --accent-light: #93c5fd;     /* Light blue */
+            --dark: #0f172a;             /* Almost black blue */
+            --light: #f8fafc;            /* Off-white */
+            --success: #0d9488;          /* Teal green */
+            --danger: #dc2626;           /* Red */
+            --gray: #64748b;             /* Slate gray */
+            --light-gray: #e2e8f0;       /* Light gray */
+            --card-bg: #ffffff;          /* Card background */
+            --subtle-bg: #f1f5f9;        /* Subtle background */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --border-radius-sm: 6px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 12px;
         }
         
         body {
-            background-color: #f5f7fb;
+            background-color: var(--subtle-bg);
             color: var(--dark);
             line-height: 1.6;
         }
-        
+
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        
-        .nav-links {
-            display: flex;
-            gap: 30px;
+
+        .dashboard-section {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+            margin: 30px 0;
         }
-        
-        .nav-links a {
-            text-decoration: none;
+
+        .dashboard-content {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 30px;
+        }
+
+        .section-title {
             color: var(--dark);
-            font-weight: 500;
-            transition: color 0.3s;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 15px;
         }
-        
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-        
-        .user-actions {
-            display: flex;
-            align-items: center;
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
             gap: 20px;
+            margin-bottom: 40px;
         }
-        
-        .user-actions .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 4px;
-            background-color: var(--primary);
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-        
-        .user-actions .btn:hover {
-            background-color: var(--secondary);
-        }
-        
-        .user-actions .cart {
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--light) 100%);
+            border-radius: var(--border-radius-md);
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--accent);
+            transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
         }
-        
-        .cart-count {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background-color: var(--accent);
-            color: white;
-            width: 20px;
-            height: 20px;
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card .stat-icon {
+            font-size: 22px;
+            color: var(--accent);
+            margin-bottom: 15px;
+            background-color: rgba(59, 130, 246, 0.1);
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
         }
-        
-        main {
-            padding: 40px 0;
+
+        .stat-card .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
         }
-        
-        .profile-section {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 30px;
+
+        .stat-card .stat-label {
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
-        .sidebar {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            height: fit-content;
-        }
-        
-        .user-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--light-gray);
-            margin-bottom: 20px;
-        }
-        
-        .avatar {
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background-color: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 15px;
+            background-color: rgba(59, 130, 246, 0.05);
+            z-index: 0;
         }
-        
-        .user-name {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .user-email {
-            color: var(--gray);
-            font-size: 14px;
-        }
-        
-        .menu {
-            list-style: none;
-        }
-        
-        .menu li {
-            margin-bottom: 10px;
-        }
-        
-        .menu li:last-child {
-            margin-bottom: 0;
-        }
-        
-        .menu a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border-radius: 4px;
-            text-decoration: none;
-            color: var(--dark);
-            transition: background-color 0.3s;
-        }
-        
-        .menu a:hover {
-            background-color: var(--light-gray);
-        }
-        
-        .menu a.active {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .content {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 30px;
-        }
-        
-        .section-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 25px;
-            color: var(--dark);
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
+
+        /* Downloads Section */
+        .downloads-section {
             margin-bottom: 40px;
         }
-        
-        .stat-card {
-            background-color: var(--light);
-            border-radius: 8px;
-            padding: 20px;
+
+        .section-header {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            text-align: center;
-            transition: transform 0.3s;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: rgba(67, 97, 238, 0.1);
+
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 600;
             color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 15px;
         }
-        
-        .stat-number {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            color: var(--gray);
-            font-size: 14px;
-        }
-        
-        .recent-downloads {
-            margin-bottom: 40px;
-        }
-        
-        .recent-downloads-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-        
-        .download-list {
+
+        .downloads-list {
             background-color: var(--light);
-            border-radius: 8px;
+            border-radius: var(--border-radius-md);
             overflow: hidden;
+            box-shadow: var(--shadow-sm);
         }
-        
+
         .download-item {
             display: flex;
             align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--light-gray);
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease;
         }
-        
+
         .download-item:last-child {
             border-bottom: none;
         }
-        
+
+        .download-item:hover {
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+
         .download-icon {
+            font-size: 20px;
             width: 40px;
             height: 40px;
             border-radius: 8px;
-            background-color: rgba(67, 97, 238, 0.1);
-            color: var(--primary);
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
             margin-right: 15px;
+            flex-shrink: 0;
         }
-        
+
         .download-details {
             flex: 1;
         }
-        
+
         .download-name {
             font-weight: 600;
+            color: var(--dark);
             margin-bottom: 5px;
         }
-        
+
         .download-meta {
             display: flex;
+            gap: 15px;
             color: var(--gray);
-            font-size: 12px;
+            font-size: 13px;
         }
-        
-        .download-date {
-            margin-right: 20px;
-        }
-        
-        .download-size {
-            margin-right: 20px;
-        }
-        
+
         .download-actions {
             display: flex;
             gap: 10px;
         }
-        
-        .download-actions button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--primary);
-            font-size: 14px;
-        }
-        
-        .download-actions button:hover {
-            text-decoration: underline;
-        }
-        
+
+        /* Subscription Section */
         .subscription {
             background-color: var(--light);
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: var(--border-radius-md);
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
         }
-        
+
         .subscription-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--dark);
+            color: var(--primary);
+            margin-bottom: 20px;
         }
-        
+
         .subscription-info {
             display: flex;
             align-items: center;
+            gap: 15px;
             margin-bottom: 20px;
         }
-        
+
         .subscription-badge {
-            background-color: var(--accent);
+            background-color: var(--primary);
             color: white;
-            font-weight: 500;
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 20px;
-            margin-right: 15px;
+            font-weight: 600;
+            font-size: 14px;
         }
-        
+
         .subscription-date {
             color: var(--gray);
             font-size: 14px;
         }
-        
+
         .subscription-features {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
-        
+
         .feature {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: var(--dark);
         }
-        
+
         .feature-icon {
             color: var(--success);
-            margin-right: 10px;
+            font-size: 16px;
         }
-        
+
         .subscription-actions {
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
-        
-        .btn-upgrade {
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-primary {
             background-color: var(--primary);
             color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s;
         }
-        
-        .btn-upgrade:hover {
-            background-color: var(--secondary);
-        }
-        
-        .btn-cancel {
-            background-color: transparent;
-            color: var(--danger);
-            border: 1px solid var(--danger);
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .btn-cancel:hover {
-            background-color: rgba(244, 67, 54, 0.1);
-        }
-        
-        @media (max-width: 768px) {
-            .profile-section {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .stats {
-                grid-template-columns: 1fr 1fr;
-            }
 
-            .sidebar {
-                margin-bottom: 20px;
-            }
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
-        
-        @media (max-width: 480px) {
-            .stats {
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-icon {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            color: var(--dark);
+            padding: 15px 20px;
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: 300px;
+            z-index: 1000;
+            border-left: 4px solid var(--accent);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast-success {
+            border-left-color: var(--success);
+        }
+
+        .toast-error {
+            border-left-color: var(--danger);
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toast-content i {
+            color: var(--accent);
+            font-size: 20px;
+        }
+
+        .toast-success i {
+            color: var(--success);
+        }
+
+        .toast-error i {
+            color: var(--danger);
+        }
+
+        .toast-message {
+            font-weight: 500;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-section {
                 grid-template-columns: 1fr;
             }
             
+            .stats-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
             .download-item {
                 flex-direction: column;
                 align-items: flex-start;
             }
             
-            .download-icon {
-                margin-bottom: 10px;
+            .download-actions {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: space-between;
             }
             
-            .download-actions {
+            .subscription-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
                 width: 100%;
-                margin-top: 10px;
-                justify-content: flex-start;
+                justify-content: center;
             }
         }
     </style>
@@ -445,31 +409,13 @@
 <body>
    <main>
         <div class="container">
-            <div class="profile-section">
-                <!-- Sidebar avec profil utilisateur -->
-                <div class="sidebar">
-                    <div class="user-info">
-                        <div class="avatar">
-                            <img src="../assets/images/office.png" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-                        </div>
-                        <div class="user-name">Jean Dupont</div>
-                        <div class="user-email">jean.dupont@example.com</div>
-                    </div>
-                    <ul class="menu">
-                        <li><a href="user_profil.php"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a></li>
-                        <li><a href="user_info.php"><i class="fas fa-user"></i> Informations personnelles</a></li>
-                        <li><a href="user_commande.php"><i class="fas fa-shopping-bag"></i> Mes commandes</a></li>
-                        <li><a href="user_pay.php"><i class="fas fa-credit-card"></i> Moyens de paiement</a></li>
-                        <li><a href="user_favoris.php"><i class="fas fa-heart"></i> Liste de souhaits</a></li>
-                        <li><a href="user_support.php" class="active"><i class="fas fa-headset"></i> Support</a></li>
-                        <li><a href="#"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
-                    </ul>
-                </div>
+            <div class="dashboard-section">
+                <?php include('user_nav.php'); ?>
                 
-                <div class="content">
+                <div class="dashboard-content">
                     <h1 class="section-title">Tableau de bord</h1>
                     
-                    <div class="stats">
+                    <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-icon"><i class="fas fa-download"></i></div>
                             <div class="stat-number">12</div>
@@ -492,22 +438,25 @@
                         </div>
                     </div>
                     
-                    <div class="recent-downloads">
-                        <h2 class="recent-downloads-title">Téléchargements récents</h2>
-                        <div class="download-list">
+                    <div class="downloads-section">
+                        <div class="section-header">
+                            <h2>Téléchargements récents</h2>
+                            <a href="#" class="btn btn-outline">Voir tout</a>
+                        </div>
+                        <div class="downloads-list">
                             <div class="download-item">
                                 <div class="download-icon"><i class="fas fa-file-pdf"></i></div>
                                 <div class="download-details">
                                     <div class="download-name">Guide Complet Adobe Photoshop 2025</div>
                                     <div class="download-meta">
-                                        <div class="download-date">02/05/2025</div>
-                                        <div class="download-size">245 MB</div>
-                                        <div class="download-format">PDF</div>
+                                        <div class="download-date"><i class="far fa-calendar-alt"></i> 02/05/2025</div>
+                                        <div class="download-size"><i class="fas fa-hdd"></i> 245 MB</div>
+                                        <div class="download-format"><i class="far fa-file"></i> PDF</div>
                                     </div>
                                 </div>
                                 <div class="download-actions">
-                                    <button><i class="fas fa-download"></i> Télécharger</button>
-                                    <button><i class="fas fa-info-circle"></i> Détails</button>
+                                    <button class="btn btn-primary"><i class="fas fa-download"></i> Télécharger</button>
+                                    <button class="btn btn-outline"><i class="fas fa-info-circle"></i> Détails</button>
                                 </div>
                             </div>
                             <div class="download-item">
@@ -515,14 +464,14 @@
                                 <div class="download-details">
                                     <div class="download-name">Masterclass Montage Vidéo Professionnel</div>
                                     <div class="download-meta">
-                                        <div class="download-date">28/04/2025</div>
-                                        <div class="download-size">1.2 GB</div>
-                                        <div class="download-format">MP4</div>
+                                        <div class="download-date"><i class="far fa-calendar-alt"></i> 28/04/2025</div>
+                                        <div class="download-size"><i class="fas fa-hdd"></i> 1.2 GB</div>
+                                        <div class="download-format"><i class="far fa-file"></i> MP4</div>
                                     </div>
                                 </div>
                                 <div class="download-actions">
-                                    <button><i class="fas fa-download"></i> Télécharger</button>
-                                    <button><i class="fas fa-info-circle"></i> Détails</button>
+                                    <button class="btn btn-primary"><i class="fas fa-download"></i> Télécharger</button>
+                                    <button class="btn btn-outline"><i class="fas fa-info-circle"></i> Détails</button>
                                 </div>
                             </div>
                             <div class="download-item">
@@ -530,14 +479,14 @@
                                 <div class="download-details">
                                     <div class="download-name">Pack 50 Templates WordPress Premium</div>
                                     <div class="download-meta">
-                                        <div class="download-date">15/04/2025</div>
-                                        <div class="download-size">785 MB</div>
-                                        <div class="download-format">ZIP</div>
+                                        <div class="download-date"><i class="far fa-calendar-alt"></i> 15/04/2025</div>
+                                        <div class="download-size"><i class="fas fa-hdd"></i> 785 MB</div>
+                                        <div class="download-format"><i class="far fa-file"></i> ZIP</div>
                                     </div>
                                 </div>
                                 <div class="download-actions">
-                                    <button><i class="fas fa-download"></i> Télécharger</button>
-                                    <button><i class="fas fa-info-circle"></i> Détails</button>
+                                    <button class="btn btn-primary"><i class="fas fa-download"></i> Télécharger</button>
+                                    <button class="btn btn-outline"><i class="fas fa-info-circle"></i> Détails</button>
                                 </div>
                             </div>
                         </div>
@@ -551,25 +500,25 @@
                         </div>
                         <div class="subscription-features">
                             <div class="feature">
-                                <div class="feature-icon"><i class="fas fa-check"></i></div>
+                                <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
                                 <div>Téléchargements illimités</div>
                             </div>
                             <div class="feature">
-                                <div class="feature-icon"><i class="fas fa-check"></i></div>
+                                <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
                                 <div>Accès à tous les produits Premium</div>
                             </div>
                             <div class="feature">
-                                <div class="feature-icon"><i class="fas fa-check"></i></div>
+                                <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
                                 <div>Support prioritaire 24/7</div>
                             </div>
                             <div class="feature">
-                                <div class="feature-icon"><i class="fas fa-check"></i></div>
+                                <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
                                 <div>Mises à jour gratuites</div>
                             </div>
                         </div>
                         <div class="subscription-actions">
-                            <button class="btn-upgrade">Passer à l'offre Pro</button>
-                            <button class="btn-cancel">Annuler l'abonnement</button>
+                            <button class="btn btn-primary">Passer à l'offre Pro</button>
+                            <button class="btn btn-outline">Annuler l'abonnement</button>
                         </div>
                     </div>
                 </div>
@@ -583,53 +532,23 @@
             // Fonction pour afficher un toast de notification
             function showToast(message, type = 'info') {
                 const toast = document.createElement('div');
-                toast.classList.add('toast', `toast-${type}`);
+                toast.classList.add('toast');
+                
+                if (type === 'success') {
+                    toast.classList.add('toast-success');
+                } else if (type === 'error') {
+                    toast.classList.add('toast-error');
+                }
+                
                 toast.innerHTML = `
                     <div class="toast-content">
-                        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i>
+                        <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
                         <div class="toast-message">${message}</div>
                     </div>
                     <button class="toast-close"><i class="fas fa-times"></i></button>
                 `;
                 
                 document.body.appendChild(toast);
-                
-                // Styliser le toast
-                Object.assign(toast.style, {
-                    position: 'fixed',
-                    bottom: '20px',
-                    right: '20px',
-                    backgroundColor: type === 'success' ? '#4caf50' : '#4361ee',
-                    color: 'white',
-                    padding: '15px 20px',
-                    borderRadius: '4px',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    minWidth: '300px',
-                    zIndex: '1000',
-                    transform: 'translateY(100px)',
-                    opacity: '0',
-                    transition: 'all 0.3s ease'
-                });
-                
-                // Styliser le contenu du toast
-                const toastContent = toast.querySelector('.toast-content');
-                Object.assign(toastContent.style, {
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px'
-                });
-                
-                // Styliser le bouton de fermeture
-                const closeButton = toast.querySelector('.toast-close');
-                Object.assign(closeButton.style, {
-                    background: 'none',
-                    border: 'none',
-                    color: 'white',
-                    cursor: 'pointer'
-                });
                 
                 // Animer l'apparition du toast
                 setTimeout(() => {
@@ -643,6 +562,7 @@
                 }, 5000);
                 
                 // Fermer le toast en cliquant sur le bouton de fermeture
+                const closeButton = toast.querySelector('.toast-close');
                 closeButton.addEventListener('click', () => {
                     clearTimeout(timeout);
                     closeToast();
@@ -659,7 +579,7 @@
             }
             
             // Ajouter des événements aux boutons de téléchargement
-            const downloadButtons = document.querySelectorAll('.download-actions button:first-child');
+            const downloadButtons = document.querySelectorAll('.download-actions .btn-primary');
             downloadButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const downloadName = this.closest('.download-item').querySelector('.download-name').textContent;
@@ -668,14 +588,14 @@
             });
             
             // Ajouter des événements aux boutons d'abonnement
-            const upgradeButton = document.querySelector('.btn-upgrade');
+            const upgradeButton = document.querySelector('.subscription-actions .btn-primary');
             if (upgradeButton) {
                 upgradeButton.addEventListener('click', function() {
                     showToast('Redirection vers les options de mise à niveau...', 'info');
                 });
             }
             
-            const cancelButton = document.querySelector('.btn-cancel');
+            const cancelButton = document.querySelector('.subscription-actions .btn-outline');
             if (cancelButton) {
                 cancelButton.addEventListener('click', function() {
                     if (confirm('Êtes-vous sûr de vouloir annuler votre abonnement Premium ?')) {
@@ -696,28 +616,12 @@
                 }
             };
             
-            // Mettre à jour les statistiques avec les données utilisateur
-            function updateUserStats() {
-                // Mettre à jour le nom et l'email
-                document.querySelector('.user-name').textContent = userData.name;
-                document.querySelector('.user-email').textContent = userData.email;
-                
-                // Mettre à jour les statistiques
-                const statNumbers = document.querySelectorAll('.stat-number');
-                statNumbers[0].textContent = userData.stats.downloads;
-                statNumbers[1].textContent = userData.stats.purchased;
-                statNumbers[2].textContent = userData.stats.wishlist;
-                statNumbers[3].textContent = userData.stats.totalSpent;
-                
-                // Mettre à jour l'avatar avec les initiales
-                const nameParts = userData.name.split(' ');
-                const initials = nameParts.map(part => part[0]).join('');
-                document.querySelector('.avatar').textContent = initials;
-            }
-            
-            // Appeler la fonction pour mettre à jour les statistiques
-            updateUserStats();
+            // Simuler un chargement de données
+            setTimeout(() => {
+                showToast('Bienvenue, ' + userData.name + '!', 'success');
+            }, 1000);
         });
     </script>
+    <?php include("../includes/footer.php")?>
 </body>
 </html>

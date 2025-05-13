@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
    <body>
+      <br>
+      <br>
+      <br>
+      <br>
+      
    <footer class="footer">
          <div class="footer-content">
             <div class="footer-section">

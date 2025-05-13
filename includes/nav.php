@@ -473,15 +473,15 @@
         <img src="../assets/images/d-product.png" alt="Profile Avatar">
       </div>
       <div class="profile-details">
-        <h5 class="profile-name">John Doe</h5>
-        <p class="profile-email">john.doe@example.com</p>
+        <h5 class="profile-name">Ilias</h5>
+        <p class="profile-email">Ilias@example.com</p>
       </div>
     </div>
 
     <!-- Menu Items -->
     <ul class="profile-menu">
       <li>
-        <a href="#">
+        <a href="../user/user_info.php">
           <svg width="20" height="20" viewBox="0 0 24 24">
             <use xlink:href="#user"></use>
           </svg>
@@ -489,7 +489,7 @@
         </a>
       </li>
       <li>
-        <a href="#">
+        <a href="../user/user_commande.php">
           <svg width="20" height="20" viewBox="0 0 24 24">
             <use xlink:href="#calendar"></use>
           </svg>
@@ -497,7 +497,7 @@
         </a>
       </li>
       <li>
-        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFavoris" aria-controls="offcanvasFavoris">
+        <a href="../user/user_favoris.php" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFavoris" aria-controls="offcanvasFavoris">
           <svg width="20" height="20" viewBox="0 0 24 24">
             <use xlink:href="#heart"></use>
           </svg>
@@ -505,7 +505,7 @@
         </a>
       </li>
       <li>
-        <a href="#">
+        <a href="../user/user_info.php">
           <svg width="20" height="20" viewBox="0 0 24 24">
             <use xlink:href="#category"></use>
           </svg>

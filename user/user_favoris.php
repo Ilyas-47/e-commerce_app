@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DigiStore - Mes Favoris</title>
+    <?php include("../includes/nav.php")?>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         :root {
             --primary: #4361ee;
-            --secondary: #3f37c9;
+            --primary-light: #ebefff;
+            --secondary: #3a0ca3;
             --accent: #4cc9f0;
             --dark: #212529;
             --light: #f8f9fa;
             --success: #4caf50;
             --danger: #f44336;
+            --danger-light: #ffebee;
             --gray: #6c757d;
             --light-gray: #e9ecef;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
         }
 
         body {
@@ -44,459 +47,407 @@
             gap: 30px;
         }
 
-        .sidebar {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            height: fit-content;
+        /* Styles pour la page des favoris */
+        .fav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        .user-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--light-gray);
-            margin-bottom: 20px;
-        }
-
-        .avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .user-name {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .user-email {
-            color: var(--gray);
-            font-size: 14px;
-        }
-
-        .menu {
-            list-style: none;
-        }
-
-        .menu li {
-            margin-bottom: 10px;
-        }
-
-        .menu a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border-radius: 4px;
-            text-decoration: none;
-            color: var(--dark);
-            transition: background-color 0.3s;
-        }
-
-        .menu a:hover {
-            background-color: var(--light-gray);
-        }
-
-        .menu a.active {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        @media (max-width: 768px) {
-            .profile-section {
-                grid-template-columns: 1fr;
-            }
-            
-            .sidebar {
-                margin-bottom: 20px;
-            }
-        }
-
-        /* Styles pour les favoris */
-        .favorites-grid {
+        .fav-profile-section {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
         }
 
-        .product-card {
+        .fav-content {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            transition: transform 0.3s;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
         }
 
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .product-info {
-            padding: 15px;
-        }
-
-        .product-name {
-            font-size: 16px;
+        .section-title {
+            font-size: 28px;
             font-weight: 600;
             margin-bottom: 10px;
-        }
-
-        .product-price {
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        .product-actions {
+            color: var(--dark);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-top: 15px;
+            gap: 15px;
         }
 
-        .remove-favorite {
-            background: none;
-            border: none;
-            color: var(--danger);
-            cursor: pointer;
-            transition: opacity 0.3s;
+        .section-title i {
+            color: var(--primary);
+            font-size: 32px;
+            margin-right: 15px;
         }
 
-        .remove-favorite:hover {
-            opacity: 0.8;
-        }
-
-        .add-to-cart {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .add-to-cart:hover {
-            background: var(--secondary);
-        }
-
-        .empty-favorites {
-            text-align: center;
-            padding: 40px;
-            background: white;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-
-        .empty-favorites i {
-            font-size: 48px;
+        .section-description {
             color: var(--gray);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            font-size: 16px;
         }
 
-        @media (max-width: 768px) {
-            .profile-section {
-                grid-template-columns: 1fr;
-            }
-            
-            .favorites-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-        }
-
-        /* Nouveaux styles pour les favoris */
-        .favorites-list {
+        .fav-favorites-list {
             list-style: none;
             padding: 0;
         }
 
-        .favoris-item {
+        .fav-item {
             display: flex;
-            gap: 20px;
-            padding: 20px;
+            gap: 25px;
+            padding: 25px;
             background: white;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
         }
 
-        .favoris-item:hover {
-            transform: translateY(-2px);
+        .fav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .favoris-item-image {
-            width: 120px;
-            height: 120px;
+        .fav-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            border-color: #e8eaf6;
+        }
+
+        .fav-item:hover::before {
+            opacity: 1;
+        }
+
+        .fav-item-image {
+            width: 140px;
+            height: 140px;
             flex-shrink: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .favoris-item-image img {
+        .fav-item-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 4px;
+            transition: transform 0.5s ease;
         }
 
-        .favoris-item-details {
+        .fav-item:hover .fav-item-image img {
+            transform: scale(1.08);
+        }
+
+        .fav-item-details {
             flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
-        .favoris-item-top {
+        .fav-item-top {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
-        .favoris-item-title {
-            font-size: 18px;
-            margin: 0;
-        }
-
-        .favoris-item-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .favoris-item-actions button {
-            background: none;
-            border: none;
-            padding: 5px;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .favoris-item-cart {
-            color: var(--primary);
-        }
-
-        .favoris-item-remove {
-            color: var(--danger);
-        }
-
-        .favoris-item-price {
-            font-size: 20px;
+        .fav-item-title {
+            font-size: 1.25rem;
             font-weight: 600;
-            color: var(--primary);
-            margin: 10px 0;
+            color: var(--dark);
+            margin: 0;
+            transition: color 0.3s ease;
         }
 
-        .favoris-item-description {
-            color: var(--gray);
-            font-size: 14px;
+        .fav-item:hover .fav-item-title {
+            color: var(--dark);
         }
 
-        @media (max-width: 768px) {
-            .favoris-item {
-                flex-direction: column;
-            }
-
-            .favoris-item-image {
-                width: 100%;
-                height: 200px;
-            }
-        }
-
-        /* Styles du profil */
-        .sidebar {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            height: fit-content;
-        }
-        
-        .user-info {
+        .fav-item-actions {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--light-gray);
-            margin-bottom: 20px;
+            gap: 12px;
         }
-        
-        .avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: var(--accent);
+
+        .fav-item-cart, 
+        .fav-item-remove {
+            border: none;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        
-        .user-name {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 5px;
+
+        .fav-item-cart {
+            background-color: var(--primary-light);
+            color: var(--primary);
         }
-        
-        .user-email {
-            color: var(--gray);
-            font-size: 14px;
+
+        .fav-item-remove {
+            background-color: var(--danger-light);
+            color: var(--danger);
         }
-        
-        .menu {
-            list-style: none;
-        }
-        
-        .menu li {
-            margin-bottom: 10px;
-        }
-        
-        .menu a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border-radius: 4px;
-            text-decoration: none;
-            color: var(--dark);
-            transition: background-color 0.3s;
-        }
-        
-        .menu a:hover {
-            background-color: var(--light-gray);
-        }
-        
-        .menu a.active {
+
+        .fav-item-cart:hover {
             background-color: var(--primary);
             color: white;
+            transform: translateY(-2px);
+        }
+
+        .fav-item-remove:hover {
+            background-color: var(--danger);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .fav-item-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .fav-item-description {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .fav-item-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .fav-item-tag {
+            background-color: var(--light-gray);
+            color: var(--gray);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .fav-empty {
+            text-align: center;
+            padding: 60px 40px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+
+        .fav-empty i {
+            font-size: 60px;
+            color: var(--light-gray);
+            margin-bottom: 20px;
+            display: inline-block;
+            background-color: var(--light);
+            width: 120px;
+            height: 120px;
+            line-height: 120px;
+            border-radius: 60px;
+        }
+
+        .fav-empty h2 {
+            font-size: 24px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .fav-empty p {
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+
+        .fav-empty-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fav-empty-btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Animation des items supprimés */
+        .fav-item.removing {
+            animation: fadeOutRight 0.5s forwards;
+        }
+
+        @keyframes fadeOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .fav-profile-section {
+                grid-template-columns: 1fr;
+            }
+
+            .fav-item {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .fav-item-image {
+                width: 100%;
+                height: 200px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .section-title i {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
         }
     </style>
 </head>
 <body>
     <main>
-        <div class="container">
-            <div class="profile-section">
-                <!-- Sidebar avec profil utilisateur -->
-                <div class="sidebar">
-                    <div class="user-info">
-                        <div class="avatar">
-                            <img src="../assets/images/office.png" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-                        </div>
-                        <div class="user-name">Jean Dupont</div>
-                        <div class="user-email">jean.dupont@example.com</div>
-                    </div>
-                    <ul class="menu">
-                        <li><a href="user_profil.php"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a></li>
-                        <li><a href="user_info.php"><i class="fas fa-user"></i> Informations personnelles</a></li>
-                        <li><a href="user_commande.php"><i class="fas fa-shopping-bag"></i> Mes commandes</a></li>
-                        <li><a href="user_pay.php"><i class="fas fa-credit-card"></i> Moyens de paiement</a></li>
-                        <li><a href="user_favoris.php"><i class="fas fa-heart"></i> Liste de souhaits</a></li>
-                        <li><a href="user_support.php" class="active"><i class="fas fa-headset"></i> Support</a></li>
-                        <li><a href="#"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
-                    </ul>
-                </div>
-
-                <div class="content">
-                    <h1 class="section-title"><i class="fas fa-heart"></i> Mes Favoris (3)</h1>
+        <div class="fav-container">
+            <div class="fav-profile-section">
+                <?php include('user_nav.php'); ?>
+                
+                <div class="fav-content">
+                    <h1 class="section-title">
+                        <i class="fas fa-heart"></i>
+                        <span>Mes Favoris <span class="favorite-count">(3)</span></span>
+                    </h1>
                     <p class="section-description">Gérez vos produits favoris et ajoutez-les facilement au panier</p>
 
-                    <ul class="favorites-list">
+                    <ul class="fav-favorites-list">
                         <!-- Item 1 -->
-                        <li class="favoris-item">
-                            <div class="favoris-item-image">
+                        <li class="fav-item">
+                            <div class="fav-item-image">
                                 <img src="../assets/images/d-product.png" alt="Produit 1">
                             </div>
-                            <div class="favoris-item-details">
-                                <div class="favoris-item-top">
-                                    <h5 class="favoris-item-title">Microsoft Office 2024 Home PC</h5>
-                                    <div class="favoris-item-actions">
-                                        <button class="favoris-item-cart" aria-label="Ajouter au panier">
+                            <div class="fav-item-details">
+                                <div class="fav-item-top">
+                                    <h5 class="fav-item-title">Microsoft Office 2024 Home PC</h5>
+                                    <div class="fav-item-actions">
+                                        <button class="fav-item-cart" aria-label="Ajouter au panier">
                                             <i class="fas fa-shopping-cart"></i>
                                         </button>
-                                        <button class="favoris-item-remove" aria-label="Retirer des favoris">
+                                        <button class="fav-item-remove" aria-label="Retirer des favoris">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="favoris-item-price">200 MAD</div>
-                                <div class="favoris-item-description">
-                                    Microsoft Office 2024 Home PC - Licence à vie
+                                <div class="fav-item-price">200 MAD</div>
+                                <div class="fav-item-description">
+                                    Microsoft Office 2024 Home PC - Licence à vie pour 1 PC Windows ou Mac. Suite complète incluant Word, Excel, PowerPoint, Outlook et OneNote.
+                                </div>
+                                <div class="fav-item-tags">
+                                    <span class="fav-item-tag">Office</span>
+                                    <span class="fav-item-tag">Licence à vie</span>
                                 </div>
                             </div>
                         </li>
 
                         <!-- Item 2 -->
-                        <li class="favoris-item">
-                            <div class="favoris-item-image">
+                        <li class="fav-item">
+                            <div class="fav-item-image">
                                 <img src="../assets/images/d-product.png" alt="Produit 2">
                             </div>
-                            <div class="favoris-item-details">
-                                <div class="favoris-item-top">
-                                    <h5 class="favoris-item-title">Microsoft Visual Studio 2024</h5>
-                                    <div class="favoris-item-actions">
-                                        <button class="favoris-item-cart" aria-label="Ajouter au panier">
+                            <div class="fav-item-details">
+                                <div class="fav-item-top">
+                                    <h5 class="fav-item-title">Microsoft Visual Studio 2024</h5>
+                                    <div class="fav-item-actions">
+                                        <button class="fav-item-cart" aria-label="Ajouter au panier">
                                             <i class="fas fa-shopping-cart"></i>
                                         </button>
-                                        <button class="favoris-item-remove" aria-label="Retirer des favoris">
+                                        <button class="fav-item-remove" aria-label="Retirer des favoris">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="favoris-item-price">300 MAD</div>
-                                <div class="favoris-item-description">
-                                    Microsoft Visual Studio 2024 Professional
+                                <div class="fav-item-price">300 MAD</div>
+                                <div class="fav-item-description">
+                                    Microsoft Visual Studio 2024 Professional - Environnement de développement intégré pour les développeurs professionnels avec toutes les fonctionnalités avancées.
+                                </div>
+                                <div class="fav-item-tags">
+                                    <span class="fav-item-tag">Développement</span>
+                                    <span class="fav-item-tag">Professionnel</span>
                                 </div>
                             </div>
                         </li>
 
                         <!-- Item 3 -->
-                        <li class="favoris-item">
-                            <div class="favoris-item-image">
+                        <li class="fav-item">
+                            <div class="fav-item-image">
                                 <img src="../assets/images/d-product.png" alt="Produit 3">
                             </div>
-                            <div class="favoris-item-details">
-                                <div class="favoris-item-top">
-                                    <h5 class="favoris-item-title">Microsoft Windows 11 Pro</h5>
-                                    <div class="favoris-item-actions">
-                                        <button class="favoris-item-cart" aria-label="Ajouter au panier">
+                            <div class="fav-item-details">
+                                <div class="fav-item-top">
+                                    <h5 class="fav-item-title">Microsoft Windows 11 Pro</h5>
+                                    <div class="fav-item-actions">
+                                        <button class="fav-item-cart" aria-label="Ajouter au panier">
                                             <i class="fas fa-shopping-cart"></i>
                                         </button>
-                                        <button class="favoris-item-remove" aria-label="Retirer des favoris">
+                                        <button class="fav-item-remove" aria-label="Retirer des favoris">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="favoris-item-price">400 MAD</div>
-                                <div class="favoris-item-description">
-                                    Microsoft Windows 11 Pro - Licence à vie
+                                <div class="fav-item-price">400 MAD</div>
+                                <div class="fav-item-description">
+                                    Microsoft Windows 11 Pro - Licence à vie. Système d'exploitation pour les professionnels avec des fonctionnalités de sécurité et de gestion avancées.
+                                </div>
+                                <div class="fav-item-tags">
+                                    <span class="fav-item-tag">Système</span>
+                                    <span class="fav-item-tag">Windows</span>
                                 </div>
                             </div>
                         </li>
                     </ul>
 
                     <!-- Message si aucun favori -->
-                    <div class="empty-favorites" style="display: none;">
+                    <div class="fav-empty" style="display: none;">
                         <i class="far fa-heart"></i>
                         <h2>Aucun favori pour le moment</h2>
                         <p>Explorez notre catalogue et ajoutez des produits à vos favoris</p>
+                        <button class="fav-empty-btn">
+                            <i class="fas fa-search"></i>
+                            Explorer le catalogue
+                        </button>
                     </div>
                 </div>
             </div>
@@ -506,27 +457,51 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Gestion des boutons de suppression des favoris
-            const removeButtons = document.querySelectorAll('.remove-favorite');
+            const removeButtons = document.querySelectorAll('.fav-item-remove');
+            const favoriteCount = document.querySelector('.favorite-count');
+            let count = parseInt(favoriteCount.textContent.replace(/[()]/g, ''));
+            
             removeButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    const card = this.closest('.product-card');
-                    card.style.opacity = '0';
+                    const item = this.closest('.fav-item');
+                    item.classList.add('removing');
+                    
+                    // Mettre à jour le compteur
+                    count--;
+                    favoriteCount.textContent = `(${count})`;
+                    
                     setTimeout(() => {
-                        card.remove();
+                        item.remove();
                         checkEmptyFavorites();
-                    }, 300);
+                    }, 500);
+                });
+            });
+
+            // Effets hover sur les boutons d'action
+            const actionButtons = document.querySelectorAll('.fav-item-cart, .fav-item-remove');
+            actionButtons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
                 });
             });
 
             // Vérifier si la liste des favoris est vide
             function checkEmptyFavorites() {
-                const products = document.querySelectorAll('.product-card');
-                const emptyMessage = document.querySelector('.empty-favorites');
-                if (products.length === 0) {
+                const items = document.querySelectorAll('.fav-item');
+                const emptyMessage = document.querySelector('.fav-empty');
+                const favoritesList = document.querySelector('.fav-favorites-list');
+                
+                if (items.length === 0) {
                     emptyMessage.style.display = 'block';
+                    favoritesList.style.display = 'none';
                 }
             }
         });
     </script>
+    
+    <?php include("../includes/footer.php")?>
 </body>
 </html>
