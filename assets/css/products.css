@@ -90,6 +90,7 @@
             font-size: 0.95rem;
             color: #64748B;
             transition: all 0.3s ease;
+            background-color: white;
         }
 
         .filter-checkbox:hover {
@@ -100,6 +101,13 @@
             accent-color: #FFCE0A;
             width: 16px;
             height: 16px;
+            background-color: white !important;
+            border: 1px solid #E2E8F0;
+        }
+
+        .filter-checkbox input:checked {
+            background-color: #FFCE0A;
+            border-color: #FFCE0A;
         }
 
         .price-range {
@@ -122,6 +130,7 @@
             font-size: 0.9rem;
             outline: none;
             transition: all 0.3s ease;
+            background-color: white;
         }
 
         .price-input:focus {
@@ -207,11 +216,20 @@
             background-repeat: no-repeat;
             background-position: right 10px center;
             padding-right: 30px;
+            background-color: white;
         }
 
         .sort-select:focus {
-            border-color: #FFCE0A;
-            box-shadow: 0 0 0 2px rgba(255, 206, 10, 0.1);
+            border-color: #0056b3;
+            box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.1);
+        }
+
+        .sort-select option:hover,
+        .sort-select option:focus,
+        .sort-select option:active,
+        .sort-select option:checked {
+            background-color: #0056b3 !important;
+            color: white !important;
         }
 
         .products-grid {
@@ -368,8 +386,7 @@
             background: #FFCE0A;
             color: #1E293B;
             text-decoration: none;
-            display: inline-block;
-            
+            /* display: inline-block;             */
         }
 
         .btn-cart:hover {

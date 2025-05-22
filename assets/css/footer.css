@@ -41,6 +41,14 @@
     border-radius: 4px;
     width: 100%;
     margin-bottom: 0.5rem;
+    background-color: white;
+    color: #333;
+}
+
+.newsletter-form input:focus {
+    outline: none;
+    border-color: #1a76d1;
+    box-shadow: 0 0 0 2px rgba(26, 118, 209, 0.1);
 }
 
 .newsletter-form button {

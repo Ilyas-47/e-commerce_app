@@ -93,6 +93,14 @@
                         <span>Rapports</span>
                     </a>
                 </li>
+                
+                <li class="menu-item <?php echo ($current_page == 'tickets.php') ? 'active' : ''; ?>">
+                    <a href="../admin/tickets.php">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Tickets</span>
+                    </a>
+                </li>
+                
                 <li class="menu-item <?php echo ($current_page == 'logout.php') ? 'active' : ''; ?>">
                     <a href="../includes/logout.php">
                         <i class="fas fa-sign-out-alt"></i>

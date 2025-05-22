@@ -2,12 +2,77 @@
 <html lang="en">
 <body>
     <?php include('../includes/nav.php') ?>
-    <section class="py-3" style="background-image: url('../assets/images/background-pattern.jpg'); background-repeat: no-repeat; background-size: cover;">
+    <section class="py-3" style="background-color:white; background-repeat: no-repeat; background-size: cover;">
+               <!-- nav -->
+<div class="input">
+    <button class="value">
+        Produit
+        <div class="dropdown-menu">
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+        </div>
+    </button>
+    <button class="value">
+        Produit
+        <div class="dropdown-menu">
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+        </div>
+    </button>
+    <button class="value">
+        Produit
+        <div class="dropdown-menu">
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+        </div>
+    </button>
+    <button class="value">
+        Produit
+        <div class="dropdown-menu">
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+        </div>
+    </button>
+    <button class="value">
+        Produit
+        <div class="dropdown-menu">
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+        </div>
+    </button>
+    <button class="value">
+        Produit
+        <div class="dropdown-menu">
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+        </div>
+    </button>
+    <button class="value">
+        Produit
+        <div class="dropdown-menu">
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+        </div>
+    </button>
+    <button class="value">
+        Produit
+        <div class="dropdown-menu">
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+        </div>
+    </button>
+    <button class="value">
+        Produit
+        <div class="dropdown-menu">
+            <a href="../user/product_page.php">Produit</a>
+            <a href="../user/product_page.php">Produit</a>
+        </div>
+    </button>
+</div>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="banner-blocks">
-          
           <!-- Bloc 1: Carrousel principal -->
           <div class="banner-ad large bg-info block-1">
             <div class="swiper main-swiper">
@@ -239,7 +304,7 @@
 
     <!-- slides logos -->
 
-<div class="slider">
+<!-- <div class="slider">
 	<div class="slide-track">
 		<div class="slide">
 			<img src="../assets/images/netflix.png" height="30" width="120" alt="Netflix" />
@@ -273,7 +338,7 @@
 		</div>
 	</div>
 </div>
- 
+  -->
 
  
 

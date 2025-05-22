@@ -1,4 +1,4 @@
- /* Style du mini-panier */
+/* Style du mini-panier */
  .cart-widget {
     position: relative;
   }
@@ -204,6 +204,17 @@
     font-size: 14px;
     font-weight: 500;
     -moz-appearance: textfield;
+    background-color: white !important;
+    border: 1px solid #E2E8F0;
+    border-radius: 4px;
+    width: 50px;
+    text-align: center;
+    padding: 4px;
+  }
+  
+  .quantity-input:focus {
+    outline: none;
+    border-color: #FFCE0A;
   }
   
   .quantity-input::-webkit-outer-spin-button,

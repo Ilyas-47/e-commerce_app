@@ -245,6 +245,11 @@
                 <label>Code Promo</label>
                 <input type="text" class="form-control" id="editPromo">
             </div>
+            <!-- Ajout du champ pourcentage dans le modal de modification -->
+            <div class="form-group">
+                <label>Pourcentage</label>
+                <input type="number" class="form-control" id="editPourcentage">
+            </div>
             <button type="submit" class="btn btn-warning">Enregistrer</button>
             <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
         </form>
@@ -293,6 +298,10 @@
             <div class="form-group">
                 <label>Code Promo</label>
                 <input type="text" class="form-control" id="addPromo">
+            </div>
+            <div class="form-group">
+                <label>Pourcentage</label>
+                <input type="number" class="form-control" id="pourcentage">
             </div>
             <button type="submit" class="btn btn-warning">Ajouter</button>
             <button type="button" class="btn btn-secondary" onclick="closeAddModal()">Annuler</button>

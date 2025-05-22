@@ -522,7 +522,7 @@
   </div>
 </div>
 
-      <!-- nav -->
+      <!-- nav
 <div class="input">
     <button class="value">
         Produit
@@ -587,12 +587,11 @@
             <a href="../user/product_page.php">Produit</a>
         </div>
     </button>
+</div> -->
 </div>
 </div>
 </div>
 </div>
-</div>
-
 
 <script src="../assets/js/panier2.js"></script>
 <script src="../assets/js/favoris.js"></script>
