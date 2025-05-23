@@ -101,7 +101,7 @@
                         <button class="btn-icon" onclick="viewTicket('TK003')">
                             <i class="fas fa-eye view-icon"></i>
                         </button>
-                        <button class="btn-icon" onclick="editTicket('TK003')">
+                        <button class="btn-icon" onclick="openModal(1)">
                             <i class="fas fa-edit edit-icon"></i>
                         </button>
                     </td>
@@ -170,9 +170,6 @@
         <div class="modal-header">
             <h3 class="modal-title">Détails du ticket</h3>
             <div class="modal-actions">
-                <button class="btn-icon" onclick="switchToEdit()">
-                    <i class="fas fa-edit edit-icon"></i>
-                </button>
                 <button class="modal-close" onclick="closeModal('viewTicketModal')">
                     <i class="fas fa-times"></i>
                 </button>
@@ -219,48 +216,40 @@
     </div>
 </div>
 
-<!-- Edit Ticket Modal -->
-<div id="editTicketModal" class="modal">
+<!-- Ajout du modal de modification -->
+<div id="editModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">Modifier le ticket</h3>
-            <button class="modal-close" onclick="closeModal('editTicketModal')">&times;</button>
-        </div>
-        <div class="modal-body">
-            <form id="editTicketForm" onsubmit="updateTicket(event)">
-                <div class="form-group">
-                    <label for="edit-status">Statut:</label>
-                    <select id="edit-status" class="form-control" required>
-                        <option value="pending">En attente</option>
-                        <option value="resolved">Résolu</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="edit-subject">Sujet:</label>
-                    <input type="text" id="edit-subject" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit-description">Description:</label>
-                    <textarea id="edit-description" class="form-control" rows="4" required></textarea>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="edit-client">Client:</label>
-                        <input type="text" id="edit-client" class="form-control" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="edit-email">Email:</label>
-                        <input type="email" id="edit-email" class="form-control" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-secondary" onclick="closeModal('editTicketModal')">Annuler</button>
-                    <button type="submit" class="btn-primary">Enregistrer</button>
-                </div>
-            </form>
-        </div>
+        <h2>Modifier le statut du ticket</h2>
+        <form id="editForm">
+            <div class="form-group">
+                <label>Sujet</label>
+                <input type="text" class="form-control" id="editSujet" readonly>
+            </div>
+            <div class="form-group">
+                <label>Client</label>
+                <input type="text" class="form-control" id="editClient" readonly>
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea class="form-control" id="editMessage" rows="5" readonly></textarea>
+            </div>
+            <div class="form-group">
+                <label>Statut</label>
+                <select class="form-control" id="editStatut" required>
+                    <option value="pending">En attente</option>
+                    <option value="resolved">Résolu</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Date de création</label>
+                <input type="text" class="form-control" id="editDate" readonly>
+            </div>
+            <button type="submit" class="btn btn-warning">Mettre à jour le statut</button>
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+        </form>
     </div>
 </div>
+
 </body>
 <script src="../assets/js/tickets.js"></script>
 </html>

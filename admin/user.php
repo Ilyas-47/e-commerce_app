@@ -27,11 +27,11 @@
                 <td>+00000000</td>
                 <td><span class="role-badge">Admin</span></td>
                 <td>0000-00-00</td>
-                <td>
-                    <button class="btn-edit" onclick="openModal(1)" aria-label="Modifier">
-                        <svg><use xlink:href="#edit"></use></svg>
-                    </button>
-                    <button class="btn-delete" onclick="deleteUser(1)" aria-label="Supprimer">
+                <td class="ticket-actions">
+                        <button class="btn-icon" onclick="openModal(3)">
+                            <i class="fas fa-edit edit-icon"></i>
+                        </button>
+                         <button class="btn-delete" aria-label="Supprimer">
                         <svg><use xlink:href="#trash"></use></svg>
                     </button>
                 </td>
@@ -43,11 +43,11 @@
                 <td>+00000000</td>
                 <td><span class="role-badge">Utilisateur</span></td>
                 <td>0000-00-00</td>
-                <td>
-                    <button class="btn-edit" onclick="openModal(2)" aria-label="Modifier">
-                        <svg><use xlink:href="#edit"></use></svg>
-                    </button>
-                    <button class="btn-delete" onclick="deleteUser(2)" aria-label="Supprimer">
+                <td class="ticket-actions">
+                        <button class="btn-icon" onclick="openModal(3)">
+                            <i class="fas fa-edit edit-icon"></i>
+                        </button>
+                         <button class="btn-delete" aria-label="Supprimer">
                         <svg><use xlink:href="#trash"></use></svg>
                     </button>
                 </td>
@@ -59,11 +59,11 @@
                 <td>+00000000</td>
                 <td><span class="role-badge">Admin</span></td>
                 <td>0000-00-00</td>
-                <td>
-                    <button class="btn-edit" onclick="openModal(3)" aria-label="Modifier">
-                        <svg><use xlink:href="#edit"></use></svg>
-                    </button>
-                    <button class="btn-delete" onclick="deleteUser(3)" aria-label="Supprimer">
+                <td class="ticket-actions">
+                        <button class="btn-icon" onclick="openModal(3)">
+                            <i class="fas fa-edit edit-icon"></i>
+                        </button>
+                         <button class="btn-delete" aria-label="Supprimer">
                         <svg><use xlink:href="#trash"></use></svg>
                     </button>
                 </td>
@@ -75,11 +75,11 @@
                 <td>+00000000</td>
                 <td><span class="role-badge">Utilisateur</span></td>
                 <td>0000-00-00</td>
-                <td>
-                    <button class="btn-edit" onclick="openModal(4)" aria-label="Modifier">
-                        <svg><use xlink:href="#edit"></use></svg>
-                    </button>
-                    <button class="btn-delete" onclick="deleteUser(4)" aria-label="Supprimer">
+                <td class="ticket-actions">
+                        <button class="btn-icon" onclick="openModal(3)">
+                            <i class="fas fa-edit edit-icon"></i>
+                        </button>
+                         <button class="btn-delete" aria-label="Supprimer">
                         <svg><use xlink:href="#trash"></use></svg>
                     </button>
                 </td>
@@ -91,11 +91,11 @@
                 <td>+00000000</td>
                 <td><span class="role-badge">Utilisateur</span></td>
                 <td>0000-00-00</td>
-                <td>
-                    <button class="btn-edit" onclick="openModal(5)" aria-label="Modifier">
-                        <svg><use xlink:href="#edit"></use></svg>
-                    </button>
-                    <button class="btn-delete" onclick="deleteUser(5)" aria-label="Supprimer">
+                <td class="ticket-actions">
+                        <button class="btn-icon" onclick="openModal(3)">
+                            <i class="fas fa-edit edit-icon"></i>
+                        </button>
+                         <button class="btn-delete" aria-label="Supprimer">
                         <svg><use xlink:href="#trash"></use></svg>
                     </button>
                 </td>
@@ -107,11 +107,11 @@
                 <td>+00000000</td>
                 <td><span class="role-badge">Admin</span></td>
                 <td>0000-00-00</td>
-                <td>
-                    <button class="btn-edit" onclick="openModal(6)" aria-label="Modifier">
-                        <svg><use xlink:href="#edit"></use></svg>
-                    </button>
-                    <button class="btn-delete" onclick="deleteUser(6)" aria-label="Supprimer">
+                <td class="ticket-actions">
+                        <button class="btn-icon" onclick="openModal(3)">
+                            <i class="fas fa-edit edit-icon"></i>
+                        </button>
+                         <button class="btn-delete" aria-label="Supprimer">
                         <svg><use xlink:href="#trash"></use></svg>
                     </button>
                 </td>
@@ -123,11 +123,11 @@
                 <td>+00000000</td>
                 <td><span class="role-badge">Utilisateur</span></td>
                 <td>0000-00-00</td>
-                <td>
-                    <button class="btn-edit" onclick="openModal(7)" aria-label="Modifier">
-                        <svg><use xlink:href="#edit"></use></svg>
-                    </button>
-                    <button class="btn-delete" onclick="deleteUser(7)" aria-label="Supprimer">
+                <td class="ticket-actions">
+                        <button class="btn-icon" onclick="openModal(3)">
+                            <i class="fas fa-edit edit-icon"></i>
+                        </button>
+                         <button class="btn-delete" aria-label="Supprimer">
                         <svg><use xlink:href="#trash"></use></svg>
                     </button>
                 </td>
@@ -139,11 +139,11 @@
                 <td>+00000000</td>
                 <td><span class="role-badge">Utilisateur</span></td>
                 <td>0000-00-00</td>
-                <td>
-                    <button class="btn-edit" onclick="openModal(8)" aria-label="Modifier">
-                        <svg><use xlink:href="#edit"></use></svg>
-                    </button>
-                    <button class="btn-delete" onclick="deleteUser(8)" aria-label="Supprimer">
+                <td class="ticket-actions">
+                        <button class="btn-icon" onclick="openModal(3)">
+                            <i class="fas fa-edit edit-icon"></i>
+                        </button>
+                         <button class="btn-delete" aria-label="Supprimer">
                         <svg><use xlink:href="#trash"></use></svg>
                     </button>
                 </td>
@@ -155,33 +155,40 @@
                 <td>+00000000</td>
                 <td><span class="role-badge">Admin</span></td>
                 <td>0000-00-00</td>
-                <td>
-                    <button class="btn-edit" onclick="openModal(9)" aria-label="Modifier">
-                        <svg><use xlink:href="#edit"></use></svg>
-                    </button>
-                    <button class="btn-delete" onclick="deleteUser(9)" aria-label="Supprimer">
+               <td class="ticket-actions">
+                        <button class="btn-icon" onclick="openModal(3)">
+                            <i class="fas fa-edit edit-icon"></i>
+                        </button>
+                         <button class="btn-delete" aria-label="Supprimer">
                         <svg><use xlink:href="#trash"></use></svg>
                     </button>
                 </td>
             </tr>
-            <tr>
+            <tr> 
                 <td>#10</td>
                 <td>Ilias</td>
                 <td>ilias@test.com</td>
                 <td>+00000000</td>
                 <td><span class="role-badge">Utilisateur</span></td>
                 <td>0000-00-00</td>
-                <td>
-                    <button class="btn-edit" onclick="openModal(10)" aria-label="Modifier">
-                        <svg><use xlink:href="#edit"></use></svg>
-                    </button>
-                    <button class="btn-delete" onclick="deleteUser(10)" aria-label="Supprimer">
+               <td class="ticket-actions">
+                        <button class="btn-icon" onclick="openModal(3)">
+                            <i class="fas fa-edit edit-icon"></i>
+                        </button>
+                         <button class="btn-delete" aria-label="Supprimer">
                         <svg><use xlink:href="#trash"></use></svg>
                     </button>
                 </td>
             </tr>
         </tbody>
     </table>
+    <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">&raquo;</a>
+        </div>
 </div>
 
 <!-- SVG Icons -->

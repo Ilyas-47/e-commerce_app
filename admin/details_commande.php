@@ -2,7 +2,26 @@
 <html lang="en">
 <body>
 <?php include_once '../includes/admin_nav.php'; ?> 
+<style>
+    .back-button {
+        background-color: #6c757d;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        transition: background-color 0.3s;
+        float: right;
+        margin: 10px 0;
+    }
 
+    .back-button:hover {
+        background-color: #5a6268;
+    }
+</style>
 <div class="details-card">
     <h2>Détails de la Commande</h2>
     <form>
@@ -44,6 +63,8 @@
         <div class="form-group">
             <label>Status</label>
             <span class="status-badge status-completed">Complété</span>
+            <a href="javascript:history.back()" class="back-button">← Retour</a>
+
         </div>
     </form>
 </div>

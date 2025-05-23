@@ -1,7 +1,7 @@
 <?php
 
 $servername = 'localhost'; // variable qui contient le nom du serveur
-$bdd= 'biblio'; // variable qui contient le nom de la base de données
+$bdd= 'ecommerce_app'; // variable qui contient le nom de la base de données
 $username = 'root'; // variable qui contient nom utilisateur
 $password = ''; // variable qui contient mot de passe 
 
