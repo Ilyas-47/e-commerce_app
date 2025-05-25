@@ -1,3 +1,45 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../user/login.php"); 
+    exit();
+}
+
+$user_name = $_SESSION['user_name'];
+$user_role = $_SESSION['user_role'];
+$user_image = $_SESSION['user_image'];
+
+// partie de recherche
+if (isset($_GET['query'])) {
+    $query = $_GET['query'];
+
+    // Préparation de la requête SQL avec recherche sur plusieurs champs
+    $stmt = $pdo->prepare("
+        SELECT p.id_produit, p.nom AS nom_produit, p.prix, c.nom AS nom_categorie, cp.code_promo, 
+               cmd.id_commande, sup.id_support
+        FROM produit p
+        LEFT JOIN categorie c ON p.id_categorie = c.id_categorie
+        LEFT JOIN code_promo cp ON p.id_code_promo = cp.id_code_promo
+        LEFT JOIN commande cmd ON p.id_commande = cmd.id_commande
+        LEFT JOIN support sup ON p.id_support = sup.id_support
+        WHERE p.id_produit LIKE ? 
+           OR p.nom LIKE ? 
+           OR p.prix LIKE ? 
+           OR c.nom LIKE ? 
+           OR cp.code_promo LIKE ?
+           OR cmd.id_commande LIKE ?
+           OR sup.id_support LIKE ?
+    ");
+    
+    // Ajout des valeurs à la requête avec wildcard "%" pour recherche partielle
+    $search = "%" . $query . "%";
+    $stmt->execute([$search, $search, $search, $search, $search, $search, $search]);
+    
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
    <head>
@@ -41,9 +83,6 @@
                     </div>
                 </a>
             </div>
-            <?php
-                $current_page = basename($_SERVER['PHP_SELF']);
-            ?>
             <ul class="menu-items">
                 <li class="menu-item <?php echo ($current_page == 'dashboard.php') ? 'active' : ''; ?>">
                     <a href="../admin/dashboard.php">
@@ -102,7 +141,7 @@
                 </li>
                 
                 <li class="menu-item <?php echo ($current_page == 'logout.php') ? 'active' : ''; ?>">
-                    <a href="../includes/logout.php">
+                    <a href="../includes/deconnect.php">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Déconnexion</span>
                     </a>
@@ -117,10 +156,10 @@
                 </div>
                 <div class="user-profile">
                     <div class="user-info">
-                        <div class="user-name">Ilyas Ilyas</div>
-                        <div class="user-role">Admin d-product</div>
+                        <div class="user-name"><?php echo htmlspecialchars($user_name); ?></div>
+                        <div class="user-role"><?php echo htmlspecialchars($user_role); ?></div>
                     </div>
-                    <img src="/api/placeholder/40/40" class="user-avatar" alt="User Avatar">
+                    <img src="<?php echo htmlspecialchars($user_image); ?>" class="user-avatar" alt="User Avatar">
                 </div>
             </div>
    </body>

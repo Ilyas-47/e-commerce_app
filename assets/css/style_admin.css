@@ -597,6 +597,21 @@ body {
     z-index: 2000;
 }
 
+.erreur-message {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #da0a0a;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    animation: slideDown 0.5s ease-out;
+    z-index: 2000;
+}
+
 @keyframes slideDown {
     from { transform: translate(-50%, -100%); }
     to { transform: translate(-50%, 0); }
