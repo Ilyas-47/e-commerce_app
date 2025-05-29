@@ -99,7 +99,7 @@ function deleteCategory(categoryId) {
         return;
     }
 
-    fetch("../system/system_supp_catego.php", {
+    fetch("../system/system_supp_catego.php?id_categorie", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
