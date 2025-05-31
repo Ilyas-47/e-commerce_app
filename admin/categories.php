@@ -103,6 +103,6 @@ try {
 <div id="erreurMessage" class="erreur-message">
         <span id="erreurText"></span>
     </div>
-<script src="../assets/js/categories_modal.js"></script>
+<script src="../assets/js/categories_modal.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

@@ -1,7 +1,41 @@
+<?php
+require_once('../connection/connection.php');
+
+try {
+    $reqProduits = $pdo->query("SELECT COUNT(*) AS total FROM produits");
+    $totalProduits = $reqProduits->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $reqUsers = $pdo->query("SELECT COUNT(*) AS total FROM user WHERE role = 'user'");
+    $totalUsers = $reqUsers->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $reqCategories = $pdo->query("SELECT COUNT(*) AS total FROM categories");
+    $totalCategories = $reqCategories->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $reqCommandes = $pdo->query("SELECT COUNT(*) AS total FROM commandes");
+    $totalCommandes = $reqCommandes->fetch(PDO::FETCH_ASSOC)['total'];
+
+    // Récupérer le nombre de nouvelles commandes des dernières 24 heures
+    $reqNouvellesCommandes = $pdo->query("SELECT COUNT(*) AS total FROM commandes WHERE date_commande >= DATE_SUB(NOW(), INTERVAL 24 HOUR)");
+    $nouvellesCommandes = $reqNouvellesCommandes->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $reqVentesAujourdhuit = $pdo->query("SELECT sum(montant) AS total FROM paiements WHERE date_paiement >= DATE_SUB(NOW(), INTERVAL 24 HOUR)");
+    $ventesAujourdhuit = $reqVentesAujourdhuit->fetch(PDO::FETCH_ASSOC)['total'];
+
+} catch (PDOException $e) {
+    $totalProduits = 0;
+    $totalUsers = 0;
+    $totalCategories = 0;
+    $totalCommandes = 0;
+    $nouvellesCommandes = 0;
+    $ventesAujourdhuit = 0;
+    error_log("Erreur récupération statistiques : " . $e->getMessage());
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <body>
-<?php include_once '../includes/admin_nav.php'; ?>
+<?php require_once('../includes/admin_nav.php'); ?>
 
 <div class="grid-container">
     <!-- KPI Cards -->
@@ -10,7 +44,7 @@
             <div class="card-title">Ventes Totales</div>
         </div>
         <div class="total-earnings">
-            00,00 MAD
+            <?php echo number_format($ventesAujourdhuit, 2); ?> MAD
         </div>
         <div class="earnings-detail">
             ▶ Aujourd'hui
@@ -22,10 +56,10 @@
             <div class="card-title">Commandes</div>
         </div>
         <div class="total-earnings">
-            0
+            <?php echo number_format($nouvellesCommandes, 0); ?>
         </div>
         <div class="earnings-detail">
-            ▶ Nouvelles commandes
+            ▶ Nouvelles commandes (24h)
         </div>
     </div>
 
@@ -47,16 +81,16 @@
                 <line x1="50" y1="50" x2="50" y2="200" stroke="#ccc"/>
                 <!-- Axe X -->
                 <line x1="50" y1="200" x2="750" y2="200" stroke="#ccc"/>
-                
+
                 <!-- Labels Y -->
                 <text x="30" y="60" text-anchor="end">100k</text>
                 <text x="30" y="110" text-anchor="end">50k</text>
                 <text x="30" y="200" text-anchor="end">0</text>
-                
+
                 <!-- Graph Line -->
-                <path d="M50 200 L200 150 L350 180 L500 100 L650 120 L750 90" 
+                <path d="M50 200 L200 150 L350 180 L500 100 L650 120 L750 90"
                       fill="none" stroke="#FFD700" stroke-width="3"/>
-                
+
                 <!-- Points -->
                 <circle cx="50" cy="200" r="4" fill="#FFD700"/>
                 <circle cx="200" cy="150" r="4" fill="#FFD700"/>
@@ -77,22 +111,23 @@
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 20px;">
         <div class="stat-item">
             <h3>Produits</h3>
-            <div class="stat-value">0</div>
+            <div class="stat-value"><?php echo number_format($totalProduits, 0); ?></div>
             <div class="stat-label">Total des produits</div>
         </div>
         <div class="stat-item">
             <h3>Utilisateurs</h3>
-            <div class="stat-value">0</div>
+            <div class="stat-value"><?php echo number_format($totalUsers, 0); ?></div>
             <div class="stat-label">Clients actifs</div>
         </div>
         <div class="stat-item">
             <h3>Catégories</h3>
-            <div class="stat-value">0</div>
+            <div class="stat-value"><?php echo number_format($totalCategories, 0); ?></div>
             <div class="stat-label">Types de produits</div>
         </div>
         <div class="stat-item">
-            <h3>Taux de conversion</h3>
-            <div class="stat-value">0%</            <div class="stat-label">Ce mois</div>
+            <h3>Commandes</h3>
+            <div class="stat-value"><?php echo number_format($totalCommandes, 0); ?></div>
+            <div class="stat-label">Total des commandes</div>
         </div>
     </div>
 </div>

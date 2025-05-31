@@ -12,7 +12,7 @@ try {
     $categories = $req1->fetchAll(PDO::FETCH_ASSOC);
     // Récupération des produits avec leurs catégories et codes promo
     $req2 = $pdo->prepare("
-        SELECT p.*, c.nom_categorie, cp.code_promo 
+        SELECT p.*, c.nom_categorie, cp.code_promo
         FROM produits p
         LEFT JOIN categories c ON p.id_categorie = c.id_categorie
         LEFT JOIN code_promo cp ON p.id_promo = cp.id_promo
@@ -109,7 +109,7 @@ try {
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span> <h2>Modifier le produit</h2>
-            <form id="editForm" action="../system/system_update_produit.php" method="POST" enctype="multipart/form-data">
+            <form id="editForm" action="../system/system_modif_produit.php" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="id_produit" id="editProductId"> <div class="form-group">
                     <label>Nom</label>
                     <input type="text" class="form-control" id="editNom" name="nom" required>
@@ -123,7 +123,8 @@ try {
                     <div class="image-upload-container">
                         <img src="" class="preview-image" id="currentImage" alt="Image actuelle du produit" style="max-width: 150px; display: block; margin-bottom: 10px;">
                         <label for="editImage" class="btn btn-info btn-sm">Changer l'image</label>
-                        <input type="file" class="form-control" id="editImage" name="image" style="display: none;">
+                        <input type="file" class="form-control" id="editImage" name="image" accept=".jpg,.jpeg,.png,.gif" style="display: none;">
+                        <small class="text-muted">Formats acceptés: JPG, JPEG, PNG, GIF</small>
                     </div>
                 </div>
                 <div class="form-group">
@@ -151,7 +152,8 @@ try {
                 </div>
                 <div class="form-group">
                     <label>Pourcentage (Promo)</label>
-                    <input type="number" class="form-control" id="editPourcentage" name="pourcentage">
+                    <input type="number" class="form-control" id="editPourcentage" name="pourcentage" min="1" max="100" step="1">
+                    <small class="text-muted">Pourcentage entre 1 et 100</small>
                 </div>
                 <button type="submit" class="btn btn-warning">Enregistrer</button>
                 <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
@@ -176,7 +178,8 @@ try {
                     <div class="image-upload-container">
                         <img src="" class="preview-image" id="newImagePreview" alt="Prévisualisation de l'image" style="max-width: 150px; display: none; margin-bottom: 10px;">
                         <label for="addImage" class="btn btn-info btn-sm">Choisir une image</label>
-                        <input type="file" class="form-control" id="addImage" name="image" required style="display: none;">
+                        <input type="file" class="form-control" id="addImage" name="image" accept=".jpg,.jpeg,.png,.gif" required style="display: none;">
+                        <small class="text-muted">Formats acceptés: JPG, JPEG, PNG, GIF</small>
                     </div>
                 </div>
                 <div class="form-group">
@@ -202,7 +205,8 @@ try {
                 </div>
                 <div class="form-group">
                     <label>Pourcentage (Promo)</label>
-                    <input type="number" class="form-control" id="addPourcentage" name="pourcentage">
+                    <input type="number" class="form-control" id="addPourcentage" name="pourcentage" min="1" max="100" step="1">
+                    <small class="text-muted">Pourcentage entre 1 et 100</small>
                 </div>
                 <button type="submit" class="btn btn-warning">Ajouter</button>
                 <button type="button" class="btn btn-secondary" onclick="closeAddModal()">Annuler</button>
@@ -217,7 +221,7 @@ try {
         <span id="erreurText"></span>
     </div>
 
-    <script src="../assets/js/produit_modal.js"></script>
+    <script src="../assets/js/produit_modal.js?v=<?php echo time(); ?>"></script>
 
 </body>
 </html>

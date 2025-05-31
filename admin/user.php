@@ -1,3 +1,22 @@
+<?php
+require_once('../connection/connection.php');
+
+// Nombre de produits par page
+$userParPage = 10;
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$start = ($page - 1) * $userParPage;
+
+$req1 = $pdo->prepare("SELECT * FROM user");
+$req1->execute();
+$users = $req1->fetchAll();
+
+// Nombre total de produits pour la pagination
+    $countReq = $pdo->query("SELECT COUNT(*) AS total FROM user");
+    $totalUser = $countReq->fetch(PDO::FETCH_ASSOC)['total'];
+    $totalPages = ceil($totalUser / $userParPage);
+
+    $i = ($page - 1) * $userParPage + 1; // Correction du compteur
+?>
 <!DOCTYPE html>
 <html lang="en">
 <body>
@@ -15,179 +34,50 @@
                 <th>Email</th>
                 <th>Téléphone</th>
                 <th>Rôle</th>
-                <th>Date de création</th>
+                <th>Date d'inscription</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>#1</td>
-                <td>Ilias</td>
-                <td>ilias@test.com</td>
-                <td>+00000000</td>
-                <td><span class="role-badge">Admin</span></td>
-                <td>0000-00-00</td>
-                <td class="ticket-actions">
-                        <button class="btn-icon" onclick="openModal(3)">
-                            <i class="fas fa-edit edit-icon"></i>
-                        </button>
-                         <button class="btn-delete" aria-label="Supprimer">
-                        <svg><use xlink:href="#trash"></use></svg>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>#2</td>
-                <td>Ilias</td>
-                <td>ilias@test.com</td>
-                <td>+00000000</td>
-                <td><span class="role-badge">Utilisateur</span></td>
-                <td>0000-00-00</td>
-                <td class="ticket-actions">
-                        <button class="btn-icon" onclick="openModal(3)">
-                            <i class="fas fa-edit edit-icon"></i>
-                        </button>
-                         <button class="btn-delete" aria-label="Supprimer">
-                        <svg><use xlink:href="#trash"></use></svg>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>#3</td>
-                <td>Ilias</td>
-                <td>ilias@test.com</td>
-                <td>+00000000</td>
-                <td><span class="role-badge">Admin</span></td>
-                <td>0000-00-00</td>
-                <td class="ticket-actions">
-                        <button class="btn-icon" onclick="openModal(3)">
-                            <i class="fas fa-edit edit-icon"></i>
-                        </button>
-                         <button class="btn-delete" aria-label="Supprimer">
-                        <svg><use xlink:href="#trash"></use></svg>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>#4</td>
-                <td>Ilias</td>
-                <td>ilias@test.com</td>
-                <td>+00000000</td>
-                <td><span class="role-badge">Utilisateur</span></td>
-                <td>0000-00-00</td>
-                <td class="ticket-actions">
-                        <button class="btn-icon" onclick="openModal(3)">
-                            <i class="fas fa-edit edit-icon"></i>
-                        </button>
-                         <button class="btn-delete" aria-label="Supprimer">
-                        <svg><use xlink:href="#trash"></use></svg>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>#5</td>
-                <td>Ilias</td>
-                <td>ilias@test.com</td>
-                <td>+00000000</td>
-                <td><span class="role-badge">Utilisateur</span></td>
-                <td>0000-00-00</td>
-                <td class="ticket-actions">
-                        <button class="btn-icon" onclick="openModal(3)">
-                            <i class="fas fa-edit edit-icon"></i>
-                        </button>
-                         <button class="btn-delete" aria-label="Supprimer">
-                        <svg><use xlink:href="#trash"></use></svg>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>#6</td>
-                <td>Ilias</td>
-                <td>ilias@test.com</td>
-                <td>+00000000</td>
-                <td><span class="role-badge">Admin</span></td>
-                <td>0000-00-00</td>
-                <td class="ticket-actions">
-                        <button class="btn-icon" onclick="openModal(3)">
-                            <i class="fas fa-edit edit-icon"></i>
-                        </button>
-                         <button class="btn-delete" aria-label="Supprimer">
-                        <svg><use xlink:href="#trash"></use></svg>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>#7</td>
-                <td>Ilias</td>
-                <td>ilias@test.com</td>
-                <td>+00000000</td>
-                <td><span class="role-badge">Utilisateur</span></td>
-                <td>0000-00-00</td>
-                <td class="ticket-actions">
-                        <button class="btn-icon" onclick="openModal(3)">
-                            <i class="fas fa-edit edit-icon"></i>
-                        </button>
-                         <button class="btn-delete" aria-label="Supprimer">
-                        <svg><use xlink:href="#trash"></use></svg>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>#8</td>
-                <td>Ilias</td>
-                <td>ilias@test.com</td>
-                <td>+00000000</td>
-                <td><span class="role-badge">Utilisateur</span></td>
-                <td>0000-00-00</td>
-                <td class="ticket-actions">
-                        <button class="btn-icon" onclick="openModal(3)">
-                            <i class="fas fa-edit edit-icon"></i>
-                        </button>
-                         <button class="btn-delete" aria-label="Supprimer">
-                        <svg><use xlink:href="#trash"></use></svg>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>#9</td>
-                <td>Ilias</td>
-                <td>ilias@test.com</td>
-                <td>+00000000</td>
-                <td><span class="role-badge">Admin</span></td>
-                <td>0000-00-00</td>
-               <td class="ticket-actions">
-                        <button class="btn-icon" onclick="openModal(3)">
-                            <i class="fas fa-edit edit-icon"></i>
-                        </button>
-                         <button class="btn-delete" aria-label="Supprimer">
-                        <svg><use xlink:href="#trash"></use></svg>
-                    </button>
-                </td>
-            </tr>
-            <tr> 
-                <td>#10</td>
-                <td>Ilias</td>
-                <td>ilias@test.com</td>
-                <td>+00000000</td>
-                <td><span class="role-badge">Utilisateur</span></td>
-                <td>0000-00-00</td>
-               <td class="ticket-actions">
-                        <button class="btn-icon" onclick="openModal(3)">
-                            <i class="fas fa-edit edit-icon"></i>
-                        </button>
-                         <button class="btn-delete" aria-label="Supprimer">
-                        <svg><use xlink:href="#trash"></use></svg>
-                    </button>
-                </td>
-            </tr>
+            <?php
+            $i = 1;
+            foreach($users as $user){
+                if($user['role'] === 'chef administratif') {
+                    continue;
+                }
+
+                echo '<tr>';
+                echo '<td>'.$i.'</td>';
+                echo '<td>'.$user['nom'].'</td>';
+                echo '<td>'.$user['gmail'].'</td>';
+                echo '<td>'.$user['telephone'].'</td>';
+                $roleDisplay = ($user['role'] === 'user') ? 'Utilisateur' : $user['role'];
+                echo '<td><span class="role-badge">'.$roleDisplay.'</span></td>';
+                echo '<td>'.date('Y-m-d', strtotime($user['date_creation'])).'</td>';
+                echo '<td class="ticket-actions">';
+                echo '<button class="btn-icon" onclick="openModal('.$user['id_user'].')" title="Modifier">';
+                echo '<i class="fas fa-edit edit-icon"></i>';
+                echo '</button>';
+                echo '<button class="btn-delete" onclick="deleteUser('.$user['id_user'].')" title="Supprimer" aria-label="Supprimer">';
+                echo '<svg><use xlink:href="#trash"></use></svg>';
+                echo '</button>';
+                echo '</td>';
+                echo '</tr>';
+                $i++;
+            }
+            ?>
         </tbody>
     </table>
     <div class="pagination">
-            <a href="#">&laquo;</a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">&raquo;</a>
+            <?php if ($page > 1): ?>
+                <a href="?page=<?= $page - 1 ?>">&laquo;</a>
+            <?php endif; ?>
+            <?php for ($p = 1; $p <= $totalPages; $p++): ?>
+                <a href="?page=<?= $p ?>" class="<?= ($p == $page) ? 'active' : '' ?>"><?= $p ?></a>
+            <?php endfor; ?>
+            <?php if ($page < $totalPages): ?>
+                <a href="?page=<?= $page + 1 ?>"> &raquo;</a>
+            <?php endif; ?>
         </div>
 </div>
 
@@ -206,21 +96,23 @@
     <div class="modal-content">
         <h2>Modifier l'utilisateur</h2>
         <form id="editForm">
+            <input type="hidden" id="editUserId" name="id_user">
             <div class="form-group">
                 <label>Nom</label>
-                <input type="text" class="form-control" id="editName">
+                <input type="text" class="form-control" id="editName" name="nom" required>
             </div>
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" class="form-control" id="editEmail">
+                <input type="email" class="form-control" id="editEmail" name="gmail" required>
             </div>
             <div class="form-group">
                 <label>Téléphone</label>
-                <input type="tel" class="form-control" id="editPhone">
+                <input type="tel" class="form-control" id="editPhone" name="telephone" required>
             </div>
             <div class="form-group">
                 <label>Rôle</label>
-                <select class="form-control" id="editRole">
+                <select class="form-control" id="editRole" name="role" required>
+                    <option value="">Sélectionner un rôle</option>
                     <option value="admin">Admin</option>
                     <option value="user">Utilisateur</option>
                 </select>
@@ -231,7 +123,12 @@
     </div>
 </div>
 
-<div id="successMessage" class="success-message"></div>
+<div id="successMessage" class="success-message">
+    <span id="successText"></span>
+</div>
+<div id="erreurMessage" class="erreur-message">
+    <span id="erreurText"></span>
+</div>
 
 <style>
     .role-badge {
@@ -243,6 +140,6 @@
             color: #000;
         }
 </style>
-<script src="../assets/js/user_modal.js"></script>
+<script src="../assets/js/user_modal.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

@@ -67,24 +67,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to load product data into the edit modal
-    async function loadProductData(id) {
+    async function loadProductData(id_produit) {
         try {
-            const response = await fetch(`../system/system_modif_produit.php?id=${id}`);
+            const response = await fetch(`../system/system_modif_produit.php?id_produit=${id_produit}`);
             const product = await response.json();
 
-            if (product) {
-                document.getElementById('editProductId').value = product.id_produit || '' ;
-                document.getElementById('editNom').value = product.nom_produit;
-                document.getElementById('editDescription').value = product.description;
-                document.getElementById('editImage').src = product.image ? `../assets/images/${product.image}` : '../assets/images/office.png'; // Assuming image path
-                document.getElementById('editPrix').value = product.prix;
-                document.getElementById('editStock').value = product.quantite_stock;
-                document.getElementById('editCategorie').value = product.id_categorie;
-                document.getElementById('editPromo').value = product.code_promo ;
-                document.getElementById('editPourcentage').value = product.pourcentage;
+            if (product && !product.error) {
+                document.getElementById('editProductId').value = product.id_produit || '';
+                document.getElementById('editNom').value = product.nom_produit || '';
+                document.getElementById('editDescription').value = product.description || '';
+                const imageElement = document.getElementById('currentImage');
+                if (imageElement) {
+                    if (product.image_url && product.image_url.trim() !== '') {
+                        // Vérifier si l'image existe avant de l'assigner
+                        const img = new Image();
+                        img.onload = function() {
+                            imageElement.src = product.image_url;
+                        };
+                        img.onerror = function() {
+                            console.warn("Image not found:", product.image_url);
+                            imageElement.src = '../assets/images/office.png';
+                        };
+                        img.src = product.image_url;
+                    } else {
+                        imageElement.src = '../assets/images/office.png';
+                    }
+                }
+                document.getElementById('editPrix').value = product.prix || '';
+                document.getElementById('editStock').value = product.quantite_stock || '';
+                document.getElementById('editCategorie').value = product.id_categorie || '';
+                document.getElementById('editPromo').value = product.code_promo || '';
+                document.getElementById('editPourcentage').value = product.pourcentage || '';
             } else {
-                console.error("No product data received for ID:", id);
-                showErrorMessage("Erreur: Produit introuvable.");
+                console.error("No product data received for ID:", id_produit);
+                if (product && product.error) {
+                    showErrorMessage("Erreur: " + product.error);
+                } else {
+                    showErrorMessage("Erreur: Produit introuvable.");
+                }
             }
         } catch (error) {
             console.error("Error loading product data:", error);
@@ -93,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    function openModal(id) {
+    function openProductModal(id) {
         const modal = document.getElementById('editModal');
         if (modal) {
             modal.style.display = 'block';
@@ -101,6 +121,11 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             console.error("editModal not found!");
         }
+    }
+
+    // Alias pour compatibilité
+    function openModal(id) {
+        openProductModal(id);
     }
 
     function closeModal() {
@@ -143,16 +168,67 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Function to validate image file
+    function validateImageFile(fileInput) {
+        if (fileInput.files && fileInput.files[0]) {
+            const file = fileInput.files[0];
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+
+            if (!allowedTypes.includes(file.type) || !allowedExtensions.includes(fileExtension)) {
+                showErrorMessage("Format d'image non valide. Seuls les formats JPG, JPEG, PNG et GIF sont acceptés.");
+                fileInput.value = ''; // Clear the input
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Function to validate promo code fields
+    function validatePromoFields(codePromoInput, pourcentageInput) {
+        const codePromo = codePromoInput.value.trim();
+        const pourcentage = pourcentageInput.value.trim();
+
+        // Si l'un des champs est rempli, l'autre doit l'être aussi
+        if ((codePromo && !pourcentage) || (!codePromo && pourcentage)) {
+            showErrorMessage("Si vous saisissez un code promo, vous devez aussi saisir le pourcentage");
+            return false;
+        }
+
+        // Validation du pourcentage (entre 1 et 100)
+        if (pourcentage && (isNaN(pourcentage) || pourcentage < 1 || pourcentage > 100)) {
+            showErrorMessage("Le pourcentage doit être un nombre entre 1 et 100.");
+            return false;
+        }
+
+        return true;
+    }
+
     // Event listener for Edit Form Submission
     const editForm = document.getElementById('editForm');
     if (editForm) {
         editForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
+            // Validate image file if selected
+            const imageInput = document.getElementById('editImage');
+            if (imageInput && !validateImageFile(imageInput)) {
+                return; // Stop submission if image is invalid
+            }
+
+            // Validate promo code fields
+            const codePromoInput = document.getElementById('editPromo');
+            const pourcentageInput = document.getElementById('editPourcentage');
+            if (!validatePromoFields(codePromoInput, pourcentageInput)) {
+                return; // Stop submission if promo fields are invalid
+            }
+
             let formData = new FormData(this);
 
             try {
-                const response = await fetch("../system/system_modif_produit.php", {
+                const response = await fetch('../system/system_modif_produit.php', {
                     method: "POST",
                     body: formData
                 });
@@ -164,6 +240,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         location.reload(); // Reload to reflect changes
                     }, 1500);
+                } else if (data.includes("error_image_format")) {
+                    showErrorMessage("Format d'image non valide. Seuls les formats JPG, JPEG, PNG et GIF sont acceptés.");
                 } else {
                     showErrorMessage("Erreur lors de la modification de Produit.");
                     console.error("Server response:", data);
@@ -184,6 +262,19 @@ document.addEventListener('DOMContentLoaded', function() {
         addForm.addEventListener("submit", async function(e) {
             e.preventDefault();
 
+            // Validate image file if selected
+            const imageInput = document.getElementById('addImage');
+            if (imageInput && !validateImageFile(imageInput)) {
+                return; // Stop submission if image is invalid
+            }
+
+            // Validate promo code fields
+            const codePromoInput = document.getElementById('addPromo');
+            const pourcentageInput = document.getElementById('addPourcentage');
+            if (!validatePromoFields(codePromoInput, pourcentageInput)) {
+                return; // Stop submission if promo fields are invalid
+            }
+
             let formData = new FormData(this);
 
             try {
@@ -199,6 +290,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         location.reload(); // Reload to show the new product
                     }, 1500);
+                } else if (data.includes("error_image_format")) {
+                    showErrorMessage("Format d'image non valide. Seuls les formats JPG, JPEG, PNG et GIF sont acceptés.");
                 } else {
                     showErrorMessage("Erreur lors de l'ajout de Produit.");
                     console.error("Server response:", data);
@@ -247,6 +340,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (addImageInput) {
         addImageInput.addEventListener('change', function(e) {
             if (e.target.files && e.target.files[0]) {
+                // Validate image first
+                if (!validateImageFile(e.target)) {
+                    return; // Stop if validation fails
+                }
+
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const previewImage = document.getElementById('newImagePreview');
@@ -265,6 +363,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (editImageInput) {
         editImageInput.addEventListener('change', function(e) {
             if (e.target.files && e.target.files[0]) {
+                // Validate image first
+                if (!validateImageFile(e.target)) {
+                    return; // Stop if validation fails
+                }
+
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const currentImage = document.getElementById('currentImage');
@@ -279,7 +382,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Expose functions to the global scope so they can be called from HTML onclick attributes
-    window.openModal = openModal;
+    window.openProductModal = openProductModal;
+    window.openModal = openModal; // Alias pour compatibilité
     window.closeModal = closeModal;
     window.openAddModal = openAddModal;
     window.closeAddModal = closeAddModal;
