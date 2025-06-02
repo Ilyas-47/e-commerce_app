@@ -1,0 +1,131 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="ProgId" content="Excel.Sheet">
+<style>
+table { border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; }
+.header { background-color: #4472C4; color: white; font-weight: bold; padding: 8px; border: 1px solid #000; text-align: center; }
+.data { padding: 6px; border: 1px solid #000; }
+.number { text-align: right; padding: 6px; border: 1px solid #000; }
+.total { background-color: #E7E6E6; font-weight: bold; padding: 6px; border: 1px solid #000; }
+.title { font-size: 16px; font-weight: bold; text-align: center; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<div class="title">Rapport des Ventes - Cette année (2025)</div>
+<table>
+<tr>
+<th class="header">ID Commande</th>
+<th class="header">Nom de produit</th>
+<th class="header">Client</th>
+<th class="header">Quantité</th>
+<th class="header">Montant Total</th>
+<th class="header">Date</th>
+<th class="header">Statut</th>
+</tr>
+<tr>
+<td class="data">11</td>
+<td class="data">karim</td>
+<td class="data">test1</td>
+<td class="number">10</td>
+<td class="number">1 000,00 MAD</td>
+<td class="data">2025-06-02</td>
+<td class="data">Complété</td>
+</tr>
+<tr>
+<td class="data">10</td>
+<td class="data">karim</td>
+<td class="data">ahmed</td>
+<td class="number">3</td>
+<td class="number">300,00 MAD</td>
+<td class="data">2025-06-01</td>
+<td class="data">Complété</td>
+</tr>
+<tr>
+<td class="data">9</td>
+<td class="data">karim</td>
+<td class="data">ahmed</td>
+<td class="number">3</td>
+<td class="number">300,00 MAD</td>
+<td class="data">2025-05-31</td>
+<td class="data">Complété</td>
+</tr>
+<tr>
+<td class="data">8</td>
+<td class="data">karim</td>
+<td class="data">ahmed</td>
+<td class="number">2</td>
+<td class="number">200,00 MAD</td>
+<td class="data">2025-05-31</td>
+<td class="data">Complété</td>
+</tr>
+<tr>
+<td class="data">7</td>
+<td class="data">ilyas</td>
+<td class="data">ahmed</td>
+<td class="number">7</td>
+<td class="number">833,00 MAD</td>
+<td class="data">2025-05-31</td>
+<td class="data">En attente</td>
+</tr>
+<tr>
+<td class="data">6</td>
+<td class="data">karim</td>
+<td class="data">test1</td>
+<td class="number">8</td>
+<td class="number">800,00 MAD</td>
+<td class="data">2025-05-31</td>
+<td class="data">Complété</td>
+</tr>
+<tr>
+<td class="data">5</td>
+<td class="data">karim</td>
+<td class="data">test1</td>
+<td class="number">3</td>
+<td class="number">300,00 MAD</td>
+<td class="data">2025-05-29</td>
+<td class="data">En attente</td>
+</tr>
+<tr>
+<td class="data">1</td>
+<td class="data">ilyas</td>
+<td class="data">ahmed</td>
+<td class="number">3</td>
+<td class="number">357,00 MAD</td>
+<td class="data">2025-05-24</td>
+<td class="data">Complété</td>
+</tr>
+<tr>
+<td class="data">3</td>
+<td class="data">ilyas</td>
+<td class="data">ahmed</td>
+<td class="number">3</td>
+<td class="number">357,00 MAD</td>
+<td class="data">2025-05-24</td>
+<td class="data">Complété</td>
+</tr>
+<tr>
+<td class="data">4</td>
+<td class="data">xxxzmzlxzzzzzzz</td>
+<td class="data">test1</td>
+<td class="number">5</td>
+<td class="number">55,00 MAD</td>
+<td class="data">2025-05-08</td>
+<td class="data">En attente</td>
+</tr>
+<tr>
+<td class="total">TOTAL</td>
+<td class="total">10 produits</td>
+<td class="total"></td>
+<td class="total">47</td>
+<td class="total">4 502,00 MAD</td>
+<td class="total"></td>
+<td class="total"></td>
+</tr>
+</table>
+<p style="text-align: center; font-size: 10px; color: #666; margin-top: 20px;">
+Rapport généré le 02/06/2025 à 02:03 | Nombre d'enregistrements: 10</p>
+</body>
+</html>

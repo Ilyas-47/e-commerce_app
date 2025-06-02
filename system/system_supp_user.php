@@ -1,9 +1,19 @@
 <?php
+// Démarrer la session seulement si elle n'est pas déjà active
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once('../connection/connection.php');
+
+// Vérifier si l'utilisateur est connecté et a le bon rôle
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'chef administratif') {
+    echo "error_access_denied";
+    exit();
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!isset($_POST['id_user']) || !is_numeric($_POST['id_user'])) {
-        echo "error";
+        echo "error_invalid_id";
         exit();
     }
 
@@ -18,7 +28,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result['count'] == 0) {
             // L'utilisateur n'existe pas
-            echo "error";
+            echo "error_user_not_found";
+            exit();
+        }
+
+        // Vérifier s'il y a des commandes liées à cet utilisateur
+        $reqCommandesCheck = $pdo->prepare("SELECT COUNT(*) as count FROM commandes WHERE id_user = :id_user");
+        $reqCommandesCheck->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+        $reqCommandesCheck->execute();
+        $commandesResult = $reqCommandesCheck->fetch(PDO::FETCH_ASSOC);
+
+        if ($commandesResult['count'] > 0) {
+            // L'utilisateur a des commandes, on ne peut pas le supprimer
+            echo "error_has_orders";
             exit();
         }
 
@@ -29,13 +51,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($req->execute()) {
             echo "success";
         } else {
-            echo "error";
+            $errorInfo = $req->errorInfo();
+            error_log("Erreur SQL lors de la suppression: " . implode(" | ", $errorInfo));
+            echo "error_sql";
         }
     } catch (PDOException $e) {
         error_log("Erreur de suppression utilisateur: " . $e->getMessage());
-        echo "error";
+        echo "error_exception";
     }
 } else {
-    echo "error";
+    echo "error_method";
 }
 ?>

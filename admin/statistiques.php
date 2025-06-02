@@ -14,11 +14,10 @@ try {
     $reqCommandes = $pdo->query("SELECT COUNT(*) AS total FROM commandes");
     $totalCommandes = $reqCommandes->fetch(PDO::FETCH_ASSOC)['total'];
 
-    // Récupérer le nombre de nouvelles commandes des dernières 24 heures
     $reqNouvellesCommandes = $pdo->query("SELECT COUNT(*) AS total FROM commandes WHERE date_commande >= DATE_SUB(NOW(), INTERVAL 24 HOUR)");
     $nouvellesCommandes = $reqNouvellesCommandes->fetch(PDO::FETCH_ASSOC)['total'];
 
-    $reqVentesAujourdhuit = $pdo->query("SELECT sum(montant) AS total FROM paiements WHERE date_paiement >= DATE_SUB(NOW(), INTERVAL 24 HOUR)");
+    $reqVentesAujourdhuit = $pdo->query("SELECT COALESCE(SUM(montant), 0) AS total FROM paiements WHERE date_paiement >= DATE_SUB(NOW(), INTERVAL 24 HOUR) AND statut = 'Complété' AND mode_paiement != 'TEST_DATA'");
     $ventesAujourdhuit = $reqVentesAujourdhuit->fetch(PDO::FETCH_ASSOC)['total'];
 
 } catch (PDOException $e) {
@@ -41,13 +40,13 @@ try {
     <!-- KPI Cards -->
     <div class="card">
         <div class="card-header">
-            <div class="card-title">Ventes Totales</div>
+            <div class="card-title">Ventes (24h)</div>
         </div>
         <div class="total-earnings">
             <?php echo number_format($ventesAujourdhuit, 2); ?> MAD
         </div>
         <div class="earnings-detail">
-            ▶ Aujourd'hui
+            ▶ Dernières 24 heures
         </div>
     </div>
 
@@ -76,29 +75,41 @@ try {
             </div>
         </div>
         <div class="chart-container">
-            <svg width="100%" height="250" viewBox="0 0 800 250">
+            <svg id="salesChart" width="100%" height="250" viewBox="0 0 800 250">
                 <!-- Axe Y -->
                 <line x1="50" y1="50" x2="50" y2="200" stroke="#ccc"/>
                 <!-- Axe X -->
                 <line x1="50" y1="200" x2="750" y2="200" stroke="#ccc"/>
 
                 <!-- Labels Y -->
-                <text x="30" y="60" text-anchor="end">100k</text>
-                <text x="30" y="110" text-anchor="end">50k</text>
-                <text x="30" y="200" text-anchor="end">0</text>
+                <g id="yLabels">
+                    <text x="30" y="60" text-anchor="end">100k</text>
+                    <text x="30" y="110" text-anchor="end">50k</text>
+                    <text x="30" y="200" text-anchor="end">0</text>
+                </g>
+
+                <!-- Labels X -->
+                <g id="xLabels">
+                    <!-- Les labels X seront générés dynamiquement -->
+                </g>
 
                 <!-- Graph Line -->
-                <path d="M50 200 L200 150 L350 180 L500 100 L650 120 L750 90"
+                <path id="chartLine" d="M50 200 L200 150 L350 180 L500 100 L650 120 L750 90"
                       fill="none" stroke="#FFD700" stroke-width="3"/>
 
                 <!-- Points -->
-                <circle cx="50" cy="200" r="4" fill="#FFD700"/>
-                <circle cx="200" cy="150" r="4" fill="#FFD700"/>
-                <circle cx="350" cy="180" r="4" fill="#FFD700"/>
-                <circle cx="500" cy="100" r="4" fill="#FFD700"/>
-                <circle cx="650" cy="120" r="4" fill="#FFD700"/>
-                <circle cx="750" cy="90" r="4" fill="#FFD700"/>
+                <g id="chartPoints">
+                    <circle cx="50" cy="200" r="4" fill="#FFD700"/>
+                    <circle cx="200" cy="150" r="4" fill="#FFD700"/>
+                    <circle cx="350" cy="180" r="4" fill="#FFD700"/>
+                    <circle cx="500" cy="100" r="4" fill="#FFD700"/>
+                    <circle cx="650" cy="120" r="4" fill="#FFD700"/>
+                    <circle cx="750" cy="90" r="4" fill="#FFD700"/>
+                </g>
             </svg>
+            <div id="loadingChart" style="display: none; text-align: center; padding: 50px;">
+                Chargement des données...
+            </div>
         </div>
     </div>
 </div>
@@ -151,12 +162,7 @@ try {
 }
 </style>
 
-<script>
-function updateChart(period) {
-    // Logique de mise à jour du graphique selon la période
-    console.log('Mise à jour pour la période:', period);
-}
-</script>
+<script src="../assets/js/statistiques.js"></script>
 
 </body>
 </html>

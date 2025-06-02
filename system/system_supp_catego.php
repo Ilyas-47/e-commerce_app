@@ -3,13 +3,25 @@ require_once('../connection/connection.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!isset($_POST['id_categorie']) || !is_numeric($_POST['id_categorie'])) {
-        echo "error";
+        echo "error_invalid_id";
         exit();
     }
 
     $id_categorie = (int) $_POST['id_categorie']; // Conversion en entier pour éviter les injections SQL
 
     try {
+        // Vérifier si la catégorie existe
+        $reqCategoryCheck = $pdo->prepare("SELECT COUNT(*) as count FROM categories WHERE id_categorie = :id_categorie");
+        $reqCategoryCheck->bindParam(':id_categorie', $id_categorie, PDO::PARAM_INT);
+        $reqCategoryCheck->execute();
+        $categoryResult = $reqCategoryCheck->fetch(PDO::FETCH_ASSOC);
+
+        if ($categoryResult['count'] == 0) {
+            // La catégorie n'existe pas
+            echo "error_category_not_found";
+            exit();
+        }
+
         // Vérifier s'il y a des produits liés à cette catégorie
         $reqCheck = $pdo->prepare("SELECT COUNT(*) as count FROM produits WHERE id_categorie = :id_categorie");
         $reqCheck->bindParam(':id_categorie', $id_categorie, PDO::PARAM_INT);
@@ -35,13 +47,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($req->execute()) {
             echo "success";
         } else {
-            echo "error";
+            $errorInfo = $req->errorInfo();
+            error_log("Erreur SQL lors de la suppression: " . implode(" | ", $errorInfo));
+            echo "error_sql";
         }
     } catch (PDOException $e) {
-        error_log("Erreur de suppression: " . $e->getMessage());
-        echo "error";
+        error_log("Erreur de suppression catégorie: " . $e->getMessage());
+        echo "error_exception";
     }
 } else {
-    echo "error";
+    echo "error_method";
 }
 ?>

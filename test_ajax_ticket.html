@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test AJAX Ticket</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        .success { color: green; }
+        .error { color: red; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Test AJAX pour system_modif_ticket.php</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Récupération d'un ticket (GET)</h2>
+        <input type="number" id="ticketId" placeholder="ID du ticket" value="1">
+        <button onclick="testGetTicket()">Tester GET</button>
+        <div id="getResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: Modification du statut uniquement (POST)</h2>
+        <input type="number" id="postTicketId" placeholder="ID du ticket" value="1">
+        <select id="newStatus">
+            <option value="En cours">En cours</option>
+            <option value="Résolu">Résolu</option>
+        </select>
+        <button onclick="testPostStatusOnly()">Tester POST (statut seulement)</button>
+        <div id="postStatusResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Modification complète (POST)</h2>
+        <input type="number" id="fullTicketId" placeholder="ID du ticket" value="1"><br>
+        <input type="text" id="fullSujet" placeholder="Sujet" value="Test sujet modifié"><br>
+        <input type="text" id="fullProbleme" placeholder="Problème" value="Test problème"><br>
+        <textarea id="fullMessage" placeholder="Message">Test message modifié</textarea><br>
+        <select id="fullStatus">
+            <option value="En cours">En cours</option>
+            <option value="Résolu">Résolu</option>
+        </select><br>
+        <button onclick="testPostFull()">Tester POST (complet)</button>
+        <div id="postFullResult"></div>
+    </div>
+
+    <script>
+        function testGetTicket() {
+            const ticketId = document.getElementById('ticketId').value;
+            const resultDiv = document.getElementById('getResult');
+            
+            if (!ticketId) {
+                resultDiv.innerHTML = '<p class="error">Veuillez entrer un ID de ticket</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p>Chargement...</p>';
+            
+            fetch(`system/system_modif_ticket.php?id_ticket=${ticketId}`)
+                .then(response => {
+                    console.log('Status:', response.status);
+                    return response.text();
+                })
+                .then(data => {
+                    console.log('Raw response:', data);
+                    resultDiv.innerHTML = `
+                        <p class="success">Réponse reçue:</p>
+                        <pre>${data}</pre>
+                    `;
+                    
+                    // Essayer de parser en JSON
+                    try {
+                        const jsonData = JSON.parse(data);
+                        resultDiv.innerHTML += `
+                            <p class="success">JSON valide:</p>
+                            <pre>${JSON.stringify(jsonData, null, 2)}</pre>
+                        `;
+                    } catch (e) {
+                        resultDiv.innerHTML += `<p class="error">Erreur JSON: ${e.message}</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    resultDiv.innerHTML = `<p class="error">Erreur: ${error.message}</p>`;
+                });
+        }
+        
+        function testPostStatusOnly() {
+            const ticketId = document.getElementById('postTicketId').value;
+            const status = document.getElementById('newStatus').value;
+            const resultDiv = document.getElementById('postStatusResult');
+            
+            if (!ticketId || !status) {
+                resultDiv.innerHTML = '<p class="error">Veuillez remplir tous les champs</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p>Envoi...</p>';
+            
+            const formData = new FormData();
+            formData.append('id_ticket', ticketId);
+            formData.append('statut_ticket', status);
+            
+            fetch('system/system_modif_ticket.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log('POST Status response:', data);
+                resultDiv.innerHTML = `
+                    <p class="success">Réponse POST (statut):</p>
+                    <pre>${data}</pre>
+                `;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<p class="error">Erreur: ${error.message}</p>`;
+            });
+        }
+        
+        function testPostFull() {
+            const ticketId = document.getElementById('fullTicketId').value;
+            const sujet = document.getElementById('fullSujet').value;
+            const probleme = document.getElementById('fullProbleme').value;
+            const message = document.getElementById('fullMessage').value;
+            const status = document.getElementById('fullStatus').value;
+            const resultDiv = document.getElementById('postFullResult');
+            
+            if (!ticketId || !sujet || !probleme || !message || !status) {
+                resultDiv.innerHTML = '<p class="error">Veuillez remplir tous les champs</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p>Envoi...</p>';
+            
+            const formData = new FormData();
+            formData.append('id_ticket', ticketId);
+            formData.append('sujet', sujet);
+            formData.append('probleme', probleme);
+            formData.append('message', message);
+            formData.append('statut', status);
+            
+            fetch('system/system_modif_ticket.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log('POST Full response:', data);
+                resultDiv.innerHTML = `
+                    <p class="success">Réponse POST (complet):</p>
+                    <pre>${data}</pre>
+                `;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<p class="error">Erreur: ${error.message}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>

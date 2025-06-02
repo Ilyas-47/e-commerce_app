@@ -42,7 +42,7 @@ $users = $req1->fetchAll();
             <?php
             $i = 1;
             foreach($users as $user){
-                if($user['role'] === 'chef administratif') {
+                if($user['role'] === 'chef administratif' || $user['role'] === 'admin'  ) {
                     continue;
                 }
 
@@ -55,9 +55,6 @@ $users = $req1->fetchAll();
                 echo '<td><span class="role-badge">'.$roleDisplay.'</span></td>';
                 echo '<td>'.date('Y-m-d', strtotime($user['date_creation'])).'</td>';
                 echo '<td class="ticket-actions">';
-                echo '<button class="btn-icon" onclick="openModal('.$user['id_user'].')" title="Modifier">';
-                echo '<i class="fas fa-edit edit-icon"></i>';
-                echo '</button>';
                 echo '<button class="btn-delete" onclick="deleteUser('.$user['id_user'].')" title="Supprimer" aria-label="Supprimer">';
                 echo '<svg><use xlink:href="#trash"></use></svg>';
                 echo '</button>';

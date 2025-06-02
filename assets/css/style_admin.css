@@ -1093,3 +1093,114 @@ body {
     font-size: 16px;
 }
 
+/* Styles pour les indicateurs de filtre */
+.filter-indicator {
+    font-size: 14px;
+    color: #666;
+    margin-left: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-indicator i {
+    color: #007bff;
+}
+
+.filter-tag {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: 5px;
+}
+
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-group label {
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+}
+
+.filter-group .form-control {
+    min-width: 150px;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.status-resolved {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Styles pour les actions de tickets */
+.ticket-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+.btn-icon:hover {
+    background-color: #f0f0f0;
+}
+
+.view-icon {
+    color: #007bff;
+}
+
+.edit-icon {
+    color: #007bff;
+}
+
+.delete-icon {
+    color: #dc3545;
+}
+

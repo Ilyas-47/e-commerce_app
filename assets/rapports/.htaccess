@@ -1,0 +1,21 @@
+# Protéger l'accès direct aux fichiers de rapports
+# Seuls les scripts PHP autorisés peuvent accéder aux fichiers
+
+# Interdire l'accès direct
+Order Deny,Allow
+Deny from all
+
+# Permettre l'accès depuis les scripts PHP du système
+<Files "*.xls">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+# Empêcher l'exécution de scripts
+<Files "*.php">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Empêcher l'affichage du contenu du dossier
+Options -Indexes

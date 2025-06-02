@@ -190,23 +190,60 @@ function performCategoryDeletion(categoryId) {
     })
     .then(response => response.text())
     .then(data => {
-        if (data.includes("success")) {
+        console.log("Server response:", data); // Debug: afficher la réponse du serveur
+        const response = data.trim();
+
+        if (response === "success") {
             showSuccessMessage("Catégorie supprimée avec succès !");
             setTimeout(() => {
                 location.reload();
             }, 2000);
-        } else if (data.includes("error_has_products")) {
+        } else if (response.includes("error_has_products")) {
             // Extraire le nombre de produits de la réponse
-            const parts = data.split(":");
+            const parts = response.split(":");
             const productCount = parts.length > 1 ? parts[1] : "plusieurs";
             const productText = productCount === "1" ? "produit" : "produits";
 
             showErrorMessage(`Impossible de supprimer cette catégorie car elle contient ${productCount} ${productText}. Veuillez d'abord supprimer ou déplacer les produits de cette catégorie.`);
         } else {
-            showErrorMessage("Erreur lors de la suppression !");
+            console.error("Unexpected server response:", response); // Debug: afficher la réponse inattendue
+
+            // Gérer les différents types d'erreurs
+            let errorMessage = "Erreur lors de la suppression !";
+            switch(response) {
+                case "error_invalid_id":
+                    errorMessage = "ID catégorie invalide !";
+                    break;
+                case "error_category_not_found":
+                    errorMessage = "Catégorie introuvable !";
+                    break;
+                case "error_sql":
+                    errorMessage = "Erreur de base de données lors de la suppression !";
+                    break;
+                case "error_exception":
+                    errorMessage = "Une erreur technique est survenue !";
+                    break;
+                case "error_method":
+                    errorMessage = "Méthode de requête invalide !";
+                    break;
+                case "error":
+                    errorMessage = "Erreur lors de la suppression de la catégorie !";
+                    break;
+                default:
+                    if (response.includes("error_has_products")) {
+                        // Déjà géré ci-dessus
+                    } else {
+                        errorMessage = "Erreur inconnue : " + response;
+                    }
+            }
+
+            showErrorMessage(errorMessage);
         }
     })
-    .catch(error => showErrorMessage("Une erreur inattendue est survenue !"));
+    .catch(error => {
+        console.error("Error:", error);
+        showErrorMessage("Une erreur inattendue est survenue !");
+    });
 }
 
 // Test function to verify that functions are accessible

@@ -310,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        fetch("../system/system_supp_produit.php", { // Removed ?id_produit from URL
+        fetch("../system/system_supp_produit.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -319,14 +319,43 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.text())
         .then(data => {
-            if (data.includes("success")) {
-                showSuccessMessage("Produit supprimée avec succès !");
+            console.log("Server response:", data); // Debug: afficher la réponse du serveur
+            const response = data.trim();
+
+            if (response === "success") {
+                showSuccessMessage("Produit supprimé avec succès !");
                 setTimeout(() => {
                     location.reload();
                 }, 2000);
             } else {
-                showErrorMessage("Erreur lors de la suppression !");
-                console.error("Server response:", data);
+                console.error("Unexpected server response:", response); // Debug: afficher la réponse inattendue
+
+                // Gérer les différents types d'erreurs
+                let errorMessage = "Erreur lors de la suppression !";
+                switch(response) {
+                    case "error_invalid_id":
+                        errorMessage = "ID produit invalide !";
+                        break;
+                    case "error_product_not_found":
+                        errorMessage = "Produit introuvable !";
+                        break;
+                    case "error_has_orders":
+                        errorMessage = "Impossible de supprimer ce produit car il est associé à des commandes !";
+                        break;
+                    case "error_sql":
+                        errorMessage = "Erreur de base de données lors de la suppression !";
+                        break;
+                    case "error_exception":
+                        errorMessage = "Une erreur technique est survenue !";
+                        break;
+                    case "error_method":
+                        errorMessage = "Méthode de requête invalide !";
+                        break;
+                    default:
+                        errorMessage = "Erreur inconnue : " + response;
+                }
+
+                showErrorMessage(errorMessage);
             }
         })
         .catch(error => {

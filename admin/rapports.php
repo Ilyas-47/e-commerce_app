@@ -1,3 +1,6 @@
+<?php
+require_once('../connection/connection.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <body>
@@ -13,40 +16,16 @@
     <table class="orders-table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Type de rapport</th>
+                <th>Nom du fichier</th>
                 <th>Date de génération</th>
                 <th>Période</th>
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="downloads-list">
             <tr>
-                <td>#1</td>
-                <td>Rapport des ventes</td>
-                <td>0000-00-00</td>
-                <td>Janvier 0000</td>
-                <td>
-                    <button class="btn-icon" onclick="downloadReport(1)">
-                        <i class="fas fa-download"></i>
-                    </button>
-                    <button class="btn-delete" onclick="deleteReport(1)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>#2</td>
-                <td>Rapport des clients</td>
-                <td>0000-00-00</td>
-                <td>Février 0000</td>
-                <td>
-                    <button class="btn-icon" onclick="downloadReport(2)">
-                        <i class="fas fa-download"></i>
-                    </button>
-                    <button class="btn-delete" onclick="deleteReport(2)">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                <td colspan="4" class="text-center">
+                    <i class="fas fa-spinner fa-spin"></i> Chargement des rapports...
                 </td>
             </tr>
         </tbody>
@@ -57,22 +36,22 @@
 <div id="reportModal" class="modal">
     <div class="modal-content">
         <h2>Générer un nouveau rapport</h2>
-        <form id="reportForm">
+        <form id="reportForm" action="../system/system_generate_excel.php" method="GET">
             <div class="form-group">
                 <label>Type de rapport</label>
-                <select class="form-control" required>
+                <select name="rapport" class="form-control" required>
                     <option value="">Sélectionner un type</option>
-                    <option value="sales">Rapport des ventes</option>
-                    <option value="customers">Rapport des clients</option>
-                    <option value="products">Rapport des produits</option>
+                    <option value="ventes">Rapport des ventes</option>
+                    <option value="clients">Rapport des clients</option>
+                    <option value="produits">Rapport des produits</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Période</label>
-                <select class="form-control" required>
-                    <option value="this_month">Ce mois</option>
-                    <option value="last_month">Mois dernier</option>
-                    <option value="this_year">Cette année</option>
+                <select name="periode" class="form-control" required>
+                    <option value="Ce_mois">Ce mois</option>
+                    <option value="Mois_dernier">Mois dernier</option>
+                    <option value="cette_annee">Cette année</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-warning">Générer</button>
@@ -83,40 +62,7 @@
 
 <div id="successMessage" class="success-message"></div>
 
-<script>
-function generateReport() {
-    document.getElementById('reportModal').style.display = 'block';
-}
-
-function closeModal() {
-    document.getElementById('reportModal').style.display = 'none';
-}
-
-function downloadReport(id) {
-    showSuccessMessage('Téléchargement du rapport...');
-}
-
-function deleteReport(id) {
-    if(confirm('Êtes-vous sûr de vouloir supprimer ce rapport ?')) {
-        showSuccessMessage('Rapport supprimé avec succès !');
-    }
-}
-
-function showSuccessMessage(message) {
-    const messageElement = document.getElementById('successMessage');
-    messageElement.textContent = message;
-    messageElement.style.display = 'block';
-    setTimeout(() => {
-        messageElement.style.display = 'none';
-    }, 3000);
-}
-
-document.getElementById('reportForm').onsubmit = function(e) {
-    e.preventDefault();
-    closeModal();
-    showSuccessMessage('Rapport généré avec succès !');
-};
-</script>
+<script src="../assets/js/rapport_modal.js"></script>
 
 </body>
 </html>

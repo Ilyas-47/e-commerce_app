@@ -22,8 +22,20 @@ try {
     $req->execute();
     $commandes = $req->fetchAll(PDO::FETCH_ASSOC);
 
+     $reqNouvellesCommandes = $pdo->query("SELECT COUNT(*) AS total FROM commandes WHERE date_commande >= DATE_SUB(NOW(), INTERVAL 24 HOUR)");
+    $nouvellesCommandes = $reqNouvellesCommandes->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $reqVentesAujourdhuit = $pdo->query("SELECT COALESCE(SUM(montant), 0) AS total FROM paiements WHERE date_paiement >= DATE_SUB(NOW(), INTERVAL 24 HOUR) AND statut = 'Complété' AND mode_paiement != 'TEST_DATA'");
+    $ventesAujourdhuit = $reqVentesAujourdhuit->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $reqVentes = $pdo->query("SELECT COALESCE(SUM(montant), 0) AS total FROM paiements");
+    $ventes = $reqVentes->fetch(PDO::FETCH_ASSOC)['total'];
+
 } catch (PDOException $e) {
     $commandes = [];
+    $nouvellesCommandes = 0;
+    $ventesAujourdhuit = 0;
+    $ventes = 0;
     error_log("Erreur de chargement des commandes : " . $e->getMessage());
 }
 ?>
@@ -34,70 +46,54 @@ try {
             <div class="grid-container">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">Ventes des produits</div>
+                        <div class="card-title">Évolution des ventes</div>
                         <div class="card-options">
                             <span>Trier par:</span>
-                            <select>
-                                <option>Ce Mois</option>
-                                <option>Cette Semaine</option>
-                                <option>Cette Année</option>
+                            <select onchange="updateChart(this.value)">
+                                <option value="week">Cette Semaine</option>
+                                <option value="month">Ce Mois</option>
+                                <option value="year">Cette Année</option>
                             </select>
                         </div>
                     </div>
                     <div class="chart-container">
-                        <svg width="100%" height="100%" viewBox="0 0 500 250">
+                        <svg id="salesChart" width="100%" height="100%" viewBox="0 0 500 250">
                             <!-- Axes -->
                             <line x1="50" y1="200" x2="450" y2="200" stroke="#ccc" stroke-width="1"/>
                             <line x1="50" y1="50" x2="50" y2="200" stroke="#ccc" stroke-width="1"/>
 
-                            <!-- X-axis labels -->
-                            <text x="100" y="220" text-anchor="middle" font-size="12">Sem 1</text>
-                            <text x="200" y="220" text-anchor="middle" font-size="12">Sem 2</text>
-                            <text x="300" y="220" text-anchor="middle" font-size="12">Sem 3</text>
-                            <text x="400" y="220" text-anchor="middle" font-size="12">Sem 4</text>
+                            <!-- Labels X -->
+                            <g id="xLabels">
+                                <!-- Les labels X seront générés dynamiquement -->
+                            </g>
 
-                            <!-- Y-axis labels -->
-                            <text x="40" y="200" text-anchor="end" font-size="12">0</text>
-                            <text x="40" y="150" text-anchor="end" font-size="12">20</text>
-                            <text x="40" y="100" text-anchor="end" font-size="12">40</text>
-                            <text x="40" y="50" text-anchor="end" font-size="12">60</text>
+                            <!-- Labels Y -->
+                            <g id="yLabels">
+                                <text x="40" y="200" text-anchor="end" font-size="12">0</text>
+                                <text x="40" y="150" text-anchor="end" font-size="12">2000 MAD</text>
+                                <text x="40" y="100" text-anchor="end" font-size="12">4000 MAD</text>
+                                <text x="40" y="50" text-anchor="end" font-size="12">6000 MAD</text>
+                            </g>
 
                             <!-- Grid lines -->
                             <line x1="50" y1="150" x2="450" y2="150" stroke="#eee" stroke-width="1"/>
                             <line x1="50" y1="100" x2="450" y2="100" stroke="#eee" stroke-width="1"/>
                             <line x1="50" y1="50" x2="450" y2="50" stroke="#eee" stroke-width="1"/>
 
-                            <!-- Logiciels Line -->
-                            <polyline
-                                points="100,160 200,120 300,140 400,170"
-                                fill="none"
-                                stroke="#000"
-                                stroke-width="2"/>
-                            <circle cx="100" cy="160" r="4" fill="#000"/>
-                            <circle cx="200" cy="120" r="4" fill="#000"/>
-                            <circle cx="300" cy="140" r="4" fill="#000"/>
-                            <circle cx="400" cy="170" r="4" fill="#000"/>
+                            <!-- Graph Line -->
+                            <path id="chartLine" d="M100 200 L200 150 L300 180 L400 100"
+                                  fill="none" stroke="#FFD700" stroke-width="2"/>
 
-                            <!-- E-books Line -->
-                            <polyline
-                                points="100,180 200,150 300,80 400,60"
-                                fill="none"
-                                stroke="#FFD700"
-                                stroke-width="2"/>
-                            <circle cx="100" cy="180" r="4" fill="#FFD700"/>
-                            <circle cx="200" cy="150" r="4" fill="#FFD700"/>
-                            <circle cx="300" cy="80" r="4" fill="#FFD700"/>
-                            <circle cx="400" cy="60" r="4" fill="#FFD700"/>
+                            <!-- Points -->
+                            <g id="chartPoints">
+                                <circle cx="100" cy="200" r="4" fill="#FFD700"/>
+                                <circle cx="200" cy="150" r="4" fill="#FFD700"/>
+                                <circle cx="300" cy="180" r="4" fill="#FFD700"/>
+                                <circle cx="400" cy="100" r="4" fill="#FFD700"/>
+                            </g>
                         </svg>
-                    </div>
-                    <div class="client-legend">
-                        <div class="legend-item">
-                            <div class="legend-color" style="background-color: #000;"></div>
-                            <span>Logiciels et Applications</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background-color: #FFD700;"></div>
-                            <span>E-books et Formations</span>
+                        <div id="loadingChart" style="display: none; text-align: center; padding: 50px;">
+                            Chargement des données...
                         </div>
                     </div>
                 </div>
@@ -110,7 +106,7 @@ try {
                         </div>
                     </div>
                     <div class="total-earnings">
-                        89 548,49 €
+                            <?php echo number_format($ventes, 2); ?> MAD
                     </div>
                     <div class="earnings-detail">
                         ▶ Total des ventes de produits digitaux
@@ -118,27 +114,27 @@ try {
 
                     <div class="category-earnings">
                         <div class="category-earnings-title">
-                            <span>Revenus Logiciels</span>
+                            <span>Ventes (24h)</span>
                             <i class="fas fa-ellipsis-v"></i>
                         </div>
                         <div class="category-amount">
-                            47 943,50 €
+                                <?php echo number_format($ventesAujourdhuit, 2); ?> MAD
                         </div>
                         <div class="category-detail">
-                            ▶ Applications et Solutions
+                            ▶ Dernières 24 heures
                         </div>
                     </div>
 
                     <div class="category-earnings">
                         <div class="category-earnings-title">
-                            <span>Revenus E-books</span>
+                            <span>Commandes</span>
                             <i class="fas fa-ellipsis-v"></i>
                         </div>
                         <div class="category-amount">
-                            41 604,99 €
+                      <?php echo number_format($nouvellesCommandes, 0); ?>
                         </div>
                         <div class="category-detail">
-                            ▶ Formations et Documentation
+                            ▶ Nouvelles commandes (24h)
                         </div>
                     </div>
                 </div>
@@ -204,5 +200,8 @@ try {
             </div>
         </div>
     </div>
+
+<script src="../assets/js/dashboard.js"></script>
+
 </body>
 </html>
