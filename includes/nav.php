@@ -1,3 +1,45 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Initialiser le panier s'il n'existe pas
+if (!isset($_SESSION['panier'])) {
+    $_SESSION['panier'] = [];
+}
+
+// Vérifier si l'utilisateur est connecté
+$isLoggedIn = isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+$userName = $isLoggedIn ? ($_SESSION['user_name'] ?? 'Utilisateur') : '';
+$userEmail = $isLoggedIn ? ($_SESSION['user_gmail'] ?? '') : '';
+$userAvatar = $isLoggedIn ? ($_SESSION['user_image'] ?? '../assets/images/user.png') : '../assets/images/user.png';
+
+// Fonction pour calculer le total du panier
+function calculerTotalPanier() {
+    $total = 0;
+    if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
+        foreach ($_SESSION['panier'] as $item) {
+            $total += $item['prix'] * $item['quantite'];
+        }
+    }
+    return $total;
+}
+
+// Fonction pour compter les articles dans le panier
+function compterArticlesPanier() {
+    $count = 0;
+    if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
+        foreach ($_SESSION['panier'] as $item) {
+            $count += $item['quantite'];
+        }
+    }
+    return $count;
+}
+
+// Calculer les totaux pour l'affichage
+$totalPanier = calculerTotalPanier();
+$nombreArticles = compterArticlesPanier();
+?>
 <!DOCTYPE html>
 <html lang="en">
    <head>
@@ -155,11 +197,19 @@
                   <!-- Icons -->
                   <ul class="d-flex list-unstyled m-0 align-items-center gap-3">
                      <li class="d-flex align-items-center gap-2">
-                        <a href="#" class="rounded-circle bg-light p-2 d-flex align-items-center justify-content-center" data-bs-toggle="offcanvas" data-bs-target="#offcanvasUser" aria-controls="offcanvasUser">
-                           <svg width="24" height="24" viewBox="0 0 24 24">
-                              <use xlink:href="#user"></use>
-                           </svg>
-                        </a>
+                        <?php if ($isLoggedIn): ?>
+                           <a href="#" class="rounded-circle bg-light p-2 d-flex align-items-center justify-content-center" data-bs-toggle="offcanvas" data-bs-target="#offcanvasUser" aria-controls="offcanvasUser">
+                              <svg width="24" height="24" viewBox="0 0 24 24">
+                                 <use xlink:href="#user"></use>
+                              </svg>
+                           </a>
+                        <?php else: ?>
+                           <a href="../user/login.php" class="rounded-circle bg-light p-2 d-flex align-items-center justify-content-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24">
+                                 <use xlink:href="#user"></use>
+                              </svg>
+                           </a>
+                        <?php endif; ?>
                      </li>
                      <li>
                         <a href="#" class="rounded-circle bg-light p-2 d-flex align-items-center justify-content-center" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFavoris" aria-controls="offcanvasFavoris">
@@ -184,8 +234,8 @@
                   <!-- Panier (Desktop only) -->
                   <div class="cart d-none d-lg-block dropdown">
                      <button class="border-0 bg-transparent d-flex flex-column gap-1 lh-1 align-items-end" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                     <span class="fs-6 text-muted" style="color:black;">Votre Panier</span>
-                     <span class="cart-total fs-5 fw-bold" style="color:black;">00.00 MAD</span>
+                     <span class="fs-6 text-muted" style="color:black;" data-cart-count>Votre Panier (0)</span>
+                     <span class="cart-total fs-5 fw-bold" style="color:black;">0.00 MAD</span>
                      </button>
                   </div>
                </div>
@@ -211,81 +261,17 @@
 <!-- Panier Offcanvas -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
   <div class="cart-header">
-    <h4 id="offcanvasCartLabel">Votre Panier (3)</h4>
+    <h4 id="offcanvasCartLabel">Votre Panier (0)</h4>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   
   <div class="cart-body">
-    <ul class="cart-items">
-      <!-- Item 1 -->
-      <li class="cart-item">
-        <div class="cart-item-image">
-          <img src="../assets/images/office.png" alt="Produit 1">
-        </div>
-        <div class="cart-item-details">
-          <div class="cart-item-top">
-            <h5 class="cart-item-title">Microsoft Office 2024 Home PC</h5>
-            <button class="cart-item-remove" aria-label="Retirer l'article">×</button>
-          </div>
-          <div class="cart-item-price">200 MAD</div>
-          <div class="cart-item-bottom">
-            <div class="quantity-selector">
-              <button class="quantity-btn" data-action="decrease">−</button>
-              <input type="number" class="quantity-input" value="1" min="1" max="10" aria-label="Quantité">
-              <button class="quantity-btn" data-action="increase">+</button>
-            </div>
-            <div class="cart-item-subtotal">200 MAD</div>
-          </div>
-        </div>
-      </li>
-      
-      <!-- Item 2 -->
-      <li class="cart-item">
-        <div class="cart-item-image">
-          <img src="../assets/images/office.png" alt="Produit 2">
-        </div>
-        <div class="cart-item-details">
-          <div class="cart-item-top">
-            <h5 class="cart-item-title">Microsoft Office 2024 Home PC</h5>
-            <button class="cart-item-remove" aria-label="Retirer l'article">×</button>
-          </div>
-          <div class="cart-item-price">200 MAD</div>
-          <div class="cart-item-bottom">
-            <div class="quantity-selector">
-              <button class="quantity-btn" data-action="decrease">−</button>
-              <input type="number" class="quantity-input" value="1" min="1" max="10" aria-label="Quantité">
-              <button class="quantity-btn" data-action="increase">+</button>
-            </div>
-            <div class="cart-item-subtotal">200 MAD</div>
-          </div>
-        </div>
-      </li>
-      
-      <!-- Item 3 -->
-      <li class="cart-item">
-        <div class="cart-item-image">
-          <img src="../assets/images/office.png" alt="Produit 3">
-        </div>
-        <div class="cart-item-details">
-          <div class="cart-item-top">
-            <h5 class="cart-item-title">Microsoft Office 2024 Home PC</h5>
-            <button class="cart-item-remove" aria-label="Retirer l'article">×</button>
-          </div>
-          <div class="cart-item-price">200 MAD</div>
-          <div class="cart-item-bottom">
-            <div class="quantity-selector">
-              <button class="quantity-btn" data-action="decrease">−</button>
-              <input type="number" class="quantity-input" value="1" min="1" max="10" aria-label="Quantité">
-              <button class="quantity-btn" data-action="increase">+</button>
-            </div>
-            <div class="cart-item-subtotal">200 MAD</div>
-          </div>
-        </div>
-      </li>
+    <ul class="cart-items" style="display: none;">
+      <!-- Les articles du panier seront ajoutés dynamiquement ici -->
     </ul>
-    
-    <!-- Panier vide (état alternatif) -->
-    <div class="empty-cart" style="display: none;">
+
+    <!-- Panier vide (état par défaut) -->
+    <div class="empty-cart">
       <div class="empty-cart-icon">
         <svg width="48" height="48" viewBox="0 0 24 24">
           <use xlink:href="#cart"></use>
@@ -293,15 +279,15 @@
       </div>
       <h5>Votre panier est vide</h5>
       <p class="empty-cart-message">Découvrez notre catalogue et ajoutez des produits à votre panier.</p>
-      <a href="#" class="cart-shop-btn">Continuer mes achats</a>
+      <a href="../user/products.php" class="cart-shop-btn">Continuer mes achats</a>
     </div>
   </div>
   
-  <div class="cart-footer">
+  <div class="cart-footer" style="display: none;">
     <div class="cart-summary">
       <div class="summary-row">
         <span>Sous-total</span>
-        <span>200 MAD</span>
+        <span>0.00 MAD</span>
       </div>
       <!-- Code promo -->
       <div class="promo-code-container">
@@ -319,12 +305,12 @@
       </div>
       <div class="summary-row total">
         <span>Total</span>
-        <span>200 MAD</span>
+        <span>0.00 MAD</span>
       </div>
     </div>
-    
-    <button class="checkout-btn">Passer à la caisse</button>
-    <a href="#" class="continue-shopping" data-bs-dismiss="offcanvas">Continuer mes achats</a>
+
+    <button class="checkout-btn" style="display: none;">Passer à la caisse</button>
+    <a href="../user/products.php" class="continue-shopping" data-bs-dismiss="offcanvas">Continuer mes achats</a>
   </div>
 </div>
 
@@ -349,99 +335,17 @@
 <!-- Favoris Offcanvas -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFavoris" aria-labelledby="offcanvasFavorisLabel">
   <div class="favoris-header">
-    <h4 id="offcanvasFavorisLabel">Vos Favoris (3)</h4>
+    <h4 id="offcanvasFavorisLabel">Vos Favoris (0)</h4>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   
   <div class="favoris-body">
-    <ul class="favoris-items">
-      <!-- Item 1 -->
-      <li class="favoris-item">
-        <div class="favoris-item-image">
-          <img src="../assets/images/d-product.png" alt="Produit 1">
-        </div>
-        <div class="favoris-item-details">
-          <div class="favoris-item-top">
-            <h5 class="favoris-item-title">Microsoft Office 2024 Home PC</h5>
-            <div class="favoris-item-actions">
-              <button class="favoris-item-cart" aria-label="Ajouter au panier">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <use xlink:href="#cart"></use>
-                </svg>
-              </button>
-              <button class="favoris-item-remove" aria-label="Retirer des favoris">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <use xlink:href="#trash"></use>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="favoris-item-price">200 MAD</div>
-          <div class="favoris-item-description">
-            Microsoft Office 2024 Home PC
-          </div>
-        </div>
-      </li>
-      
-      <!-- Item 2 -->
-      <li class="favoris-item">
-        <div class="favoris-item-image">
-          <img src="../assets/images/d-product.png" alt="Produit 2">
-        </div>
-        <div class="favoris-item-details">
-          <div class="favoris-item-top">
-            <h5 class="favoris-item-title">Microsoft Office 2024 Home PC</h5>
-            <div class="favoris-item-actions">
-              <button class="favoris-item-cart" aria-label="Ajouter au panier">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <use xlink:href="#cart"></use>
-                </svg>
-              </button>
-              <button class="favoris-item-remove" aria-label="Retirer des favoris">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <use xlink:href="#trash"></use>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="favoris-item-price">200 MAD</div>
-          <div class="favoris-item-description">
-            Microsoft Office 2024 Home PC
-          </div>
-        </div>
-      </li>
-      
-      <!-- Item 3 -->
-      <li class="favoris-item">
-        <div class="favoris-item-image">
-          <img src="../assets/images/d-product.png" alt="Produit 3">
-        </div>
-        <div class="favoris-item-details">
-          <div class="favoris-item-top">
-            <h5 class="favoris-item-title">Microsoft Office 2024 Home PC</h5>
-            <div class="favoris-item-actions">
-              <button class="favoris-item-cart" aria-label="Ajouter au panier">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <use xlink:href="#cart"></use>
-                </svg>
-              </button>
-              <button class="favoris-item-remove" aria-label="Retirer des favoris">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <use xlink:href="#trash"></use>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="favoris-item-price">200 MAD</div>
-          <div class="favoris-item-description">
-            Microsoft Office 2024 Home PC
-          </div>
-        </div>
-      </li>
+    <ul class="favoris-items" style="display: none;">
+      <!-- Les articles des favoris seront ajoutés dynamiquement ici -->
     </ul>
     
     <!-- Favoris vides (état alternatif) -->
-    <div class="empty-favoris" style="display: none;">
+    <div class="empty-favoris" style="display: block;">
       <div class="empty-favoris-icon">
         <svg width="48" height="48" viewBox="0 0 24 24">
           <use xlink:href="#heart"></use>
@@ -449,13 +353,13 @@
       </div>
       <h5>Votre liste de favoris est vide</h5>
       <p class="empty-favoris-message">Explorez notre catalogue et ajoutez des produits à vos favoris.</p>
-      <a href="#" class="favoris-shop-btn" data-bs-dismiss="offcanvas">Découvrir nos produits</a>
+      <a href="../user/products.php" class="favoris-shop-btn" data-bs-dismiss="offcanvas">Découvrir nos produits</a>
     </div>
   </div>
   
   <div class="favoris-footer">
-    <button class="add-all-to-cart-btn">Tout ajouter au panier</button>
-    <a href="#" class="continue-shopping" data-bs-dismiss="offcanvas">Continuer mes achats</a>
+    <button class="add-all-to-cart-btn" style="display: none;">Tout ajouter au panier</button>
+    <a href="../user/products.php" class="continue-shopping" data-bs-dismiss="offcanvas">Continuer mes achats</a>
   </div>
 </div>
 
@@ -467,58 +371,74 @@
   </div>
   
   <div class="user-body">
-    <!-- Profile Info -->
-    <div class="profile-info">
-      <div class="profile-avatar">
-        <img src="../assets/images/d-product.png" alt="Profile Avatar">
+    <?php if ($isLoggedIn): ?>
+      <!-- Profile Info -->
+      <div class="profile-info">
+        <div class="profile-avatar">
+          <img src="<?php echo htmlspecialchars($userAvatar); ?>" alt="Profile Avatar" onerror="this.src='../assets/images/user.png'">
+        </div>
+        <div class="profile-details">
+          <h5 class="profile-name"><?php echo htmlspecialchars($userName); ?></h5>
+          <p class="profile-email"><?php echo htmlspecialchars($userEmail); ?></p>
+        </div>
       </div>
-      <div class="profile-details">
-        <h5 class="profile-name">Ilias</h5>
-        <p class="profile-email">Ilias@example.com</p>
-      </div>
-    </div>
 
-    <!-- Menu Items -->
-    <ul class="profile-menu">
-      <li>
-        <a href="../user/user_info.php">
-          <svg width="20" height="20" viewBox="0 0 24 24">
-            <use xlink:href="#user"></use>
-          </svg>
-          Mon Compte
-        </a>
-      </li>
-      <li>
-        <a href="../user/user_commande.php">
-          <svg width="20" height="20" viewBox="0 0 24 24">
-            <use xlink:href="#calendar"></use>
-          </svg>
-          Mes Commandes
-        </a>
-      </li>
-      <li>
-        <a href="../user/user_favoris.php" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFavoris" aria-controls="offcanvasFavoris">
-          <svg width="20" height="20" viewBox="0 0 24 24">
-            <use xlink:href="#heart"></use>
-          </svg>
-          Mes Favoris
-        </a>
-      </li>
-      <li>
-        <a href="../user/user_info.php">
-          <svg width="20" height="20" viewBox="0 0 24 24">
-            <use xlink:href="#category"></use>
-          </svg>
-          Paramètres
-        </a>
-      </li>
-    </ul>
+      <!-- Menu Items -->
+      <ul class="profile-menu">
+        <li>
+          <a href="../user/user_info.php?id_user=<?php echo htmlspecialchars($_SESSION['user_id']);?>">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <use xlink:href="#user"></use>
+            </svg>
+            Mon Compte
+          </a>
+        </li>
+        <li>
+          <a href="../user/user_commande.php">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <use xlink:href="#calendar"></use>
+            </svg>
+            Mes Commandes
+          </a>
+        </li>
+        <li>
+          <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFavoris" aria-controls="offcanvasFavoris">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <use xlink:href="#heart"></use>
+            </svg>
+            Mes Favoris
+          </a>
+        </li>
+        <li>
+          <a href="../user/user_info.php">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <use xlink:href="#category"></use>
+            </svg>
+            Paramètres
+          </a>
+        </li>
+      </ul>
+    <?php else: ?>
+      <!-- Non connecté -->
+      <div class="profile-info text-center">
+        <div class="profile-avatar">
+          <img src="../assets/images/d-product.png" alt="Profile Avatar">
+        </div>
+        <div class="profile-details">
+          <h5 class="profile-name">Invité</h5>
+          <p class="profile-email">Vous n'êtes pas connecté</p>
+          <a href="../user/login.php" class="btn btn-primary btn-sm">Se connecter</a>
+        </div>
+      </div>
+    <?php endif; ?>
   </div>
   
   <div class="user-footer">
-    <button class="logout-btn">
-      Se déconnecter
-    </button>
+    <?php if ($isLoggedIn): ?>
+      <button class="logout-btn" onclick="logout()">
+        Se déconnecter
+      </button>
+    <?php endif; ?>
   </div>
 </div>
 
@@ -594,7 +514,26 @@
 </div>
 
 <script src="../assets/js/panier2.js"></script>
-<script src="../assets/js/favoris.js"></script>
+<script src="../assets/js/favoris_simple.js"></script>
+
+<script>
+// Initialiser le gestionnaire de panier
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🛒 Initialisation du CartManager...');
+    window.cartManager = new CartManager();
+    console.log('✅ CartManager initialisé:', window.cartManager);
+
+    console.log('💖 Initialisation du FavoritesManager...');
+    window.favoritesManager = new FavoritesManager();
+    console.log('✅ FavoritesManager initialisé:', window.favoritesManager);
+});
+
+function logout() {
+    if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+        window.location.href = '../includes/deconnect.php';
+    }
+}
+</script>
 
 </header>
 </html>

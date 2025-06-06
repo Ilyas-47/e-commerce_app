@@ -426,3 +426,181 @@
             margin: 10px;
             flex-shrink: 0;
         }
+
+
+        /* Styles généraux pour le bloc de bannières */
+.banner-blocks {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  gap: 20px;
+  grid-template-areas:
+    "block-1 block-1"
+    "block-2 block-3";
+
+}
+
+/* Styles pour le bloc principal du carrousel */
+.banner-blocks .block-1 {
+  grid-area: block-1;
+  background-color: #f0f8ff !important; /* Fond bleu clair comme dans la capture */
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Styles pour les titres et catégories */
+.categories {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.categories.sale {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.categories.sale:after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background-color: #333;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.text-purple {
+  color: #FFCE0A;
+}
+
+.banner-title {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* Styles pour le carrousel */
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #FFCE0A; /* Bullet actif en jaune comme dans la capture */
+}
+
+/* Ajustements pour les boutons */
+.btn-outline-dark {
+  border: 2px solid #333;
+  font-weight: 600;
+}
+
+/* Conteneur d'image avec accent violet */
+.image-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.purple-accent {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20%;
+  height: 100%;
+  background-color: #FFCE0A;
+}
+
+/* Styles pour les liens "Voir les offres" et "En savoir plus" */
+.banner-ad a.nav-link {
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.banner-ad a.nav-link svg {
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.banner-ad a.nav-link:hover svg {
+  transform: translateX(5px);
+}
+
+/* Styles spécifiques pour la version mobile */
+@media (max-width: 768px) {
+  .banner-blocks {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "block-1"
+      "block-2"
+      "block-3";
+  }
+}
+
+/* Styles pour uniformiser les cartes de produits */
+.products-carousel .product-item {
+  height: 450px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  min-width: 280px !important;
+  max-width: 320px !important;
+}
+
+.products-carousel .product-item figure {
+  height: 200px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 15px !important;
+}
+
+.products-carousel .product-item figure img {
+  max-height: 180px !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+}
+
+.products-carousel .product-item h3 {
+  height: 50px !important;
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  margin-bottom: 10px !important;
+  font-size: 16px !important;
+  line-height: 1.3 !important;
+}
+
+.products-carousel .product-item .qty,
+.products-carousel .product-item .rating {
+  margin-bottom: 8px !important;
+  display: inline-block !important;
+  margin-right: 15px !important;
+}
+
+.products-carousel .product-item .price {
+  margin-bottom: 15px !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+}
+
+.products-carousel .product-item .d-flex {
+  margin-top: auto !important;
+  align-items: center !important;
+}
+
+/* Ajustements pour le carrousel Swiper */
+.products-carousel .swiper-slide {
+  height: auto !important;
+  display: flex !important;
+}
+
+.products-carousel .swiper-wrapper {
+  align-items: stretch !important;
+}

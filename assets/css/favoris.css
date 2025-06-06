@@ -1,4 +1,4 @@
-Styles pour le panneau des favoris
+/* Styles pour le panneau des favoris */
 .favoris-header {
   display: flex;
   justify-content: space-between;
@@ -193,24 +193,27 @@ Styles pour le panneau des favoris
 /* Toast notification for favoris actions */
 .favoris-toast {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
   background-color: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
-  padding: 12px 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 20px 30px;
   display: flex;
   align-items: center;
   gap: 12px;
   z-index: 1060;
   opacity: 0;
-  transform: translateY(20px);
+  min-width: 350px;
+  max-width: 500px;
+  text-align: center;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .favoris-toast.show {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
 }
 
 .favoris-toast-icon {
@@ -245,4 +248,32 @@ Styles pour le panneau des favoris
   font-size: 20px;
   cursor: pointer;
   color: #999;
+}
+
+/* Styles pour les boutons de favoris sur les pages */
+.add-to-favorites-btn {
+  background: #fff;
+  border: 1px solid #d8d8d8;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  color: #666;
+}
+
+.add-to-favorites-btn:hover {
+  background: rgb(240, 56, 56);
+  color: #fff;
+  border-color: rgb(240, 56, 56);
+}
+
+.add-to-favorites-btn.in-favorites {
+  background: rgb(240, 56, 56);
+  color: #fff;
+  border-color: rgb(240, 56, 56);
+}
+
+.add-to-favorites-btn.in-favorites:hover {
+  background: #fff;
+  color: rgb(240, 56, 56);
+  border-color: rgb(240, 56, 56);
 }

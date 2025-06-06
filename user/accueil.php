@@ -1,3 +1,53 @@
+<?php
+require_once('../connection/connection.php');
+
+// Récupération des catégories
+try {
+    $reqCategories = $pdo->prepare("SELECT id_categorie, nom_categorie FROM categories ORDER BY nom_categorie ASC");
+    $reqCategories->execute();
+    $categories = $reqCategories->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $categories = [];
+    error_log("Erreur récupération catégories : " . $e->getMessage());
+}
+
+// Récupération des produits avec leurs catégories (limité aux 8 plus populaires)
+try {
+    $reqProduits = $pdo->prepare("
+        SELECT p.id_produit, p.nom_produit, p.description, p.prix, p.quantite_stock, p.image_url, c.nom_categorie
+        FROM produits p
+        LEFT JOIN categories c ON p.id_categorie = c.id_categorie
+        WHERE p.quantite_stock > 0
+        ORDER BY p.id_produit DESC
+        LIMIT 8
+    ");
+    $reqProduits->execute();
+    $produits = $reqProduits->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $produits = [];
+    error_log("Erreur récupération produits : " . $e->getMessage());
+}
+
+// Récupération des produits par catégorie pour les dropdowns
+$produitsParCategorie = [];
+try {
+    $reqProduitsCategorie = $pdo->prepare("
+        SELECT p.id_produit, p.nom_produit, p.id_categorie
+        FROM produits p
+        WHERE p.quantite_stock > 0
+        ORDER BY p.nom_produit ASC
+    ");
+    $reqProduitsCategorie->execute();
+    $allProduits = $reqProduitsCategorie->fetchAll(PDO::FETCH_ASSOC);
+
+    // Organiser les produits par catégorie
+    foreach ($allProduits as $produit) {
+        $produitsParCategorie[$produit['id_categorie']][] = $produit;
+    }
+} catch (PDOException $e) {
+    error_log("Erreur récupération produits par catégorie : " . $e->getMessage());
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <body>
@@ -5,69 +55,33 @@
     <section class="py-3" style="background-color:white; background-repeat: no-repeat; background-size: cover;">
                <!-- nav -->
 <div class="input">
-    <button class="value">
-        Produit
-        <div class="dropdown-menu">
-            <a href="../user/product_page.php">Produit</a>
-            <a href="../user/product_page.php">Produit</a>
-        </div>
-    </button>
-    <button class="value">
-        Produit
-        <div class="dropdown-menu">
-            <a href="../user/product_page.php">Produit</a>
-            <a href="../user/product_page.php">Produit</a>
-        </div>
-    </button>
-    <button class="value">
-        Produit
-        <div class="dropdown-menu">
-            <a href="../user/product_page.php">Produit</a>
-            <a href="../user/product_page.php">Produit</a>
-        </div>
-    </button>
-    <button class="value">
-        Produit
-        <div class="dropdown-menu">
-            <a href="../user/product_page.php">Produit</a>
-            <a href="../user/product_page.php">Produit</a>
-        </div>
-    </button>
-    <button class="value">
-        Produit
-        <div class="dropdown-menu">
-            <a href="../user/product_page.php">Produit</a>
-            <a href="../user/product_page.php">Produit</a>
-        </div>
-    </button>
-    <button class="value">
-        Produit
-        <div class="dropdown-menu">
-            <a href="../user/product_page.php">Produit</a>
-            <a href="../user/product_page.php">Produit</a>
-        </div>
-    </button>
-    <button class="value">
-        Produit
-        <div class="dropdown-menu">
-            <a href="../user/product_page.php">Produit</a>
-            <a href="../user/product_page.php">Produit</a>
-        </div>
-    </button>
-    <button class="value">
-        Produit
-        <div class="dropdown-menu">
-            <a href="../user/product_page.php">Produit</a>
-            <a href="../user/product_page.php">Produit</a>
-        </div>
-    </button>
-    <button class="value">
-        Produit
-        <div class="dropdown-menu">
-            <a href="../user/product_page.php">Produit</a>
-            <a href="../user/product_page.php">Produit</a>
-        </div>
-    </button>
+    <?php if (!empty($categories)): ?>
+        <?php foreach ($categories as $categorie): ?>
+            <button class="value">
+                <?php echo htmlspecialchars($categorie['nom_categorie']); ?>
+                <div class="dropdown-menu">
+                    <?php
+                    // Afficher les produits de cette catégorie
+                    if (isset($produitsParCategorie[$categorie['id_categorie']])):
+                        foreach ($produitsParCategorie[$categorie['id_categorie']] as $produit):
+                    ?>
+                        <a href="../user/product_page.php?id=<?php echo $produit['id_produit']; ?>">
+                            <?php echo htmlspecialchars($produit['nom_produit']); ?>
+                        </a>
+                    <?php
+                        endforeach;
+                    else:
+                    ?>
+                        <a href="../user/products.php?categorie=<?php echo $categorie['id_categorie']; ?>">
+                            Voir tous les produits
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </button>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>Aucune catégorie disponible pour le moment.</p>
+    <?php endif; ?>
 </div>
   <div class="container-fluid">
     <div class="row">
@@ -182,6 +196,80 @@
           delay: 5000,
         },
       });
+
+      // Initialisation du carrousel des produits
+      const productsSwiper = new Swiper('.products-carousel', {
+        slidesPerView: 'auto',
+        spaceBetween: 20,
+        navigation: {
+          nextEl: '.products-carousel-next',
+          prevEl: '.products-carousel-prev',
+        },
+        breakpoints: {
+          640: {
+            slidesPerView: 2,
+          },
+          768: {
+            slidesPerView: 3,
+          },
+          1024: {
+            slidesPerView: 4,
+          },
+        }
+      });
+
+      // Gestion des boutons + et - pour la quantité
+      function setupQuantityButtons() {
+        // Boutons pour diminuer la quantité
+        document.querySelectorAll('.quantity-left-minus').forEach(button => {
+          button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const input = this.closest('.product-qty').querySelector('.input-number');
+            let currentValue = parseInt(input.value) || 1;
+            if (currentValue > 1) {
+              input.value = currentValue - 1;
+            }
+          });
+        });
+
+        // Boutons pour augmenter la quantité
+        document.querySelectorAll('.quantity-right-plus').forEach(button => {
+          button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const input = this.closest('.product-qty').querySelector('.input-number');
+            let currentValue = parseInt(input.value) || 1;
+            const maxStock = parseInt(input.getAttribute('data-max-stock')) || 999;
+            if (currentValue < maxStock) {
+              input.value = currentValue + 1;
+            }
+          });
+        });
+
+        // Validation directe dans les champs input
+        document.querySelectorAll('.input-number').forEach(input => {
+          input.addEventListener('change', function() {
+            let value = parseInt(this.value) || 1;
+            const maxStock = parseInt(this.getAttribute('data-max-stock')) || 999;
+
+            if (value < 1) {
+              this.value = 1;
+            } else if (value > maxStock) {
+              this.value = maxStock;
+              alert(`Stock maximum disponible: ${maxStock}`);
+            }
+          });
+
+          // Empêcher la saisie de caractères non numériques
+          input.addEventListener('keypress', function(e) {
+            if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(e.key)) {
+              e.preventDefault();
+            }
+          });
+        });
+      }
+
+      // Initialiser les boutons de quantité
+      setupQuantityButtons();
     });
   </script>
 </section>
@@ -300,6 +388,69 @@
       "block-3";
   }
 }
+
+/* Styles pour uniformiser les cartes de produits */
+.products-carousel .product-item {
+  height: 450px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  min-width: 280px !important;
+  max-width: 320px !important;
+}
+
+.products-carousel .product-item figure {
+  height: 200px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 15px !important;
+}
+
+.products-carousel .product-item figure img {
+  max-height: 180px !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+}
+
+.products-carousel .product-item h3 {
+  height: 50px !important;
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  margin-bottom: 10px !important;
+  font-size: 16px !important;
+  line-height: 1.3 !important;
+}
+
+.products-carousel .product-item .qty,
+.products-carousel .product-item .rating {
+  margin-bottom: 8px !important;
+  display: inline-block !important;
+  margin-right: 15px !important;
+}
+
+.products-carousel .product-item .price {
+  margin-bottom: 15px !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+}
+
+.products-carousel .product-item .d-flex {
+  margin-top: auto !important;
+  align-items: center !important;
+}
+
+/* Ajustements pour le carrousel Swiper */
+.products-carousel .swiper-slide {
+  height: auto !important;
+  display: flex !important;
+}
+
+.products-carousel .swiper-wrapper {
+  align-items: stretch !important;
+}
 </style>
 
     <!-- slides logos -->
@@ -369,229 +520,58 @@
             <div class="products-carousel swiper">
               <div class="swiper-wrapper">
                 
-                <div class="product-item swiper-slide">
-                  <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
-                  <figure>
-                    <a href="product_page.php" title="Product Title">
-                      <img src="../assets/images/office.png"  class="tab-image">
-                    </a>
-                  </figure>
-                  <h3>Microsoft Office 2024 Home PC</h3>
-                  <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
-                  <span class="price">200 MAD</span>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="input-group product-qty">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
+                <?php if (!empty($produits)): ?>
+                    <?php foreach ($produits as $produit): ?>
+                        <div class="product-item swiper-slide">
+                          <button class="btn-wishlist add-to-favorites-btn"
+                                  data-product-id="<?php echo $produit['id_produit']; ?>"
+                                  data-product-name="<?php echo htmlspecialchars($produit['nom_produit']); ?>"
+                                  data-product-price="<?php echo $produit['prix']; ?>"
+                                  data-product-image="<?php echo !empty($produit['image_url']) ? htmlspecialchars($produit['image_url']) : '../assets/images/office.png'; ?>">
+                            <svg width="24" height="24"><use xlink:href="#heart"></use></svg>
+                          </button>
+                          <figure>
+                            <a href="product_page.php?id=<?php echo $produit['id_produit']; ?>" title="<?php echo htmlspecialchars($produit['nom_produit']); ?>">
+                              <img src="<?php echo !empty($produit['image_url']) ? htmlspecialchars($produit['image_url']) : '../assets/images/office.png'; ?>" class="tab-image" alt="<?php echo htmlspecialchars($produit['nom_produit']); ?>">
+                            </a>
+                          </figure>
+                          <h3><?php echo htmlspecialchars($produit['nom_produit']); ?></h3>
+                          <span class="qty"><?php echo htmlspecialchars($produit['quantite_stock']); ?> en stock</span>
+                          <span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
+                          <span class="price"><?php echo number_format($produit['prix'], 2); ?> MAD</span>
+                          <div class="d-flex align-items-center justify-content-between">
+                            <div class="input-group product-qty">
+                                <span class="input-group-btn">
+                                    <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                                      <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
+                                    </button>
+                                </span>
+                                <input type="text" id="quantity_<?php echo $produit['id_produit']; ?>" name="quantity" class="form-control input-number" value="1" data-max-stock="<?php echo $produit['quantite_stock']; ?>">
+                                <span class="input-group-btn">
+                                    <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                                        <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
+                                    </button>
+                                </span>
+                            </div>
+                            <button class="nav-link add-to-cart-btn"
+                                    data-product-id="<?php echo $produit['id_produit']; ?>"
+                                    data-product-name="<?php echo htmlspecialchars($produit['nom_produit']); ?>"
+                                    data-product-price="<?php echo $produit['prix']; ?>"
+                                    data-product-image="<?php echo htmlspecialchars($produit['image_url']); ?>"
+                                    style="border: none; background: none;">
+                                Ajouter au panier <iconify-icon icon="uil:shopping-cart"></iconify-icon>
                             </button>
-                        </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                            </button>
-                        </span>
+                          </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="product-item swiper-slide">
+                        <div class="text-center p-4">
+                            <p>Aucun produit disponible pour le moment.</p>
+                        </div>
                     </div>
-                    <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
-                  </div>
-                </div>
+                <?php endif; ?>
 
-                <div class="product-item swiper-slide">
-                  <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
-                  <figure>
-                    <a href="product_page.php" title="Product Title">
-                      <img src="../assets/images/office.png"  class="tab-image">
-                    </a>
-                  </figure>
-                  <h3>Microsoft Office 2024 Home PC</h3>
-                  <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
-                  <span class="price">200 MAD</span>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="input-group product-qty">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                            </button>
-                        </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                            </button>
-                        </span>
-                    </div>
-                    <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
-                  </div>
-                </div>
-
-                <div class="product-item swiper-slide">
-                  <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
-                  <figure>
-                    <a href="product_page.php" title="Product Title">
-                      <img src="../assets/images/office.png"  class="tab-image">
-                    </a>
-                  </figure>
-                  <h3>Microsoft Office 2024 Home PC</h3>
-                  <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
-                  <span class="price">200 MAD</span>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="input-group product-qty">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                            </button>
-                        </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                            </button>
-                        </span>
-                    </div>
-                    <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
-                  </div>
-                </div>
-
-                <div class="product-item swiper-slide">
-                  <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
-                  <figure>
-                    <a href="product_page.php" title="Product Title">
-                      <img src="../assets/images/office.png"  class="tab-image">
-                    </a>
-                  </figure>
-                  <h3>Microsoft Office 2024 Home PC</h3>
-                  <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
-                  <span class="price">200 MAD</span>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="input-group product-qty">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                            </button>
-                        </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                            </button>
-                        </span>
-                    </div>
-                    <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
-                  </div>
-                </div>
-                <div class="product-item swiper-slide">
-                  <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
-                  <figure>
-                    <a href="product_page.php" title="Product Title">
-                      <img src="../assets/images/office.png"  class="tab-image">
-                    </a>
-                  </figure>
-                  <h3>Microsoft Office 2024 Home PC</h3>
-                  <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
-                  <span class="price">200 MAD</span>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="input-group product-qty">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                            </button>
-                        </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                            </button>
-                        </span>
-                    </div>
-                    <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
-                  </div>
-                </div>
-
-                <div class="product-item swiper-slide">
-                  <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
-                  <figure>
-                    <a href="product_page.php" title="Product Title">
-                      <img src="../assets/images/office.png"  class="tab-image">
-                    </a>
-                  </figure>
-                  <h3>Microsoft Office 2024 Home PC</h3>
-                  <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
-                  <span class="price">200 MAD</span>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="input-group product-qty">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                            </button>
-                        </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                            </button>
-                        </span>
-                    </div>
-                    <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
-                  </div>
-                </div>
-
-                <div class="product-item swiper-slide">
-                  <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
-                  <figure>
-                    <a href="product_page.php" title="Product Title">
-                      <img src="../assets/images/office.png"  class="tab-image">
-                    </a>
-                  </figure>
-                  <h3>Microsoft Office 2024 Home PC</h3>
-                  <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
-                  <span class="price">200 MAD</span>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="input-group product-qty">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                            </button>
-                        </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                            </button>
-                        </span>
-                    </div>
-                    <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
-                  </div>
-                </div>
-
-                <div class="product-item swiper-slide">
-                  <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
-                  <figure>
-                    <a href="product_page.php" title="Product Title">
-                      <img src="../assets/images/office.png"  class="tab-image">
-                    </a>
-                  </figure>
-                  <h3>Microsoft Office 2024 Home PC</h3>
-                  <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
-                  <span class="price">200 MAD</span>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="input-group product-qty">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                            </button>
-                        </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
-                        <span class="input-group-btn">
-                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                            </button>
-                        </span>
-                    </div>
-                    <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
-                  </div>
-                </div>
-                
               </div>
             </div>
             <!-- / products-carousel -->
@@ -717,5 +697,49 @@
 <br>
 
     <?php include('../includes/footer.php') ?>
+
+    <script>
+    // Script de débogage pour les favoris
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Page chargée, vérification du FavoritesManager...');
+
+        // Attendre un peu que le script favoris.js se charge
+        setTimeout(function() {
+            if (window.favoritesManager) {
+                console.log('✅ FavoritesManager trouvé !');
+                console.log('Nombre de favoris actuels:', window.favoritesManager.getFavoritesCount());
+
+                // Tester les boutons de favoris
+                const favoriteButtons = document.querySelectorAll('.add-to-favorites-btn');
+                console.log('Nombre de boutons de favoris trouvés:', favoriteButtons.length);
+
+                favoriteButtons.forEach((btn, index) => {
+                    console.log(`Bouton ${index + 1}:`, {
+                        id: btn.dataset.productId,
+                        name: btn.dataset.productName,
+                        price: btn.dataset.productPrice,
+                        image: btn.dataset.productImage
+                    });
+                });
+            } else {
+                console.error('❌ FavoritesManager non trouvé !');
+            }
+        }, 500);
+
+        // Ajouter un listener pour tester les clics
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.add-to-favorites-btn')) {
+                console.log('🖱️ Clic sur bouton favoris détecté !');
+                const btn = e.target.closest('.add-to-favorites-btn');
+                console.log('Données du produit:', {
+                    id: btn.dataset.productId,
+                    name: btn.dataset.productName,
+                    price: btn.dataset.productPrice,
+                    image: btn.dataset.productImage
+                });
+            }
+        });
+    });
+    </script>
 </body>
 </html>

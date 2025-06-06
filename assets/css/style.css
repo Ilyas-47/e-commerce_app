@@ -577,6 +577,16 @@ h1,h2,h3,h4,h5,h6 {
   background: rgb(240, 56, 56);
   color: #fff;
 }
+.product-item .btn-wishlist.in-favorites {
+  background: rgb(240, 56, 56);
+  color: #fff;
+  border-color: rgb(240, 56, 56);
+}
+.product-item .btn-wishlist.in-favorites:hover {
+  background: #fff;
+  color: rgb(240, 56, 56);
+  border-color: rgb(240, 56, 56);
+}
 .product-item .qty {
   font-weight: 400;
   font-size: 13px;

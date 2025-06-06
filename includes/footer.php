@@ -58,7 +58,7 @@
             </div>
          </div>
          <div class="footer-bottom">
-            <p>&copy; 2023 Votre Marketplace Digitale - Tous droits réservés</p>
+            <p>Copyright &copy; Codec. All rights reserved.</p>
          </div>
          <script src="../assets/js/jquery-1.11.0.min.js"></script>
          <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>

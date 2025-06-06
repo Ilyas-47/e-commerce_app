@@ -1,0 +1,65 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="ProgId" content="Excel.Sheet">
+<style>
+table { border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; }
+.header { background-color: #4472C4; color: white; font-weight: bold; padding: 8px; border: 1px solid #000; text-align: center; }
+.data { padding: 6px; border: 1px solid #000; }
+.number { text-align: right; padding: 6px; border: 1px solid #000; }
+.total { background-color: #E7E6E6; font-weight: bold; padding: 6px; border: 1px solid #000; }
+.title { font-size: 16px; font-weight: bold; text-align: center; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<div class="title">Rapport des Clients - Cette année (2025)</div>
+<table>
+<tr>
+<th class="header">Nom</th>
+<th class="header">Email</th>
+<th class="header">Téléphone</th>
+<th class="header">Nombre Commandes</th>
+<th class="header">Total Achats</th>
+</tr>
+<tr>
+<td class="data">test1</td>
+<td class="data">test1@gmail.com</td>
+<td class="data">060000023</td>
+<td class="number">6</td>
+<td class="number">4 155,00 MAD</td>
+</tr>
+<tr>
+<td class="data">testpartuserzanm</td>
+<td class="data">testpartuserzand@gmail.com</td>
+<td class="data">020200329</td>
+<td class="number">2</td>
+<td class="number">2 722,00 MAD</td>
+</tr>
+<tr>
+<td class="data">ahmed</td>
+<td class="data">ahmedqwerty@gmail.com</td>
+<td class="data"></td>
+<td class="number">6</td>
+<td class="number">2 347,00 MAD</td>
+</tr>
+<tr>
+<td class="data">Utilisateur Simple</td>
+<td class="data">user@test.com</td>
+<td class="data">0123456789</td>
+<td class="number">1</td>
+<td class="number">2 222,00 MAD</td>
+</tr>
+<tr>
+<td class="total">TOTAL (4 clients)</td>
+<td class="total"></td>
+<td class="total"></td>
+<td class="total">15</td>
+<td class="total">11 446,00 MAD</td>
+</tr>
+</table>
+<p style="text-align: center; font-size: 10px; color: #666; margin-top: 20px;">
+Rapport généré le 06/06/2025 à 03:29 | Nombre d'enregistrements: 4</p>
+</body>
+</html>

@@ -1,3 +1,37 @@
+<?php
+// Démarrer la session seulement si elle n'est pas déjà active
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../user/login.php");
+    exit();
+}
+
+require_once('../connection/connection.php');
+
+// Récupérer les informations de l'utilisateur connecté
+try {
+    $req = $pdo->prepare("SELECT id_user, nom, gmail, password, image, telephone, role FROM user WHERE id_user = :id_user");
+    $req->bindParam(':id_user', $_SESSION['user_id'], PDO::PARAM_INT);
+    $req->execute();
+
+    $user = $req->fetch(PDO::FETCH_ASSOC);
+
+    if (!$user) {
+        // Si l'utilisateur n'existe pas, déconnecter
+        session_destroy();
+        header("Location: ../user/login.php");
+        exit();
+    }
+} catch (Exception $e) {
+    error_log("Erreur lors de la récupération des données utilisateur: " . $e->getMessage());
+    header("Location: ../user/login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,14 +50,14 @@
                     <h1 class="section-title"><i class="fas fa-user-circle"></i> Informations Personnelles</h1>
                     <p class="section-description">Gérez vos informations personnelles et modifiez votre profil. Ces informations nous aident à personnaliser votre expérience et à sécuriser votre compte.</p>
                     
-                    <form id="personal-info-form">
+                    <form id="personal-info-form" action="../system/system_modif_user_info.php" method="POST" enctype="multipart/form-data">
                         <div class="form-section">
                             <h2 class="form-title">Informations de base</h2>
                             <div class="form-group">
                                 <label for="avatar" class="form-label">Photo de profil</label>
                                 <div class="file-upload">
                                     <div class="avatar-preview">
-                                        <img src="../assets/images/office.png" alt="Avatar">
+                                        <img src="<?php echo htmlspecialchars($user['image'] ?? '../assets/images/user.png'); ?>" alt="Avatar" onerror="this.src='../assets/images/user.png'">
                                     </div>
                                     <div>
                                         <label for="avatar-input" class="file-upload-btn">
@@ -37,20 +71,20 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="full-name" class="form-label">Nom complet</label>
-                                    <input type="text" id="full-name" class="form-control" value="Jean Dupont">
+                                    <input type="text" id="full-name" class="form-control" value="<?php echo htmlspecialchars($user['nom'] ?? ''); ?>">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" id="email" class="form-control" value="jean.dupont@example.com">
+                                    <input type="email" id="email" class="form-control" value="<?php echo htmlspecialchars($user['gmail'] ?? ''); ?>">
                                     <div class="account-verified">
                                         <i class="fas fa-check-circle"></i> Vérifié
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="phone" class="form-label">Téléphone</label>
-                                    <input type="tel" id="phone" class="form-control" value="+33 6 12 34 56 78">
+                                    <input type="tel" id="phone" class="form-control" value="<?php echo htmlspecialchars($user['telephone'] ?? ''); ?>">
                                     <div class="account-not-verified">
                                         <i class="fas fa-exclamation-circle"></i> Non vérifié
                                     </div>
@@ -64,24 +98,23 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="current-password" class="form-label">Mot de passe actuel</label>
-                                    <input type="password" id="current-password" class="form-control" required>
+                                    <input type="password" id="current-password" class="form-control" placeholder="Saisissez votre mot de passe actuel">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="new-password" class="form-label">Nouveau mot de passe</label>
-                                    <input type="password" id="new-password" class="form-control" required>
+                                    <input type="password" id="new-password" class="form-control" placeholder="Saisissez votre nouveau mot de passe">
                                     <small class="form-text">Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="confirm-password" class="form-label">Confirmer le nouveau mot de passe</label>
-                                    <input type="password" id="confirm-password" class="form-control" required>
+                                    <input type="password" id="confirm-password" class="form-control" placeholder="Confirmez votre nouveau mot de passe">
                                 </div>
                             </div>
                         </div>
 
                         <div class="action-buttons">
-                            <button type="button" class="btn btn-outline">Annuler</button>
                             <button type="submit" class="supp-btn">Enregistrer les modifications</button>
                         </div>
                     </form>
@@ -150,18 +183,112 @@
         // Form submission handler avec validation du mot de passe
         document.getElementById('personal-info-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
+            const currentPassword = document.getElementById('current-password').value;
             const newPassword = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
-            
-            if (newPassword && newPassword !== confirmPassword) {
-                showToast('Les mots de passe ne correspondent pas', 'error');
+            const fullName = document.getElementById('full-name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+
+            // Vérifier si l'utilisateur veut changer le mot de passe
+            if (newPassword || confirmPassword) {
+                // Si l'utilisateur veut changer le mot de passe, tous les champs doivent être remplis
+                if (!currentPassword) {
+                    showToast('Veuillez saisir votre mot de passe actuel', 'error');
+                    return;
+                }
+                if (!newPassword) {
+                    showToast('Veuillez saisir votre nouveau mot de passe', 'error');
+                    return;
+                }
+                if (!confirmPassword) {
+                    showToast('Veuillez confirmer votre nouveau mot de passe', 'error');
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    showToast('Les mots de passe ne correspondent pas', 'error');
+                    return;
+                }
+            }
+
+            // Validation des champs obligatoires
+            if (!fullName.trim()) {
+                showToast('Le nom complet est requis', 'error');
                 return;
             }
-            
+            if (!email.trim()) {
+                showToast('L\'email est requis', 'error');
+                return;
+            }
+            if (!phone.trim()) {
+                showToast('Le téléphone est requis', 'error');
+                return;
+            }
+
             if (confirm('Êtes-vous sûr de vouloir enregistrer ces modifications ?')) {
-                showToast('Vos modifications ont été enregistrées avec succès !', 'success');
-                this.reset();
+                // Préparer les données à envoyer
+                const formData = new FormData();
+                formData.append('id_user', '<?php echo $user['id_user']; ?>');
+                formData.append('nom', fullName);
+                formData.append('gmail', email);
+                formData.append('telephone', phone);
+
+                // Ajouter l'image si elle a été sélectionnée
+                const avatarInput = document.getElementById('avatar-input');
+                if (avatarInput.files.length > 0) {
+                    formData.append('avatar', avatarInput.files[0]);
+                }
+
+                // Ajouter les données de mot de passe si nécessaire
+                if (newPassword) {
+                    formData.append('current_password', currentPassword);
+                    formData.append('new_password', newPassword);
+                }
+
+                // Envoyer la requête AJAX
+                fetch('../system_user/system_modif_user_info.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    if (data === 'success') {
+                        showToast('Vos modifications ont été enregistrées avec succès !', 'success');
+                        // Réinitialiser seulement les champs de mot de passe
+                        document.getElementById('current-password').value = '';
+                        document.getElementById('new-password').value = '';
+                        document.getElementById('confirm-password').value = '';
+                        // Recharger la page pour afficher les nouvelles données
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                    } else if (data === 'error_current_password') {
+                        showToast('Le mot de passe actuel est incorrect', 'error');
+                    } else if (data === 'error_email_exists') {
+                        showToast('Cet email est déjà utilisé par un autre utilisateur', 'error');
+                    } else if (data === 'error_unauthorized') {
+                        showToast('Vous n\'êtes pas autorisé à effectuer cette modification', 'error');
+                    } else {
+                        showToast('Une erreur est survenue lors de la modification', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    showToast('Une erreur est survenue lors de la modification', 'error');
+                });
+            }
+        });
+
+        // Prévisualisation de l'image sélectionnée
+        document.getElementById('avatar-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.querySelector('.avatar-preview img').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         });
 
